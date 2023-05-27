@@ -65,7 +65,7 @@ const FailerAppBar: React.FC<FailerAppBarProps> = ({
           }}
         >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Failer
+            fAIler
           </Typography>
         </Box>
         {user && (
