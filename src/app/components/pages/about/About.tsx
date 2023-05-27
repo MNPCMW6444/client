@@ -1,4 +1,4 @@
-import { Box, Typography, Link } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import version from "../../../util/version";
 
@@ -10,11 +10,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const StyledTypography = styled(Typography)(({ theme }) => ({
   fontFamily: (theme as any).typography.fontFamily,
   color: theme.palette.text.primary,
-}));
-
-const StyledLink = styled(Link)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  textDecoration: "none",
 }));
 
 const About = () => {

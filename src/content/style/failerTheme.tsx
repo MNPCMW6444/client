@@ -3,31 +3,31 @@ import { createTheme, ThemeOptions } from "@mui/material/styles/index.js";
 const failerTheme: ThemeOptions = createTheme({
   palette: {
     primary: {
-      main: "#3f51b5",
+      main: "#D32F2F", // A bold, strong red for "failure"
     },
     secondary: {
-      main: "#f5f5f5",
+      main: "#1976D2", // A calming blue for "learning"
     },
     text: {
-      primary: "#333",
-      secondary: "#666",
+      primary: "#000", // Black text for legibility
+      secondary: "#777", // A darker grey for secondary text
     },
     background: {
-      default: "#f5f5f5",
-      paper: "#fff",
+      default: "#FFF", // A clean, white background
+      paper: "#F6F6F6", // A slightly off-white for contrast with the background
     },
   },
   typography: {
-    fontFamily: "Helvetica, sans-serif",
+    fontFamily: "Roboto, sans-serif", // A modern, clean font
   },
   components: {
     MuiButton: {
       styleOverrides: {
         contained: {
-          backgroundColor: "#3f51b5",
-          color: "#fff",
+          backgroundColor: "#D32F2F", // A bold, strong red for "failure"
+          color: "#FFF", // White text for contrast
           "&:hover": {
-            backgroundColor: "#3f51b5",
+            backgroundColor: "#C62828", // A darker red for hover states
             opacity: 0.9,
           },
         },
