@@ -2,7 +2,7 @@ import { ReactNode, createContext, useEffect, useState, useRef } from "react";
 import { Typography } from "@mui/material";
 import axios, { AxiosInstance } from "axios";
 
-interface ProvideMainServerProps {
+interface ProvideMainserverProps {
   children: ReactNode;
   tryInterval?: number;
 }
@@ -49,7 +49,7 @@ const MainserverContext = createContext<{
 export const MainserverContextProvider = ({
   children,
   tryInterval,
-}: ProvideMainServerProps) => {
+}: ProvideMainserverProps) => {
   const [status, setStatus] = useState<string>(IDLE);
   const [version, setVersion] = useState<string>();
   const axiosInstance = axios.create(axiosSettings);
