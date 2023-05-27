@@ -58,7 +58,7 @@ function UserContextProvider({ children }: { children: ReactNode }) {
             .then(() => {
               axiosInstance
                 .post("data/rawIdeas", {
-                  idea: ideas[ideas.length - 1]?._id,
+                  rawIdea: ideas[ideas.length - 1]?._id,
                 })
                 .then(() => {
                   setLastRawIdea(
