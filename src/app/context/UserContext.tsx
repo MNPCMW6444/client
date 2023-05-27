@@ -11,7 +11,7 @@ import { MainServerContext } from "./MainServerContext";
 
 const UserContext = createContext<{
   user: any;
-  ideas: string[];
+  ideas: any[];
   lastRawIdea: string;
   getUser: () => Promise<void>;
 }>({
@@ -23,7 +23,7 @@ const UserContext = createContext<{
 
 function UserContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState(undefined);
-  const [ideas, setIdeas] = useState<string[]>([]);
+  const [ideas, setIdeas] = useState<any[]>([]);
   const [lastRawIdea, setLastRawIdea] = useState<string>("");
   const axiosInstance = useContext(MainServerContext);
   const loadingMessage = <Typography>Loading lilush...</Typography>;
@@ -33,7 +33,6 @@ function UserContextProvider({ children }: { children: ReactNode }) {
     axiosInstance
       .get("auth/signedin")
       .then((userRes) => {
-        setloading(false);
         setUser(userRes.data);
       })
       .catch(() => {
@@ -48,10 +47,35 @@ function UserContextProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     axiosInstance
-      .post("data/rawIdeas", { idea: ideas[ideas.length - 1] })
-      .then((res) => setLastRawIdea(res.data.ideas))
+      .post("data/rawIdeas", { idea: ideas[ideas.length - 1]?._id })
+      .then((res) => {
+        if (res.data.rawIdeas.length === 0)
+          axiosInstance
+            .post("data/saveRawIdea", {
+              parent: ideas[ideas.length - 1]?._id,
+              rawIdea: "enter your new idea here",
+            })
+            .then(() => {
+              axiosInstance
+                .post("data/rawIdeas", {
+                  idea: ideas[ideas.length - 1]?._id,
+                })
+                .then(() => {
+                  setLastRawIdea(
+                    res.data.rawIdeas[res.data.rawIdeas.length - 1].rawIdea
+                  );
+                  setloading(false);
+                });
+            });
+        else {
+          setLastRawIdea(
+            res.data.rawIdeas[res.data.rawIdeas.length - 1].rawIdea
+          );
+          setloading(false);
+        }
+      })
       .catch(() => setLastRawIdea(""));
-  }, [ideas]);
+  }, [ideas, axiosInstance]);
 
   useEffect(() => {
     getUser();
