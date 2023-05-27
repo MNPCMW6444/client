@@ -8,12 +8,16 @@ import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
 const Home = () => {
-  const { getUser, user, lastRawIdea, ideas } = useContext(UserContext);
+  const {
+    activeIdeaIndex,
+    setActiveIdeaIndex,
+    getUser,
+    user,
+    lastRawIdea,
+    ideas,
+  } = useContext(UserContext);
   const [inputText, setInputText] = useState<string>(lastRawIdea);
   const [saveStatus, setSaveStatus] = useState<string>("editing");
-  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(
-    ideas.length - 1
-  );
 
   const axiosInstance = useContext(MainServerContext);
 
@@ -75,14 +79,13 @@ const Home = () => {
             <Tabs
               variant="fullWidth"
               value={activeIdeaIndex}
-              onChange={(e: any) => {
-                debugger;
-                setActiveIdeaIndex(e);
+              onChange={(e: any, x) => {
+                setActiveIdeaIndex(x);
               }}
               aria-label="basic tabs example"
             >
-              {ideas.map((idea) => (
-                <Tab label={idea.idea.substring(0, 15)} />
+              {ideas.map((idea, index) => (
+                <Tab label={`${index + 1}: ${idea.idea.substring(0, 15)}`} />
               ))}
             </Tabs>
           </Grid>

@@ -1,5 +1,7 @@
 import {
+  Dispatch,
   ReactNode,
+  SetStateAction,
   createContext,
   useCallback,
   useContext,
@@ -14,11 +16,15 @@ const UserContext = createContext<{
   ideas: any[];
   lastRawIdea: string;
   getUser: () => Promise<void>;
+  activeIdeaIndex: number;
+  setActiveIdeaIndex: Dispatch<SetStateAction<number>>;
 }>({
   user: undefined,
   ideas: [],
   lastRawIdea: "",
   getUser: () => Promise.resolve(),
+  activeIdeaIndex: 0,
+  setActiveIdeaIndex: () => {},
 });
 
 function UserContextProvider({ children }: { children: ReactNode }) {
@@ -28,6 +34,14 @@ function UserContextProvider({ children }: { children: ReactNode }) {
   const axiosInstance = useContext(MainServerContext);
   const loadingMessage = <Typography>Loading lilush...</Typography>;
   const [loading, setloading] = useState(true);
+
+  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(
+    ideas.length - 1
+  );
+
+  useEffect(() => {
+    setActiveIdeaIndex(ideas.length - 1);
+  }, [ideas.length]);
 
   const getUser = useCallback(async () => {
     axiosInstance
@@ -49,40 +63,27 @@ function UserContextProvider({ children }: { children: ReactNode }) {
     axiosInstance
       .post("data/rawIdeas", { idea: ideas[ideas.length - 1]?._id })
       .then((res) => {
-        if (res.data.rawIdeas.length === 0)
-          axiosInstance
-            .post("data/saveRawIdea", {
-              parent: ideas[ideas.length - 1]?._id,
-              rawIdea: "enter your new idea here",
-            })
-            .then(() => {
-              axiosInstance
-                .post("data/rawIdeas", {
-                  rawIdea: ideas[ideas.length - 1]?._id,
-                })
-                .then(() => {
-                  setLastRawIdea(
-                    res.data.rawIdeas[res.data.rawIdeas.length - 1].rawIdea
-                  );
-                  setloading(false);
-                });
-            });
-        else {
-          setLastRawIdea(
-            res.data.rawIdeas[res.data.rawIdeas.length - 1].rawIdea
-          );
-          setloading(false);
-        }
+        setLastRawIdea(res.data.rawIdeas[activeIdeaIndex].rawIdea);
+        setloading(false);
       })
       .catch(() => setLastRawIdea(""));
-  }, [ideas, axiosInstance]);
+  }, [ideas, axiosInstance, activeIdeaIndex]);
 
   useEffect(() => {
     getUser();
   }, [getUser]);
 
   return (
-    <UserContext.Provider value={{ user, lastRawIdea, ideas, getUser }}>
+    <UserContext.Provider
+      value={{
+        user,
+        lastRawIdea,
+        ideas,
+        getUser,
+        activeIdeaIndex,
+        setActiveIdeaIndex,
+      }}
+    >
       {loading ? loadingMessage : children}
     </UserContext.Provider>
   );
