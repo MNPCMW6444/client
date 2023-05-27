@@ -16,7 +16,7 @@ const About = () => {
   return (
     <StyledBox>
       <StyledTypography variant="h4" gutterBottom>
-        About Failer
+        About fAIler
       </StyledTypography>
 
       <StyledTypography variant="body1" paragraph>
