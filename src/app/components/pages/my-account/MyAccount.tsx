@@ -8,7 +8,7 @@ import EditableTextField from "./EditableTextField";
 import PasswordTextField from "./PasswordTextField";
 import styled from "@emotion/styled";
 import UserContext from "../../../context/UserContext";
-import { MainServerContext } from "../../../context/MainServerContext";
+import MainserverContext from "../../../context/MainserverContext";
 
 const StyledContainer = styled(Container)`
   display: flex;
@@ -44,7 +44,7 @@ const MyAccount: FC = () => {
   const setIsEditingName = setIsEditingNamex[1];
   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
 
   useEffect(() => {
     getUser();

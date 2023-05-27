@@ -10,7 +10,7 @@ import UserContext from "../../context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { MainServerContext } from "../../context/MainServerContext";
+import MainserverContext from "../../context/MainserverContext";
 
 export interface LablesConstants {
   IDLE: {
@@ -42,7 +42,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;

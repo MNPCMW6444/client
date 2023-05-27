@@ -14,7 +14,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import { MainServerContext } from "../../context/MainServerContext";
+import MainserverContext from "../../context/MainserverContext";
 
 interface FailerAppBarProps {
   onMobileDrawerToggle: () => void;
@@ -38,7 +38,7 @@ const FailerAppBar: React.FC<FailerAppBarProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
   const { getUser } = useContext(UserContext);
 
   return (

@@ -2,7 +2,7 @@ import { useContext, useState, useRef, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import { Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
 import _ from "lodash";
-import { MainServerContext } from "../../../context/MainServerContext";
+import MainserverContext from "../../../context/MainserverContext";
 import { toast } from "react-toastify";
 import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
@@ -19,7 +19,7 @@ const Home = () => {
   const [inputText, setInputText] = useState<string>(lastRawIdea);
   const [saveStatus, setSaveStatus] = useState<string>("editing");
 
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
 
   const sendToServerRef = useRef(
     _.debounce((text) => {

@@ -16,7 +16,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import styled from "@emotion/styled";
-import { MainServerContext } from "../../context/MainServerContext";
+import MainserverContext from "../../context/MainserverContext";
 
 export const StyledLinearProgressHOC = (passwordStrength: number) =>
   styled(LinearProgress)(() => {
@@ -62,7 +62,7 @@ const Register = () => {
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
 
   const navigate = useNavigate();
 

@@ -1,15 +1,15 @@
 import FailerRouter from "./components/FailerRouter";
 import { UserContextProvider } from "./context/UserContext";
-import ProvideMainServer from "./providers/ProvideMainServer";
+import { MainserverContextProvider } from "./context/MainserverContext";
 import FailerThemeProvider from "./providers/style/FailerThemeProvider";
 
 const App = () => (
   <FailerThemeProvider>
-    <ProvideMainServer>
+    <MainserverContextProvider>
       <UserContextProvider>
         <FailerRouter />
       </UserContextProvider>
-    </ProvideMainServer>
+    </MainserverContextProvider>
   </FailerThemeProvider>
 );
 

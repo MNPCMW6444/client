@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { Typography } from "@mui/material";
-import { MainServerContext } from "./MainServerContext";
+import MainserverContext from "./MainserverContext";
 
 const UserContext = createContext<{
   user: any;
@@ -27,11 +27,11 @@ const UserContext = createContext<{
   setActiveIdeaIndex: () => {},
 });
 
-function UserContextProvider({ children }: { children: ReactNode }) {
+export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(undefined);
   const [ideas, setIdeas] = useState<any[]>([]);
   const [lastRawIdea, setLastRawIdea] = useState<string>("");
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
   const loadingMessage = <Typography>Loading lilush...</Typography>;
   const [loading, setloading] = useState(true);
 
@@ -87,7 +87,6 @@ function UserContextProvider({ children }: { children: ReactNode }) {
       {loading ? loadingMessage : children}
     </UserContext.Provider>
   );
-}
+};
 
 export default UserContext;
-export { UserContextProvider };

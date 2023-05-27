@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LABELS, LablesConstants } from "./Login";
 import { StyledLinearProgressHOC } from "./Register";
-import { MainServerContext } from "../../context/MainServerContext";
+import MainserverContext from "../../context/MainserverContext";
 
 const Reset = () => {
   const [email, setEmail] = useState<string>("");
@@ -26,7 +26,7 @@ const Reset = () => {
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
-  const axiosInstance = useContext(MainServerContext);
+  const { axiosInstance } = useContext(MainserverContext);
 
   const navigate = useNavigate();
 
