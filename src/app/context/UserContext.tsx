@@ -13,7 +13,7 @@ import MainserverContext from "./MainserverContext";
 
 interface Idea {
   _id: string;
-  lastRawIdea: string;
+  idea: string;
 }
 
 const UserContext = createContext<{
@@ -34,8 +34,10 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(undefined);
   const [ideas, setIdeas] = useState<any[]>([]);
   const { axiosInstance } = useContext(MainserverContext);
-  const loadingMessage = <Typography>Loading lilush...</Typography>;
-  const [loading, setloading] = useState(true);
+  const loadingMessage = (
+    <Typography>Loading user account details and ideas...</Typography>
+  );
+  const [loading, setLoading] = useState(true);
 
   const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(
     ideas.length - 1
@@ -50,45 +52,25 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       .get("auth/signedin")
       .then((userRes) => {
         setUser(userRes.data);
+        setLoading(false);
       })
       .catch(() => {
         setUser(undefined);
+        setLoading(false);
       });
-    axiosInstance
-      .get("data/ideas")
-      .then((res) => setIdeas(res.data.ideas))
-      .catch(() => setIdeas([]));
   }, [axiosInstance]);
-
-  useEffect(() => {
-    const asyncRead = async () => {
-      let lideas = [...ideas];
-      for (let i = 0; i < lideas.length; i++) {
-        const rawIdea = await axiosInstance.post("data/lastRawIdea", {
-          idea: lideas[i]._id,
-        });
-        lideas[i].lastRawIdea = rawIdea.data.rawIdea;
-      }
-    };
-    asyncRead();
-  }, [ideas, axiosInstance]);
-
-  useEffect(() => {
-    axiosInstance
-      .post("data/lastRawIdea", { idea: ideas[activeIdeaIndex]?._id })
-      .then((res) => {
-        if (activeIdeaIndex > -1) {
-          let updatedIdeas = [...ideas];
-          updatedIdeas[activeIdeaIndex].lastRawIdea = res.data.rawIdea;
-          setIdeas(updatedIdeas);
-          setloading(false);
-        }
-      });
-  }, [ideas, axiosInstance, activeIdeaIndex]);
 
   useEffect(() => {
     getUser();
   }, [getUser]);
+
+  useEffect(() => {
+    user &&
+      axiosInstance
+        .get("data/getIdeas")
+        .then((res) => setIdeas(res.data.ideas))
+        .catch(() => setIdeas([]));
+  }, [user, axiosInstance]);
 
   return (
     <UserContext.Provider

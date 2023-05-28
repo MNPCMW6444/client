@@ -11,7 +11,7 @@ const Home = () => {
   const { activeIdeaIndex, setActiveIdeaIndex, getUser, user, ideas } =
     useContext(UserContext);
   const [inputText, setInputText] = useState<string>(
-    ideas[activeIdeaIndex]?.lastRawIdea
+    ideas[activeIdeaIndex]?.idea
   );
   const [saveStatus, setSaveStatus] = useState<string>("editing");
 
@@ -54,7 +54,7 @@ const Home = () => {
   }, [ideas.length]);
 
   useEffect(() => {
-    setInputText(ideas[activeIdeaIndex]?.lastRawIdea);
+    setInputText(ideas[activeIdeaIndex]?.idea);
   }, [ideas, activeIdeaIndex]);
 
   const handleInputChange = (event: any) => {
@@ -81,9 +81,7 @@ const Home = () => {
               aria-label="basic tabs example"
             >
               {ideas.map((idea, index) => (
-                <Tab
-                  label={`${index + 1}: ${idea.lastRawIdea?.substring(0, 15)}`}
-                />
+                <Tab label={`${index + 1}: ${idea.idea?.substring(0, 15)}`} />
               ))}
             </Tabs>
           </Grid>
