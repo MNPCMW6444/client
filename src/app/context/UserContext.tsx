@@ -39,12 +39,10 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   );
   const [loading, setLoading] = useState(true);
 
-  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(
-    ideas.length - 1
-  );
+  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
 
   useEffect(() => {
-    setActiveIdeaIndex(ideas.length - 1);
+    // setActiveIdeaIndex(ideas.length - 1);
   }, [ideas.length]);
 
   const getUser = useCallback(async () => {
@@ -68,7 +66,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     user &&
       axiosInstance
         .get("data/getIdeas")
-        .then((res) => setIdeas(res.data.ideas))
+        .then((res) => setIdeas(res.data.ideas.map((idea: any) => idea._doc)))
         .catch(() => setIdeas([]));
   }, [user, axiosInstance]);
 

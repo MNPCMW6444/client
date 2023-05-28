@@ -10,6 +10,11 @@ import { Button } from "@mui/material";
 const Home = () => {
   const { activeIdeaIndex, setActiveIdeaIndex, getUser, user, ideas } =
     useContext(UserContext);
+  console.log("ideas", ideas);
+  console.log("activeIdeaIndex", activeIdeaIndex);
+  console.log("user", user);
+  console.log("setActiveIdeaIndex", setActiveIdeaIndex);
+  console.log("getUser", getUser);
   const [inputText, setInputText] = useState<string>(
     ideas[activeIdeaIndex]?.idea
   );
@@ -20,18 +25,21 @@ const Home = () => {
   const sendToServerRef = useRef(
     _.debounce((text) => {
       setSaveStatus("saving");
-      axiosInstance
-        .post("data/saveRawIdea", {
-          parent: ideas[activeIdeaIndex]._id,
-          rawIdea: text,
-        })
-        .then(() => {
-          setSaveStatus("saved");
-        })
-        .catch(() => {
-          setSaveStatus("editing");
-          toast("Error saving data to server");
-        });
+      debugger;
+      activeIdeaIndex !== -1 &&
+        ideas.length > 0 &&
+        axiosInstance
+          .post("data/saveRawIdea", {
+            parent: ideas[activeIdeaIndex]._id,
+            rawIdea: text,
+          })
+          .then(() => {
+            setSaveStatus("saved");
+          })
+          .catch(() => {
+            setSaveStatus("editing");
+            toast("Error saving data to server");
+          });
     }, 1000)
   );
 
@@ -64,7 +72,9 @@ const Home = () => {
     sendToServerRef.current(text);
   };
 
-  return (
+  return activeIdeaIndex === -1 || ideas.length === 0 ? (
+    <Typography>Loading...</Typography>
+  ) : (
     <>
       {ideas.length > 0 && (
         <Grid paddingTop="20px" container direction="column" rowSpacing={2}>
@@ -76,6 +86,7 @@ const Home = () => {
               variant="fullWidth"
               value={activeIdeaIndex}
               onChange={(e: any, x) => {
+                debugger;
                 setActiveIdeaIndex(x);
               }}
               aria-label="basic tabs example"
