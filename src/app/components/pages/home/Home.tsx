@@ -8,15 +8,11 @@ import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
 const Home = () => {
-  const {
-    activeIdeaIndex,
-    setActiveIdeaIndex,
-    getUser,
-    user,
-    lastRawIdea,
-    ideas,
-  } = useContext(UserContext);
-  const [inputText, setInputText] = useState<string>(lastRawIdea);
+  const { activeIdeaIndex, setActiveIdeaIndex, getUser, user, ideas } =
+    useContext(UserContext);
+  const [inputText, setInputText] = useState<string>(
+    ideas[activeIdeaIndex]?.lastRawIdea
+  );
   const [saveStatus, setSaveStatus] = useState<string>("editing");
 
   const { axiosInstance } = useContext(MainserverContext);
@@ -58,8 +54,8 @@ const Home = () => {
   }, [ideas.length]);
 
   useEffect(() => {
-    setInputText(lastRawIdea);
-  }, [lastRawIdea]);
+    setInputText(ideas[activeIdeaIndex]?.lastRawIdea);
+  }, [ideas, activeIdeaIndex]);
 
   const handleInputChange = (event: any) => {
     const text = event.target.value;
@@ -85,7 +81,9 @@ const Home = () => {
               aria-label="basic tabs example"
             >
               {ideas.map((idea, index) => (
-                <Tab label={`${index + 1}: ${idea.idea.substring(0, 15)}`} />
+                <Tab
+                  label={`${index + 1}: ${idea.lastRawIdea?.substring(0, 15)}`}
+                />
               ))}
             </Tabs>
           </Grid>
@@ -103,10 +101,10 @@ const Home = () => {
             <Grid item>
               <Typography>
                 {saveStatus === "editing"
-                  ? "Waiting one second after last edit to save..."
+                  ? "In Edit..."
                   : saveStatus === "saving"
-                  ? "Saving..."
-                  : "Saved to server"}
+                  ? "Autosaving..."
+                  : "Autosaved"}
               </Typography>
             </Grid>
             <Grid item>

@@ -11,17 +11,20 @@ import {
 import { Typography } from "@mui/material";
 import MainserverContext from "./MainserverContext";
 
+interface Idea {
+  _id: string;
+  lastRawIdea: string;
+}
+
 const UserContext = createContext<{
   user: any;
-  ideas: any[];
-  lastRawIdea: string;
+  ideas: Idea[];
   getUser: () => Promise<void>;
   activeIdeaIndex: number;
   setActiveIdeaIndex: Dispatch<SetStateAction<number>>;
 }>({
   user: undefined,
   ideas: [],
-  lastRawIdea: "",
   getUser: () => Promise.resolve(),
   activeIdeaIndex: 0,
   setActiveIdeaIndex: () => {},
@@ -30,7 +33,6 @@ const UserContext = createContext<{
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(undefined);
   const [ideas, setIdeas] = useState<any[]>([]);
-  const [lastRawIdea, setLastRawIdea] = useState<string>("");
   const { axiosInstance } = useContext(MainserverContext);
   const loadingMessage = <Typography>Loading lilush...</Typography>;
   const [loading, setloading] = useState(true);
@@ -50,7 +52,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         setUser(userRes.data);
       })
       .catch(() => {
-        setloading(false);
         setUser(undefined);
       });
     axiosInstance
@@ -60,13 +61,29 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }, [axiosInstance]);
 
   useEffect(() => {
+    const asyncRead = async () => {
+      let lideas = [...ideas];
+      for (let i = 0; i < lideas.length; i++) {
+        const rawIdea = await axiosInstance.post("data/lastRawIdea", {
+          idea: lideas[i]._id,
+        });
+        lideas[i].lastRawIdea = rawIdea.data.rawIdea;
+      }
+    };
+    asyncRead();
+  }, [ideas, axiosInstance]);
+
+  useEffect(() => {
     axiosInstance
-      .post("data/rawIdeas", { idea: ideas[activeIdeaIndex]?._id })
+      .post("data/lastRawIdea", { idea: ideas[activeIdeaIndex]?._id })
       .then((res) => {
-        setLastRawIdea(res.data.rawIdeas.rawIdea);
-        setloading(false);
-      })
-      .catch(() => setLastRawIdea(""));
+        if (activeIdeaIndex > -1) {
+          let updatedIdeas = [...ideas];
+          updatedIdeas[activeIdeaIndex].lastRawIdea = res.data.rawIdea;
+          setIdeas(updatedIdeas);
+          setloading(false);
+        }
+      });
   }, [ideas, axiosInstance, activeIdeaIndex]);
 
   useEffect(() => {
@@ -77,7 +94,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     <UserContext.Provider
       value={{
         user,
-        lastRawIdea,
         ideas,
         getUser,
         activeIdeaIndex,
