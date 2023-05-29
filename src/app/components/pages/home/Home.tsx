@@ -83,7 +83,7 @@ const Home = () => {
               }}
               aria-label="basic tabs example"
             >
-              {ideas.reverse().map((idea, index) => (
+              {ideas.map((idea, index) => (
                 <Tab
                   key={index}
                   label={`${index + 1}: ${idea.idea?.substring(0, 15)}`}
