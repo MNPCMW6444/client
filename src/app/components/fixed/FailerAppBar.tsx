@@ -39,7 +39,7 @@ const FailerAppBar: React.FC<FailerAppBarProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { axiosInstance } = useContext(MainserverContext);
-  const { getUser } = useContext(UserContext);
+  const { refreshUserData } = useContext(UserContext);
 
   return (
     <AppBar position="fixed">
@@ -102,8 +102,8 @@ const FailerAppBar: React.FC<FailerAppBarProps> = ({
                 onClick={() =>
                   axiosInstance
                     .get("auth/signout")
-                    .then(() => getUser())
-                    .catch(() => getUser())
+                    .then(() => refreshUserData())
+                    .catch(() => refreshUserData())
                 }
               >
                 Logout

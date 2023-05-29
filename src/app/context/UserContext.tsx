@@ -1,15 +1,17 @@
 import {
-  Dispatch,
+  useState,
+  useEffect,
   ReactNode,
-  SetStateAction,
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
 } from "react";
 import { Typography } from "@mui/material";
 import MainserverContext from "./MainserverContext";
+
+const loadingMessage = (
+  <Typography>Loading user account details and ideas...</Typography>
+);
 
 interface Idea {
   _id: string;
@@ -19,38 +21,34 @@ interface Idea {
 const UserContext = createContext<{
   user: any;
   ideas: Idea[];
-  getUser: () => Promise<void>;
-  activeIdeaIndex: number;
-  setActiveIdeaIndex: Dispatch<SetStateAction<number>>;
+  refreshUserData: () => Promise<void>;
 }>({
   user: undefined,
   ideas: [],
-  getUser: () => Promise.resolve(),
-  activeIdeaIndex: 0,
-  setActiveIdeaIndex: () => {},
+  refreshUserData: () => Promise.resolve(),
 });
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
+  const { axiosInstance } = useContext(MainserverContext);
   const [user, setUser] = useState(undefined);
   const [ideas, setIdeas] = useState<any[]>([]);
-  const { axiosInstance } = useContext(MainserverContext);
-  const loadingMessage = (
-    <Typography>Loading user account details and ideas...</Typography>
-  );
   const [loading, setLoading] = useState(true);
 
-  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
-
-  useEffect(() => {
-    // setActiveIdeaIndex(ideas.length - 1);
-  }, [ideas.length]);
-
-  const getUser = useCallback(async () => {
+  const refreshUserData = useCallback(async () => {
     axiosInstance
       .get("auth/signedin")
       .then((userRes) => {
         setUser(userRes.data);
-        setLoading(false);
+        axiosInstance
+          .get("data/getIdeas")
+          .then((res) => {
+            setIdeas(res.data.ideas.map((idea: any) => idea._doc));
+            setLoading(false);
+          })
+          .catch(() => {
+            setIdeas([]);
+            setLoading(false);
+          });
       })
       .catch(() => {
         setUser(undefined);
@@ -59,25 +57,15 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }, [axiosInstance]);
 
   useEffect(() => {
-    getUser();
-  }, [getUser]);
-
-  useEffect(() => {
-    user &&
-      axiosInstance
-        .get("data/getIdeas")
-        .then((res) => setIdeas(res.data.ideas.map((idea: any) => idea._doc)))
-        .catch(() => setIdeas([]));
-  }, [user, axiosInstance]);
+    refreshUserData();
+  }, [refreshUserData]);
 
   return (
     <UserContext.Provider
       value={{
         user,
         ideas,
-        getUser,
-        activeIdeaIndex,
-        setActiveIdeaIndex,
+        refreshUserData,
       }}
     >
       {loading ? loadingMessage : children}

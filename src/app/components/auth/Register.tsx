@@ -58,7 +58,7 @@ const Register = () => {
   const [name, setName] = useState<string>("");
   const [buttonLabel, setButtonLabel] = useState<keyof LablesConstants>("IDLE");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const { getUser } = useContext(UserContext);
+  const { refreshUserData } = useContext(UserContext);
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
@@ -103,7 +103,7 @@ const Register = () => {
             password,
             passwordagain: confirmPassword,
           })
-          .then(() => getUser())
+          .then(() => refreshUserData())
           .catch((error) => {
             setButtonLabel("IDLE");
             toast.error(

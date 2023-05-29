@@ -8,14 +8,13 @@ import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
 const Home = () => {
-  const { activeIdeaIndex, setActiveIdeaIndex, getUser, user, ideas } =
-    useContext(UserContext);
-  const [inputText, setInputText] = useState<string>(
-    ideas[activeIdeaIndex]?.idea
-  );
-  const [saveStatus, setSaveStatus] = useState<string>("editing");
-
   const { axiosInstance } = useContext(MainserverContext);
+  const { user, ideas, refreshUserData } = useContext(UserContext);
+  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(
+    ideas?.length === 0 ? ideas?.length : ideas?.length - 1
+  );
+  const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
+  const [saveStatus, setSaveStatus] = useState<string>("editing");
 
   const sendToServerRef = useRef(
     _.debounce((text) => {
@@ -84,8 +83,11 @@ const Home = () => {
               }}
               aria-label="basic tabs example"
             >
-              {ideas.map((idea, index) => (
-                <Tab label={`${index + 1}: ${idea.idea?.substring(0, 15)}`} />
+              {ideas.reverse().map((idea, index) => (
+                <Tab
+                  key={index}
+                  label={`${index + 1}: ${idea.idea?.substring(0, 15)}`}
+                />
               ))}
             </Tabs>
           </Grid>
@@ -117,10 +119,10 @@ const Home = () => {
                       idea: inputText,
                     })
                     .then(() => {
-                      getUser();
+                      refreshUserData();
                     })
                     .catch(() => {
-                      getUser();
+                      refreshUserData();
                       toast("Error saving data to server");
                     });
                 }}

@@ -38,7 +38,7 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [buttonLabel, setButtonLabel] = useState<keyof LablesConstants>("IDLE");
-  const { getUser } = useContext(UserContext);
+  const { refreshUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ const Login = () => {
     if (validateEmail(email) && password) {
       axiosInstance
         .post("auth/signin", { email, password })
-        .then(() => getUser())
+        .then(() => refreshUserData())
         .catch((error) => {
           setButtonLabel("IDLE");
           toast.error(

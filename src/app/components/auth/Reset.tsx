@@ -22,7 +22,7 @@ const Reset = () => {
   const [check, setCheck] = useState<boolean>(false);
   const [buttonLabel, setButtonLabel] = useState<keyof LablesConstants>("IDLE");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const { getUser } = useContext(UserContext);
+  const { refreshUserData } = useContext(UserContext);
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
@@ -67,7 +67,7 @@ const Reset = () => {
             password,
             passwordagain: confirmPassword,
           })
-          .then(() => getUser())
+          .then(() => refreshUserData())
           .catch((error) => {
             setButtonLabel("IDLE");
             toast.error(

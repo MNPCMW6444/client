@@ -36,7 +36,7 @@ export const StyledTextField: any = styled(TextField)`
 `;
 
 const MyAccount: FC = () => {
-  const { user, getUser } = useContext(UserContext);
+  const { user, refreshUserData } = useContext(UserContext);
   const [name, setName] = useState(user?.name || "");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -47,8 +47,8 @@ const MyAccount: FC = () => {
   const { axiosInstance } = useContext(MainserverContext);
 
   useEffect(() => {
-    getUser();
-  }, [getUser]);
+    refreshUserData();
+  }, [refreshUserData]);
 
   useEffect(() => {
     user && setName(user.name);
@@ -64,7 +64,7 @@ const MyAccount: FC = () => {
       setIsEditingName(false);
 
       toast("Name updated successfully!");
-      getUser();
+      refreshUserData();
     } catch (err) {
       console.error(err);
     }
@@ -79,7 +79,7 @@ const MyAccount: FC = () => {
       );
       setIsEditingPassword(false);
       toast("Password updated successfully!");
-      getUser();
+      refreshUserData();
     } catch (err) {
       console.error(err);
     }
