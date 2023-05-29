@@ -10,9 +10,7 @@ import { Button } from "@mui/material";
 const Home = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const { user, ideas, refreshUserData } = useContext(UserContext);
-  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(
-    ideas?.length === 0 ? ideas?.length : ideas?.length - 1
-  );
+  const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
   const [saveStatus, setSaveStatus] = useState<string>("editing");
 
@@ -86,7 +84,7 @@ const Home = () => {
               {ideas.map((idea, index) => (
                 <Tab
                   key={index}
-                  label={`${index + 1}: ${idea.idea?.substring(0, 15)}`}
+                  labe-l={`${index + 1}: ${idea?.idea?.substring(0, 15)}...`}
                 />
               ))}
             </Tabs>

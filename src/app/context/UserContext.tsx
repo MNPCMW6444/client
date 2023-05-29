@@ -42,7 +42,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         axiosInstance
           .get("data/getIdeas")
           .then((res) => {
-            setIdeas(res.data.ideas.map((idea: any) => idea._doc));
+            setIdeas(res.data.ideas);
             setLoading(false);
           })
           .catch(() => {
