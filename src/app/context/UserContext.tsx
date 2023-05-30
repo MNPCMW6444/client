@@ -43,6 +43,15 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
           .get("data/getIdeas")
           .then((res) => {
             setIdeas(res.data.ideas);
+            [res.data.ideas[0]].forEach((idea: any) => {
+              axiosInstance
+                .post(
+                  "ai/validateIdea",
+                  { ideaId: idea._id },
+                  { timeout: 99900 }
+                )
+                .then((res) => console.log(res.data.response));
+            });
             setLoading(false);
           })
           .catch(() => {
