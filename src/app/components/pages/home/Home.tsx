@@ -84,7 +84,7 @@ const Home = () => {
               {ideas.map((idea, index) => (
                 <Tab
                   key={index}
-                  labe-l={`${index + 1}: ${idea?.idea?.substring(0, 15)}...`}
+                  label={`${index + 1}: ${idea?.idea?.substring(0, 5)}...`}
                 />
               ))}
             </Tabs>
