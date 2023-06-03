@@ -3,15 +3,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import FailerAuthRouter from "./auth/FailerAuthRouter";
+import WhiteAuthRouter from "./auth/WhiteAuthRouter";
 import Home from "./pages/home/Home";
 import MyAccount from "./pages/my-account/MyAccount";
 import About from "./pages/about/About";
-import FailerAppBar from "./fixed/FailerAppBar";
-import FailerSideBar from "./fixed/FailerSideBar";
+import WhiteAppBar from "./fixed/WhiteAppBar";
+import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 
-const FailerRouter = () => {
+const WhiteRouter = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const theme = useTheme();
@@ -25,8 +25,8 @@ const FailerRouter = () => {
     <BrowserRouter>
       {user ? (
         <>
-          <FailerAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
-          <FailerSideBar
+          <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
+          <WhiteSideBar
             mobileDrawerOpen={mobileDrawerOpen}
             onMobileDrawerToggle={handleMobileDrawerToggle}
           />
@@ -51,10 +51,10 @@ const FailerRouter = () => {
           </Box>
         </>
       ) : (
-        <FailerAuthRouter />
+        <WhiteAuthRouter />
       )}
     </BrowserRouter>
   );
 };
 
-export default FailerRouter;
+export default WhiteRouter;

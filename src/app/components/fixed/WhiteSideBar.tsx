@@ -8,12 +8,12 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
-interface FailerSideBarProps {
+interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
   onMobileDrawerToggle: () => void;
 }
 
-const FailerSideBar: FC<FailerSideBarProps> = ({
+const WhiteSideBar: FC<WhiteSideBarProps> = ({
   mobileDrawerOpen,
   onMobileDrawerToggle,
 }) => {
@@ -86,4 +86,4 @@ const FailerSideBar: FC<FailerSideBarProps> = ({
   );
 };
 
-export default FailerSideBar;
+export default WhiteSideBar;

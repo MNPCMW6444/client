@@ -3,7 +3,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Reset from "./Reset";
 
-const FailerAuthRouter = () => (
+const WhiteAuthRouter = () => (
   <Routes>
     <Route path="/" element={<Login />} />
     <Route path="/register" element={<Register />} />
@@ -11,4 +11,4 @@ const FailerAuthRouter = () => (
   </Routes>
 );
 
-export default FailerAuthRouter;
+export default WhiteAuthRouter;

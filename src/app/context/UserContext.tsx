@@ -7,7 +7,7 @@ import {
   useContext,
 } from "react";
 import { Typography } from "@mui/material";
-import MainserverContext from "./MainserverContext";
+import MainserverContext from "./WhiteserverContext";
 
 const loadingMessage = (
   <Typography>Loading user account details and ideas...</Typography>

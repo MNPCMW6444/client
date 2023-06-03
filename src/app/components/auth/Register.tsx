@@ -16,7 +16,7 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import styled from "@emotion/styled";
-import MainserverContext from "../../context/MainserverContext";
+import MainserverContext from "../../context/WhiteserverContext";
 
 export const StyledLinearProgressHOC = (passwordStrength: number) =>
   styled(LinearProgress)(() => {

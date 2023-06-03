@@ -1,8 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import version from "../../../util/version";
-import MainserverContext from "../../../context/MainserverContext";
+import MainserverContext from "../../../context/WhiteserverContext";
 import { useContext } from "react";
+import name from "../../../../content/name";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -19,7 +20,7 @@ const About = () => {
   return (
     <StyledBox>
       <StyledTypography variant="h4" gutterBottom>
-        About fAIler
+        About {name.up}
       </StyledTypography>
       <StyledTypography variant="body1" paragraph>
         Client version: ${version}

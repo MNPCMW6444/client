@@ -1,16 +1,16 @@
-import FailerRouter from "./components/FailerRouter";
+import WhiteRouter from "./components/WhiteRouter";
 import { UserContextProvider } from "./context/UserContext";
-import { MainserverContextProvider } from "./context/MainserverContext";
-import FailerThemeProvider from "./providers/style/FailerThemeProvider";
+import { MainserverContextProvider } from "./context/WhiteserverContext";
+import WhiteThemeProvider from "./providers/style/WhiteThemeProvider";
 
 const App = () => (
-  <FailerThemeProvider>
+  <WhiteThemeProvider>
     <MainserverContextProvider>
       <UserContextProvider>
-        <FailerRouter />
+        <WhiteRouter />
       </UserContextProvider>
     </MainserverContextProvider>
-  </FailerThemeProvider>
+  </WhiteThemeProvider>
 );
 
 export default App;

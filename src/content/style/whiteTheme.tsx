@@ -1,6 +1,6 @@
 import { createTheme, ThemeOptions } from "@mui/material/styles/index.js";
 
-const failerTheme: ThemeOptions = createTheme({
+const whiteTheme: ThemeOptions = createTheme({
   palette: {
     primary: {
       main: "#D32F2F",
@@ -36,4 +36,4 @@ const failerTheme: ThemeOptions = createTheme({
   },
 });
 
-export default failerTheme;
+export default whiteTheme;
