@@ -17,7 +17,7 @@ const GOOD_STATUS = "good";
 const domain =
   process.env.NODE_ENV === "development"
     ? "http://localhost:6555/"
-    : "https://server.f-ai-ler.com/";
+    : "https://mainserver.failean.com/";
 
 const axiosSettings = {
   baseURL: domain,
