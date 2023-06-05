@@ -4,12 +4,13 @@ import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
-import Home from "./pages/home/Home";
+import Notebook from "./pages/notebook/Notebook";
 import MyAccount from "./pages/my-account/MyAccount";
 import About from "./pages/about/About";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
+import AI from "./pages/ai/AI";
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
@@ -24,7 +25,7 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <>
+        <Box paddingTop="20px">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <WhiteSideBar
             mobileDrawerOpen={mobileDrawerOpen}
@@ -44,12 +45,13 @@ const WhiteRouter = () => {
             }}
           >
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Notebook />} />
+              <Route path="/ai" element={<AI />} />
               <Route path="/my-account" element={<MyAccount />} />
               <Route path="/about" element={<About />} />
             </Routes>
           </Box>
-        </>
+        </Box>
       ) : (
         <WhiteAuthRouter />
       )}

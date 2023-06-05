@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { Add } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
-const Home = () => {
+const Notebook = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const { user, ideas, refreshUserData } = useContext(UserContext);
   const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
@@ -68,7 +68,7 @@ const Home = () => {
   ) : (
     <>
       {ideas.length > 0 && (
-        <Grid paddingTop="20px" container direction="column" rowSpacing={2}>
+        <Grid container direction="column" rowSpacing={2}>
           <Grid item>
             <Typography>Hi {user.name}</Typography>
           </Grid>
@@ -136,4 +136,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Notebook;

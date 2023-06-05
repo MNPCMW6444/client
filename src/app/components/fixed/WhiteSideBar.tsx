@@ -23,7 +23,8 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const location = useLocation();
 
   const menuItems = [
-    { label: "Home", route: "/" },
+    { label: "Notebook", route: "/" },
+    { label: "fAIlean", route: "/ai" },
     { label: "About", route: "/about" },
   ];
 
