@@ -33,7 +33,7 @@ const Tree = ({ setCurrentPromptResultName }: TreeProps) => {
   ) =>
     node && (
       <TreeItem
-        nodeId={`${Math.random()}`}
+        nodeId={node.name}
         key={index}
         label={node.name}
         onClick={() => setCurrentPromptResultName(node.name)}
