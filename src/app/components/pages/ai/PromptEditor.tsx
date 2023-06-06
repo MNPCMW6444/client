@@ -31,17 +31,17 @@ const PromptEditor = ({
 
   return (
     <>
-      <Grid item width="60%">
+      <Grid item width="40%">
         <TextField
           multiline
-          rows={50}
+          rows={24}
           variant="outlined"
           fullWidth
           onChange={(e) => setCurrentPromptResultValue(e.target.value)}
           value={curentPromptResultValue}
         />
       </Grid>
-      <Grid item width="15%" container direction="column">
+      <Grid item width="20%" container direction="column" alignItems="center">
         <Grid item>
           <Button onClick={run}>run$</Button>
         </Grid>

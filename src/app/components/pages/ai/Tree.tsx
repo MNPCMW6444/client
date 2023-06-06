@@ -35,7 +35,12 @@ const Tree = ({ setCurrentPromptResultName }: TreeProps) => {
       <TreeItem
         nodeId={node.name}
         key={index}
-        label={node.name}
+        label={
+          node.name
+            .replace(/([A-Z])/g, " $1")
+            .charAt(0)
+            .toUpperCase() + node.name.replace(/([A-Z])/g, " $1").slice(1)
+        }
         onClick={() => setCurrentPromptResultName(node.name)}
       >
         {node.children.map((node: TreeNode, index: number) =>

@@ -40,21 +40,28 @@ const AI = () => {
   }, [axiosInstance, ideas, currentIdeaId, currentPromptResultName]);
 
   return (
-    <Grid container direction="column" width="100%">
+    <Grid
+      container
+      direction="column"
+      width="100%"
+      rowSpacing={4}
+      alignItems="center"
+    >
       <Grid item width="100%">
         <Select
+          fullWidth
           value={currentIdeaId || ideas[0]._id}
           onChange={(e) => setCurrentIdeaId(e.target.value)}
         >
           {ideas.map((idea, index) => (
-            <MenuItem key={index} value={idea._id}>{`${
-              index + 1
-            }: ${idea?.idea?.substring(0, 5)}...`}</MenuItem>
+            <MenuItem key={index} value={idea._id}>
+              {idea?.idea}
+            </MenuItem>
           ))}
         </Select>
       </Grid>
-      <Grid item width="100%" container>
-        <Grid item width="25%">
+      <Grid item width="100%" container columnSpacing={4}>
+        <Grid item width="40%">
           <Tree setCurrentPromptResultName={setCurrentPromptResultName} />
         </Grid>
         <PromptEditor
