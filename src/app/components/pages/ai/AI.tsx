@@ -1,8 +1,24 @@
+import { useState, useEffect, useContext } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeItem, TreeView } from "@mui/lab";
+import MainserverContext from "../../../context/WhiteserverContext";
 
 const AI = () => {
+  const { axiosInstance } = useContext(MainserverContext);
+
+  const [tree, setTree] = useState({});
+
+  useEffect(() => {
+    const fetchTree = async () => {
+      const { data } = await axiosInstance.get("ai/xxx");
+      setTree(data.order);
+    };
+    fetchTree();
+  }, []);
+
+  console.log(tree);
+
   return (
     <TreeView
       aria-label="file system navigator"
