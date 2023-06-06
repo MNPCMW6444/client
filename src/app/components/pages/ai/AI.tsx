@@ -1,16 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { TreeItem, TreeView } from "@mui/lab";
-import { Grid, TextField, Select, MenuItem } from "@mui/material";
+import { Grid, Select, MenuItem } from "@mui/material";
 import MainserverContext from "../../../context/WhiteserverContext";
-import { TreeNode } from "@failean/shared-types";
 import UserContext from "../../../context/UserContext";
+import Tree from "./Tree";
+import PromptEditor from "./PromptEditor";
 
 const AI = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const { ideas } = useContext(UserContext);
-  const [tree, setTree] = useState<TreeNode>();
   const [currentIdeaId, setCurrentIdeaId] = useState<string>();
   const [curentPromptResultName, setCurrentPromptResultName] =
     useState<string>();
@@ -18,52 +15,31 @@ const AI = () => {
     useState<string>();
 
   useEffect(() => {
-    const fetchTree = async () => {
-      const { data } = await axiosInstance.get("ai/getPromptTree");
-      setTree(data.tree);
-    };
-    fetchTree();
-  }, [axiosInstance]);
-
-  useEffect(() => {
-    console.log("currentIdeaId: ", currentIdeaId || ideas[0]);
-    console.log("curentPromptResultName: ", curentPromptResultName);
     const fetchCurrentPromptResult = async () => {
       if (currentIdeaId || ideas[0]) {
         try {
-          console.log("currentIdeaId: ", currentIdeaId || ideas[0]);
-          console.log("curentPromptResultName: ", curentPromptResultName);
-          const { data } = await axiosInstance.post("ai/getPromptResult", {
-            ideaId: currentIdeaId || ideas[0],
-            promptName: curentPromptResultName,
-          });
-          setCurrentPromptResultValue(data.promptResult.data);
-        } catch (e) {}
+          if (curentPromptResultName && curentPromptResultName !== "idea") {
+            const { data } = await axiosInstance.post("ai/getPromptResult", {
+              ideaId: currentIdeaId || ideas[0],
+              promptName: curentPromptResultName,
+            });
+            setCurrentPromptResultValue(data.promptResult[0].data);
+          } else
+            setCurrentPromptResultValue(
+              ideas.find((idea) => idea._id === currentIdeaId || ideas[0]._id)
+                ?.idea
+            );
+        } catch (e) {
+          console.log(e);
+        }
       }
     };
     fetchCurrentPromptResult();
   }, [axiosInstance, ideas, currentIdeaId, curentPromptResultName]);
 
-  const nodeRenderer = (
-    node: TreeNode | undefined,
-    index: number = Math.random()
-  ) =>
-    node && (
-      <TreeItem
-        nodeId={`${Math.random()}`}
-        key={index}
-        label={node.name}
-        onClick={() => setCurrentPromptResultName(node.name)}
-      >
-        {node.children.map((node: TreeNode, index: number) =>
-          nodeRenderer(node, index)
-        )}
-      </TreeItem>
-    );
-
   return (
-    <Grid container direction="column">
-      <Grid item>
+    <Grid container direction="column" width="100%">
+      <Grid item width="100%">
         <Select
           value={currentIdeaId || ideas[0]._id}
           onChange={(e) => setCurrentIdeaId(e.target.value)}
@@ -75,26 +51,12 @@ const AI = () => {
           ))}
         </Select>
       </Grid>
-      <Grid item container>
-        <Grid item>
-          <TreeView
-            aria-label="file system navigator"
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ height: 1000, flexGrow: 1, maxWidth: 400, overflowY: "auto" }}
-          >
-            {nodeRenderer(tree)}
-          </TreeView>
+      <Grid item width="100%" container>
+        <Grid item width="25%">
+          <Tree setCurrentPromptResultName={setCurrentPromptResultName} />
         </Grid>
-        <Grid item>
-          <TextField
-            multiline
-            rows={10}
-            variant="outlined"
-            fullWidth
-            onChange={() => {}}
-            value={curentPromptResultValue}
-          />
+        <Grid item width="75%">
+          <PromptEditor curentPromptResultValue={curentPromptResultValue} />
         </Grid>
       </Grid>
     </Grid>
