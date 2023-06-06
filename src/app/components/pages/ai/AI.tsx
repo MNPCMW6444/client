@@ -26,15 +26,23 @@ const AI = () => {
   }, [axiosInstance]);
 
   useEffect(() => {
+    console.log("currentIdeaId: ", currentIdeaId || ideas[0]);
+    console.log("curentPromptResultName: ", curentPromptResultName);
     const fetchCurrentPromptResult = async () => {
-      const { data } = await axiosInstance.post("ai/runAndGetPromptResult", {
-        ideaId: currentIdeaId,
-        promptName: curentPromptResultName,
-      });
-      setCurrentPromptResultValue(data.promptResult);
+      if (currentIdeaId || ideas[0]) {
+        try {
+          console.log("currentIdeaId: ", currentIdeaId || ideas[0]);
+          console.log("curentPromptResultName: ", curentPromptResultName);
+          const { data } = await axiosInstance.post("ai/getPromptResult", {
+            ideaId: currentIdeaId || ideas[0],
+            promptName: curentPromptResultName,
+          });
+          setCurrentPromptResultValue(data.promptResult.data);
+        } catch (e) {}
+      }
     };
     fetchCurrentPromptResult();
-  }, [axiosInstance, currentIdeaId, curentPromptResultName]);
+  }, [axiosInstance, ideas, currentIdeaId, curentPromptResultName]);
 
   const nodeRenderer = (
     node: TreeNode | undefined,
@@ -56,7 +64,10 @@ const AI = () => {
   return (
     <Grid container direction="column">
       <Grid item>
-        <Select onChange={(e) => setCurrentIdeaId(e.target.value as string)}>
+        <Select
+          value={currentIdeaId || ideas[0]._id}
+          onChange={(e) => setCurrentIdeaId(e.target.value)}
+        >
           {ideas.map((idea, index) => (
             <MenuItem key={index} value={idea._id}>{`${
               index + 1

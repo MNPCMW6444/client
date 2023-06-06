@@ -1,10 +1,4 @@
-interface AppName {
-  low: string;
-  up: string;
-  special: string;
-  allUp: string;
-  //more...
-}
+import { AppName } from "@failean/shared-types";
 
 const name: AppName = {
   low: "failean",

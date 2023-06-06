@@ -1,7 +1,6 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import { Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
-import _ from "lodash";
 import MainserverContext from "../../../context/WhiteserverContext";
 import { toast } from "react-toastify";
 import { Add } from "@mui/icons-material";
@@ -12,45 +11,6 @@ const Notebook = () => {
   const { user, ideas, refreshUserData } = useContext(UserContext);
   const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
-  const [saveStatus, setSaveStatus] = useState<string>("editing");
-
-  const sendToServerRef = useRef(
-    _.debounce((text) => {
-      setSaveStatus("saving");
-      activeIdeaIndex !== -1 &&
-        ideas.length > 0 &&
-        axiosInstance
-          .post("data/saveRawIdea", {
-            parent: ideas[activeIdeaIndex]._id,
-            rawIdea: text,
-          })
-          .then(() => {
-            setSaveStatus("saved");
-          })
-          .catch(() => {
-            setSaveStatus("editing");
-            toast("Error saving data to server");
-          });
-    }, 1000)
-  );
-
-  useEffect(() => {
-    const sendToServer = sendToServerRef.current;
-    return () => {
-      if (ideas.length > 0) {
-        sendToServer.cancel();
-      }
-    };
-  }, [ideas.length]);
-
-  useEffect(() => {
-    const sendToServer = sendToServerRef.current;
-    return () => {
-      if (ideas.length > 0) {
-        sendToServer.cancel();
-      }
-    };
-  }, [ideas.length]);
 
   useEffect(() => {
     setInputText(ideas[activeIdeaIndex]?.idea);
@@ -59,8 +19,6 @@ const Notebook = () => {
   const handleInputChange = (event: any) => {
     const text = event.target.value;
     setInputText(text);
-    setSaveStatus("editing");
-    sendToServerRef.current(text);
   };
 
   return activeIdeaIndex === -1 || ideas.length === 0 ? (
@@ -101,13 +59,7 @@ const Notebook = () => {
           </Grid>
           <Grid item container columnSpacing={4}>
             <Grid item>
-              <Typography>
-                {saveStatus === "editing"
-                  ? "In Edit..."
-                  : saveStatus === "saving"
-                  ? "Autosaving..."
-                  : "Autosaved"}
-              </Typography>
+              <Typography>Add new to save currnet</Typography>
             </Grid>
             <Grid item>
               <Button
