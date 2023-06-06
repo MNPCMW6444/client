@@ -3,11 +3,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { TreeItem, TreeView } from "@mui/lab";
 import MainserverContext from "../../../context/WhiteserverContext";
-
-interface TreeNode {
-  name: string;
-  children: TreeNode[];
-}
+import { TreeNode } from "@failean/shared-types";
 
 const AI = () => {
   const { axiosInstance } = useContext(MainserverContext);
@@ -22,10 +18,15 @@ const AI = () => {
     fetchTree();
   }, [axiosInstance]);
 
-  const nodeRenderer = (node: TreeNode | undefined) =>
+  const nodeRenderer = (
+    node: TreeNode | undefined,
+    index: number = Math.random()
+  ) =>
     node && (
-      <TreeItem nodeId={`${Math.random()}`} label={node.name}>
-        {node.children.map((node: TreeNode) => nodeRenderer(node))}
+      <TreeItem nodeId={`${Math.random()}`} key={index} label={node.name}>
+        {node.children.map((node: TreeNode, index: number) =>
+          nodeRenderer(node, index)
+        )}
       </TreeItem>
     );
 
