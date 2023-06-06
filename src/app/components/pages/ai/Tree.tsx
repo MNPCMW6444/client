@@ -21,7 +21,7 @@ const Tree = ({ setCurrentPromptResultName }: TreeProps) => {
 
   useEffect(() => {
     const fetchTree = async () => {
-      const { data } = await axiosInstance.get("ai/getPromptTree");
+      const { data } = await axiosInstance.get("data/getPromptTree");
       setTree(data.tree);
     };
     fetchTree();

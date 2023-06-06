@@ -9,7 +9,7 @@ const AI = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const { ideas } = useContext(UserContext);
   const [currentIdeaId, setCurrentIdeaId] = useState<string>();
-  const [curentPromptResultName, setCurrentPromptResultName] =
+  const [currentPromptResultName, setCurrentPromptResultName] =
     useState<string>();
   const [curentPromptResultValue, setCurrentPromptResultValue] =
     useState<string>();
@@ -18,12 +18,14 @@ const AI = () => {
     const fetchCurrentPromptResult = async () => {
       if (currentIdeaId || ideas[0]) {
         try {
-          if (curentPromptResultName && curentPromptResultName !== "idea") {
-            const { data } = await axiosInstance.post("ai/getPromptResult", {
+          if (currentPromptResultName && currentPromptResultName !== "idea") {
+            const { data } = await axiosInstance.post("data/getPromptResult", {
               ideaId: currentIdeaId || ideas[0],
-              promptName: curentPromptResultName,
+              promptName: currentPromptResultName,
             });
-            setCurrentPromptResultValue(data.promptResult[0].data);
+            setCurrentPromptResultValue(
+              data.promptResult[data.promptResult.length - 1].data
+            );
           } else
             setCurrentPromptResultValue(
               ideas.find((idea) => idea._id === currentIdeaId || ideas[0]._id)
@@ -35,7 +37,7 @@ const AI = () => {
       }
     };
     fetchCurrentPromptResult();
-  }, [axiosInstance, ideas, currentIdeaId, curentPromptResultName]);
+  }, [axiosInstance, ideas, currentIdeaId, currentPromptResultName]);
 
   return (
     <Grid container direction="column" width="100%">
@@ -55,9 +57,12 @@ const AI = () => {
         <Grid item width="25%">
           <Tree setCurrentPromptResultName={setCurrentPromptResultName} />
         </Grid>
-        <Grid item width="75%">
-          <PromptEditor curentPromptResultValue={curentPromptResultValue} />
-        </Grid>
+        <PromptEditor
+          curentPromptResultValue={curentPromptResultValue}
+          setCurrentPromptResultValue={setCurrentPromptResultValue}
+          ideaId={currentIdeaId || ideas[0]._id}
+          promptName={currentPromptResultName || "validation"}
+        />
       </Grid>
     </Grid>
   );
