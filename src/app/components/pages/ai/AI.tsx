@@ -16,11 +16,11 @@ const AI = () => {
 
   useEffect(() => {
     const fetchCurrentPromptResult = async () => {
-      if (currentIdeaId || ideas[0]) {
+      if (currentIdeaId) {
         try {
           if (currentPromptResultName && currentPromptResultName !== "idea") {
             const { data } = await axiosInstance.post("data/getPromptResult", {
-              ideaId: currentIdeaId || ideas[0],
+              ideaId: currentIdeaId,
               promptName: currentPromptResultName,
             });
             setCurrentPromptResultValue(
