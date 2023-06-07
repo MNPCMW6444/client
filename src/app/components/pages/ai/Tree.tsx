@@ -12,7 +12,7 @@ import { TreeNode } from "@failean/shared-types";
 import MainserverContext from "../../../context/WhiteserverContext";
 
 interface TreeProps {
-  setCurrentPromptResultName: Dispatch<SetStateAction<string | undefined>>;
+  setCurrentPromptResultName: Dispatch<SetStateAction<string>>;
 }
 
 const Tree = ({ setCurrentPromptResultName }: TreeProps) => {
@@ -48,8 +48,6 @@ const Tree = ({ setCurrentPromptResultName }: TreeProps) => {
         )}
       </TreeItem>
     );
-
-  console.log("tree");
 
   return (
     <TreeView

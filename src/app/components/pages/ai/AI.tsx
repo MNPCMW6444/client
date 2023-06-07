@@ -8,9 +8,9 @@ import PromptEditor from "./PromptEditor";
 const AI = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const { ideas } = useContext(UserContext);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>();
+  const [currentIdeaId, setCurrentIdeaId] = useState<string>(ideas[0]._id);
   const [currentPromptResultName, setCurrentPromptResultName] =
-    useState<string>();
+    useState<string>("idea");
   const [curentPromptResultValue, setCurrentPromptResultValue] =
     useState<string>();
 
@@ -28,7 +28,7 @@ const AI = () => {
             );
           } else
             setCurrentPromptResultValue(
-              ideas.find((idea) => idea._id === currentIdeaId || ideas[0]._id)
+              ideas.find((idea) => idea._id === (currentIdeaId || ideas[0]._id))
                 ?.idea
             );
         } catch (e) {
@@ -50,7 +50,7 @@ const AI = () => {
       <Grid item width="100%">
         <Select
           fullWidth
-          value={currentIdeaId || ideas[0]._id}
+          value={currentIdeaId}
           onChange={(e) => setCurrentIdeaId(e.target.value)}
         >
           {ideas.map((idea, index) => (
