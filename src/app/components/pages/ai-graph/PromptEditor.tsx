@@ -36,7 +36,7 @@ const PromptEditor = ({ ideaId, promptName }: PromptEditorProps) => {
 
   return (
     <>
-      <Grid item width="40%">
+      <Grid item>
         <TextField
           multiline
           rows={24}
@@ -46,7 +46,7 @@ const PromptEditor = ({ ideaId, promptName }: PromptEditorProps) => {
           value={promptResultValue}
         />
       </Grid>
-      <Grid item width="20%" container direction="column" alignItems="center">
+      <Grid item container direction="column" alignItems="center">
         <Grid item>
           <Button onClick={run}>run$</Button>
         </Grid>
