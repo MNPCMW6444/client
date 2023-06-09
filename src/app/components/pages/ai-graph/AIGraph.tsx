@@ -39,7 +39,10 @@ const AIGraph = () => {
           <Grid item key={index} container wrap="nowrap">
             {level.map(({ name }, index) => (
               <Grid key={index} item container>
-                <PromptEditor ideaId={currentIdeaId} promptName={name} />
+                <PromptEditor
+                  idea={ideas.find(({ _id }) => _id === currentIdeaId)}
+                  promptName={name}
+                />
               </Grid>
             ))}
           </Grid>
