@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Grid, Select, MenuItem } from "@mui/material";
 import MainserverContext from "../../../context/WhiteserverContext";
 import UserContext from "../../../context/UserContext";
-import Tree from "./Tree";
+import Graph from "./Graph";
 import PromptEditor from "./PromptEditor";
 
 const AI = () => {
@@ -62,7 +62,7 @@ const AI = () => {
       </Grid>
       <Grid item width="100%" container columnSpacing={4}>
         <Grid item width="40%">
-          <Tree setCurrentPromptResultName={setCurrentPromptResultName} />
+          <Graph setCurrentPromptResultName={setCurrentPromptResultName} />
         </Grid>
         <PromptEditor
           curentPromptResultValue={curentPromptResultValue}
