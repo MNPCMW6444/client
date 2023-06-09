@@ -36,6 +36,7 @@ const PromptEditor = ({ ideaId, promptName }: PromptEditorProps) => {
 
   return (
     <><Grid item><Typography>{promptName}</Typography></Grid>
+    <Grid item><Typography>{ideaId}</Typography></Grid>
       <Grid item>
         <TextField
           multiline
