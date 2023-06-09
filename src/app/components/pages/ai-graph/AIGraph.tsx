@@ -34,9 +34,9 @@ const AIGraph = () => {
       }
     }
     return (
-      <Grid container wrap="nowrap">
+      <Grid container wrap="nowrap" direction="column">
         {result.map((level, index) => (
-          <Grid item key={index} container wrap="nowrap" direction="column">
+          <Grid item key={index} container wrap="nowrap">
             {level.map(({ name }, index) => (
               <Grid key={index} item container>
                 <PromptEditor ideaId={currentIdeaId} promptName={name} />
