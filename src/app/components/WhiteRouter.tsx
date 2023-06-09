@@ -46,7 +46,7 @@ const WhiteRouter = () => {
           >
             <Routes>
               <Route path="/*" element={<Notebook />} />
-              <Route path="/ai" element={<AIGraph />} />
+              <Route path="/ai-graph" element={<AIGraph />} />
               <Route path="/my-account" element={<MyAccount />} />
               <Route path="/about" element={<About />} />
             </Routes>

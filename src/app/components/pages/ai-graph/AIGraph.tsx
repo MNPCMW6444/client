@@ -34,9 +34,15 @@ const AIGraph = () => {
       }
     }
     return (
-      <Grid container wrap="nowrap" direction="column">
+      <Grid container wrap="nowrap" direction="column" alignItems="center">
         {result.map((level, index) => (
-          <Grid item key={index} container wrap="nowrap">
+          <Grid
+            item
+            key={index}
+            container
+            wrap="nowrap"
+            justifyContent="center"
+          >
             {level.map(({ name }, index) => (
               <Grid key={index} item container>
                 <PromptEditor
@@ -55,7 +61,6 @@ const AIGraph = () => {
     <Grid container direction="column" rowSpacing={4} alignItems="center">
       <Grid item>
         <Select
-          fullWidth
           value={currentIdeaId}
           onChange={(e) => setCurrentIdeaId(e.target.value)}
         >

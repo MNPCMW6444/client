@@ -70,7 +70,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         <Grid item>
           <Button
             disabled={!promptName || promptName === "idea"}
-            onClick={() => (!promptName || promptName === "idea") && run()}
+            onClick={() => !(!promptName || promptName === "idea") && run()}
           >
             run$
           </Button>
@@ -78,7 +78,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         <Grid item>
           <Button
             disabled={!promptName || promptName === "idea"}
-            onClick={() => (!promptName || promptName === "idea") && save()}
+            onClick={() => !(!promptName || promptName === "idea") && save()}
           >
             override manual
           </Button>
