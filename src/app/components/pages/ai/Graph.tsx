@@ -6,6 +6,7 @@ import {
   SetStateAction,
 } from "react";
 import MainserverContext from "../../../context/WhiteserverContext";
+import { PromptGraph } from "@failean/shared-types";
 
 interface GraphProps {
   setCurrentPromptResultName: Dispatch<SetStateAction<string>>;
@@ -13,7 +14,7 @@ interface GraphProps {
 
 const Graph = ({ setCurrentPromptResultName }: GraphProps) => {
   const { axiosInstance } = useContext(MainserverContext);
-  const [graph, setGraph] = useState();
+  const [graph, setGraph] = useState<PromptGraph>();
 
   useEffect(() => {
     const fetchGraph = async () => {
