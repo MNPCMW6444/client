@@ -10,7 +10,7 @@ import About from "./pages/about/About";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import AI from "./pages/ai/AI";
+import AIGraph from "./pages/ai-graph/AIGraph";
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
@@ -46,7 +46,7 @@ const WhiteRouter = () => {
           >
             <Routes>
               <Route path="/*" element={<Notebook />} />
-              <Route path="/ai" element={<AI />} />
+              <Route path="/ai" element={<AIGraph />} />
               <Route path="/my-account" element={<MyAccount />} />
               <Route path="/about" element={<About />} />
             </Routes>

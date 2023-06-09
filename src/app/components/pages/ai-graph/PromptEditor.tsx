@@ -1,31 +1,36 @@
 import { Grid, TextField, Button } from "@mui/material";
-import { useContext, Dispatch, SetStateAction } from "react";
+import { useContext, useState, useEffect } from "react";
 import MainserverContext from "../../../context/WhiteserverContext";
 
 interface PromptEditorProps {
-  curentPromptResultValue?: string;
-  setCurrentPromptResultValue: Dispatch<SetStateAction<string | undefined>>;
-  ideaId: string;
   promptName: string;
+  ideaId: string;
 }
 
-const PromptEditor = ({
-  curentPromptResultValue,
-  setCurrentPromptResultValue,
-  ideaId,
-  promptName,
-}: PromptEditorProps) => {
+const PromptEditor = ({ ideaId, promptName }: PromptEditorProps) => {
   const { axiosInstance } = useContext(MainserverContext);
+  const [promptResultValue, setPromptResultValue] = useState<string>("");
+
+  useEffect(() => {
+    const fetchPromptResult = async () => {
+      const { data } = await axiosInstance.post("data/getPromptResult", {
+        ideaId,
+        promptName,
+      });
+      setPromptResultValue(data.promptResult.data);
+    };
+    fetchPromptResult();
+  }, [axiosInstance, ideaId, promptName]);
 
   const run = async () => {
-    setCurrentPromptResultValue("running....");
+    setPromptResultValue("running....");
     axiosInstance
       .post("data/runAndGetPromptResult", {
         ideaId,
         promptName,
       })
       .then(({ data }) => {
-        setCurrentPromptResultValue(data.response);
+        setPromptResultValue(data.response);
       });
   };
 
@@ -37,8 +42,8 @@ const PromptEditor = ({
           rows={24}
           variant="outlined"
           fullWidth
-          onChange={(e) => setCurrentPromptResultValue(e.target.value)}
-          value={curentPromptResultValue}
+          onChange={(e) => setPromptResultValue(e.target.value)}
+          value={promptResultValue}
         />
       </Grid>
       <Grid item width="20%" container direction="column" alignItems="center">
