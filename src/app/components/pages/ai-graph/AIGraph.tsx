@@ -5,7 +5,9 @@ import UserContext from "../../../context/UserContext";
 import PromptEditor from "./PromptEditor";
 import { PromptGraph, PromptMap, PromptPart } from "@failean/shared-types";
 
+// eslint-disable-next-line
 const x = (promptMap: PromptMap) => {
+  // eslint-disable-next-line
   let superPrompts = Object.keys(promptMap).map((promptName: string) => ({
     name: promptName,
     deps: promptMap[promptName]
