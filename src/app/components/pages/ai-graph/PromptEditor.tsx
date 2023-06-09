@@ -1,4 +1,4 @@
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Typography } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import MainserverContext from "../../../context/WhiteserverContext";
 
@@ -35,7 +35,7 @@ const PromptEditor = ({ ideaId, promptName }: PromptEditorProps) => {
   };
 
   return (
-    <>
+    <><Grid item><Typography>{promptName}</Typography></Grid>
       <Grid item>
         <TextField
           multiline
