@@ -12,7 +12,7 @@ const WhiteAuthRouter = () => (
           src={process.env.PUBLIC_URL + "/website/index.html"}
           width="100%"
           height="100%"
-          style={{ border: 0 }}
+          style={{ border: 0, margin: 0, padding: 0 }}
           title="site"
         ></iframe>
       }

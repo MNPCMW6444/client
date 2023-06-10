@@ -36,6 +36,7 @@ const Notebook = () => {
               value={activeIdeaIndex}
               onChange={(e: any, x) => {
                 setActiveIdeaIndex(x);
+                debugger;
               }}
               aria-label="basic tabs example"
             >
@@ -45,6 +46,7 @@ const Notebook = () => {
                   label={`${index + 1}: ${idea?.idea?.substring(0, 5)}...`}
                 />
               ))}
+              <Tab label={<Add />} />
             </Tabs>
           </Grid>
           <Grid item>
@@ -68,26 +70,6 @@ const Notebook = () => {
               <Button>
                 <Delete />
                 Delele this Idea
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={() => {
-                  axiosInstance
-                    .post("data/saveIdea", {
-                      idea: inputText,
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
-                }}
-              >
-                <Add />
-                New Idea
               </Button>
             </Grid>
           </Grid>
