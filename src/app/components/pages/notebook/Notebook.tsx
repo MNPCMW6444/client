@@ -21,11 +21,11 @@ const Notebook = () => {
     setInputText(text);
   };
 
-  return activeIdeaIndex === -1 || ideas.length === 0 ? (
+  return !ideas ? (
     <Typography>Loading...</Typography>
   ) : (
     <>
-      {ideas.length > 0 && (
+      {ideas && (
         <Grid container direction="column" rowSpacing={2}>
           <Grid item>
             <Typography>Hi {user.name}</Typography>
@@ -36,9 +36,7 @@ const Notebook = () => {
               value={activeIdeaIndex}
               onChange={(e: any, x) => {
                 setActiveIdeaIndex(x);
-                debugger;
               }}
-              aria-label="basic tabs example"
             >
               {ideas.map((idea, index) => (
                 <Tab
@@ -46,7 +44,24 @@ const Notebook = () => {
                   label={`${index + 1}: ${idea?.idea?.substring(0, 5)}...`}
                 />
               ))}
-              <Tab label={<Add />} />
+              <Button
+                onClick={() => {
+                  axiosInstance
+                    .post("data/saveIdea", {
+                      idea: " ",
+                    })
+                    .then(() => {
+                      refreshUserData();
+                    })
+                    .catch(() => {
+                      refreshUserData();
+                      toast("Error saving data to server");
+                    });
+                }}
+              >
+                new
+                <Add />
+              </Button>
             </Tabs>
           </Grid>
           <Grid item>
@@ -61,13 +76,42 @@ const Notebook = () => {
           </Grid>
           <Grid item container columnSpacing={4}>
             <Grid item>
-              <Button>
+              <Button
+                onClick={() => {
+                  axiosInstance
+                    .post("data/saveIdea", {
+                      idea: inputText,
+                      ideaId: ideas[activeIdeaIndex]._id,
+                    })
+                    .then(() => {
+                      refreshUserData();
+                    })
+                    .catch(() => {
+                      refreshUserData();
+                      toast("Error saving data to server");
+                    });
+                }}
+              >
                 <Save />
                 Save this Idea
               </Button>
             </Grid>
             <Grid item>
-              <Button>
+              <Button
+                onClick={() => {
+                  axiosInstance
+                    .post("data/archiveIdea", {
+                      ideaId: ideas[activeIdeaIndex]._id,
+                    })
+                    .then(() => {
+                      refreshUserData();
+                    })
+                    .catch(() => {
+                      refreshUserData();
+                      toast("Error saving data to server");
+                    });
+                }}
+              >
                 <Delete />
                 Delele this Idea
               </Button>
