@@ -8,7 +8,9 @@ import { PromptGraph } from "@failean/shared-types";
 const AIGraph = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const { ideas } = useContext(UserContext);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>(ideas[0]._id);
+  const [currentIdeaId, setCurrentIdeaId] = useState<string>(
+    ideas[0]?._id || ""
+  );
   const [graph, setGraph] = useState<PromptGraph>();
 
   useEffect(() => {
@@ -46,7 +48,9 @@ const AIGraph = () => {
             {level.map(({ name }, index) => (
               <Grid key={index} item container>
                 <PromptEditor
-                  idea={ideas.find(({ _id }) => _id === currentIdeaId)}
+                  idea={
+                    ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"
+                  }
                   promptName={name}
                 />
               </Grid>

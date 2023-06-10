@@ -14,7 +14,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
   useEffect(() => {
     const fetchPromptResult = async () => {
       const { data } = await axiosInstance.post("data/getPromptResult", {
-        ideaId: idea._id,
+        ideaId: idea?._id,
         promptName,
       });
       setPromptResultValue(data.promptResult?.data || "");
@@ -56,15 +56,21 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         </Typography>
       </Grid>
       <Grid item>
-        <TextField
-          multiline
-          rows={24}
-          variant="outlined"
-          fullWidth
-          onChange={(e) => setPromptResultValue(e.target.value)}
-          value={promptName === "idea" ? idea.idea : promptResultValue}
-          disabled={promptName === "idea"}
-        />
+        {idea == "NO IDEAS" ? (
+          <Typography>
+            Create your first Ideas to validate it with AI
+          </Typography>
+        ) : (
+          <TextField
+            multiline
+            rows={24}
+            variant="outlined"
+            fullWidth
+            onChange={(e) => setPromptResultValue(e.target.value)}
+            value={promptName === "idea" ? idea.idea : promptResultValue}
+            disabled={promptName === "idea"}
+          />
+        )}
       </Grid>
       <Grid item container direction="column" alignItems="center">
         <Grid item>
