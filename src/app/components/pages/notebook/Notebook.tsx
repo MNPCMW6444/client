@@ -3,7 +3,7 @@ import UserContext from "../../../context/UserContext";
 import { Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
 import MainserverContext from "../../../context/WhiteserverContext";
 import { toast } from "react-toastify";
-import { Add } from "@mui/icons-material";
+import { Add, Delete, Save } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
 const Notebook = () => {
@@ -59,7 +59,16 @@ const Notebook = () => {
           </Grid>
           <Grid item container columnSpacing={4}>
             <Grid item>
-              <Typography>Add new to save currnet</Typography>
+              <Button>
+                <Save />
+                Save this Idea
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button>
+                <Delete />
+                Delele this Idea
+              </Button>
             </Grid>
             <Grid item>
               <Button
