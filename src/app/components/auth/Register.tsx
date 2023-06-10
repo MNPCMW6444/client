@@ -215,7 +215,7 @@ const Register = () => {
               <Box mt={1}>
                 <Typography align="center">
                   Already have an account?
-                  <Button color="primary" onClick={() => navigate("/")}>
+                  <Button color="primary" onClick={() => navigate("/login")}>
                     Login here
                   </Button>
                 </Typography>

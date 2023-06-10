@@ -174,7 +174,7 @@ const Reset = () => {
               </Box>
               <Box mt={1}>
                 <Typography align="center">
-                  <Button color="primary" onClick={() => navigate("/")}>
+                  <Button color="primary" onClick={() => navigate("/login")}>
                     Go Back to Login Page
                   </Button>
                 </Typography>
