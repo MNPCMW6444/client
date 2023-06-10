@@ -56,7 +56,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         </Typography>
       </Grid>
       <Grid item>
-        {idea == "NO IDEAS" ? (
+        {idea === "NO IDEAS" ? (
           <Typography>
             Create your first Ideas to validate it with AI
           </Typography>
