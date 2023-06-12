@@ -14,6 +14,8 @@ const loadingMessage = (
 );
 
 interface Idea {
+  prompts: any;
+  name: ReactNode;
   _id: string;
   idea: string;
 }
