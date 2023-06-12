@@ -1,4 +1,4 @@
-import { Grid, TextField, Button, Typography } from "@mui/material";
+import { Grid, TextField, Button, Typography, Paper } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import MainserverContext from "../../../context/WhiteserverContext";
 
@@ -46,51 +46,52 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
   };
 
   return (
-    <>
-      <Grid item>
-        <Typography>
-          {promptName
-            .replace(/([A-Z])/g, " $1")
-            .charAt(0)
-            .toUpperCase() + promptName.replace(/([A-Z])/g, " $1").slice(1)}
-        </Typography>
-      </Grid>
-      <Grid item>
-        {idea === "NO IDEAS" ? (
-          <Typography>
-            Create your first Ideas to validate it with AI
+    <Paper sx={{ bgcolor: "#0000FF10" }}>
+      <Grid container direction="column" rowSpacing={2} alignItems="center">
+        <Grid item>
+          <Typography variant="h6">
+            {promptName
+              .replace(/([A-Z])/g, " $1")
+              .charAt(0)
+              .toUpperCase() + promptName.replace(/([A-Z])/g, " $1").slice(1)}
           </Typography>
-        ) : (
-          <TextField
-            multiline
-            rows={24}
-            variant="outlined"
-            fullWidth
-            onChange={(e) => setPromptResultValue(e.target.value)}
-            value={promptName === "idea" ? idea.idea : promptResultValue}
-            disabled={promptName === "idea"}
-          />
-        )}
-      </Grid>
-      <Grid item container direction="column" alignItems="center">
-        <Grid item>
-          <Button
-            disabled={!promptName || promptName === "idea"}
-            onClick={() => !(!promptName || promptName === "idea") && run()}
-          >
-            run$
-          </Button>
         </Grid>
         <Grid item>
-          <Button
-            disabled={true || !promptName || promptName === "idea"}
-            onClick={() => !(!promptName || promptName === "idea") && save()}
-          >
-            override manual
-          </Button>
+          {idea === "NO IDEAS" ? (
+            <Typography>
+              Create your first Ideas to validate it with AI
+            </Typography>
+          ) : (
+            <TextField
+              multiline
+              rows={24}
+              variant="outlined"
+              onChange={(e) => setPromptResultValue(e.target.value)}
+              value={promptName === "idea" ? idea.idea : promptResultValue}
+              disabled={promptName === "idea"}
+            />
+          )}
+        </Grid>
+        <Grid item container direction="column" alignItems="center">
+          <Grid item>
+            <Button
+              disabled={!promptName || promptName === "idea"}
+              onClick={() => !(!promptName || promptName === "idea") && run()}
+            >
+              run$
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              disabled={true || !promptName || promptName === "idea"}
+              onClick={() => !(!promptName || promptName === "idea") && save()}
+            >
+              override manual
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
-    </>
+    </Paper>
   );
 };
 

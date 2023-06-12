@@ -36,7 +36,13 @@ const AIGraph = () => {
       }
     }
     return (
-      <Grid container wrap="nowrap" direction="column" alignItems="center">
+      <Grid
+        container
+        wrap="nowrap"
+        direction="column"
+        rowSpacing={10}
+        alignItems="center"
+      >
         {result.map((level, index) => (
           <Grid
             item
@@ -44,9 +50,10 @@ const AIGraph = () => {
             container
             wrap="nowrap"
             justifyContent="center"
+            columnSpacing={3}
           >
             {level.map(({ name }, index) => (
-              <Grid key={index} item container>
+              <Grid key={index} item>
                 <PromptEditor
                   idea={
                     ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"

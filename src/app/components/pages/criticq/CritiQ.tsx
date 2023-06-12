@@ -1,8 +1,33 @@
 import { useState, useEffect, useContext } from "react";
-import { Grid, Paper, Button, Select, MenuItem } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  Button,
+  Select,
+  MenuItem,
+  Typography,
+  Table,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@mui/material";
 import UserContext from "../../../context/UserContext";
 import MainserverContext from "../../../context/WhiteserverContext";
 import { Prompt, PromptGraph } from "@failean/shared-types";
+import PromptEditor from "../ai-graph/PromptEditor";
+
+interface Column {
+  headerName: string;
+}
+
+const columns: Column[] = [
+  { headerName: "Assumtions" },
+  { headerName: "Impact" },
+  { headerName: "Effort" },
+  { headerName: "Likelyhood" },
+  { headerName: "CritiQ Score" },
+  { headerName: "Actions" },
+];
 
 const CritiQ = () => {
   const { ideas } = useContext(UserContext);
@@ -33,7 +58,24 @@ const CritiQ = () => {
   };
 
   return (
-    <Grid container spacing={3}>
+    <Grid
+      container
+      direction="column"
+      rowSpacing={4}
+      width="80%"
+      paddingLeft="10%"
+      paddingTop="20px"
+    >
+      <Grid item>
+        <Typography variant="h4" textAlign="center">
+          CritiQ
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Typography variant="h6" textAlign="center">
+          Select the Idea to Critique
+        </Typography>
+      </Grid>
       <Grid item>
         <Select
           value={selectedIdeaId}
@@ -48,30 +90,45 @@ const CritiQ = () => {
         </Select>
       </Grid>
       <Grid item>
-        <Select
-          value={selectedPrompt}
-          onChange={(e) => setSelectedPrompt(e.target.value)}
-          fullWidth
-        >
-          {prompts.map((prompt: string, index: number) => (
-            <MenuItem key={index} value={prompt}>
-              {prompt}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
-      <Grid item>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </Grid>
-      <Grid item>
-        <Paper elevation={2}>
-          {actionPlan.map(
-            (item: any, index: number) =>
-              // Make sure to return a component or a piece of JSX here
-              // Replace 'null' with your actual component or JSX
-              null
+        <Typography variant="h6" textAlign="center">
+          Select the Prompt to Critique:
+        </Typography>
+        <Grid item>
+          <Select
+            value={selectedPrompt}
+            onChange={(e) => setSelectedPrompt(e.target.value)}
+            fullWidth
+          >
+            {prompts.map((prompt: string, index: number) => (
+              <MenuItem key={index} value={prompt}>
+                {prompt}
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
+        <Grid item>
+          {ideas.length > 0 && (
+            <PromptEditor
+              idea={ideas.find(
+                (idea) => idea._id === selectedIdeaId || ideas[0]
+              )}
+              promptName={selectedPrompt}
+            ></PromptEditor>
           )}
-        </Paper>
+        </Grid>
+        <Grid item>
+          <Button onClick={handleSubmit}>Submit</Button>
+        </Grid>
+        <Grid item>
+          <Table>
+            <TableHead>
+              {columns.map(({ headerName }) => (
+                <TableCell>{headerName}</TableCell>
+              ))}
+            </TableHead>
+            <TableBody></TableBody>
+          </Table>
+        </Grid>
       </Grid>
     </Grid>
   );
