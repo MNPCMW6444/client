@@ -26,6 +26,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
     { label: "Notebook", route: "/" },
     { label: "fAIlean", route: "/ai-graph" },
     { label: "About", route: "/about" },
+    { label: "CritiQ", route: "/critiq" },
   ];
 
   const handleMenuItemClick = (route: string) => {
