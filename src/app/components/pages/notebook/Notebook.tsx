@@ -66,6 +66,7 @@ const Notebook = () => {
           </Grid>
           <Grid item>
             <TextField
+              disabled={ideas.length === 0}
               multiline
               rows={10}
               variant="outlined"
@@ -77,6 +78,7 @@ const Notebook = () => {
           <Grid item container columnSpacing={4}>
             <Grid item>
               <Button
+                disabled={ideas.length === 0}
                 onClick={() => {
                   axiosInstance
                     .post("data/saveIdea", {
@@ -98,6 +100,7 @@ const Notebook = () => {
             </Grid>
             <Grid item>
               <Button
+                disabled={ideas.length === 0}
                 onClick={() => {
                   axiosInstance
                     .post("data/archiveIdea", {
