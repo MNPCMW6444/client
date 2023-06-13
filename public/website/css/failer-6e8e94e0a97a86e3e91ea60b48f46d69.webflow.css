@@ -1527,7 +1527,8 @@ figcaption {
 }
 
 .textarea {
-  margin-bottom: 0;
+  border-radius: 10px;
+  margin-bottom: 15px;
   padding-right: 0;
   position: relative;
 }
@@ -1711,6 +1712,21 @@ figcaption {
   align-self: center;
   font-size: 17px;
   font-weight: 400;
+}
+
+.submit-button {
+  width: 20px;
+  height: 23px;
+  color: #fcc032;
+  display: block;
+}
+
+.cc-small.button {
+  display: inline-block;
+}
+
+.text-field-3 {
+  border-radius: 10px;
 }
 
 @media screen and (min-width: 1280px) {
