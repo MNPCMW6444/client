@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import {
   Grid,
-  Paper,
   Button,
   Select,
   MenuItem,
@@ -13,7 +12,7 @@ import {
 } from "@mui/material";
 import UserContext from "../../../context/UserContext";
 import MainserverContext from "../../../context/WhiteserverContext";
-import { Prompt, PromptGraph } from "@failean/shared-types";
+import { PromptGraph } from "@failean/shared-types";
 import PromptEditor from "../ai-graph/PromptEditor";
 
 interface Column {
@@ -34,10 +33,10 @@ const CritiQ = () => {
   const { axiosInstance } = useContext(MainserverContext);
   const [selectedIdeaId, setSelectedIdeaId] = useState<string>("");
   const [selectedPrompt, setSelectedPrompt] = useState<string>("");
-  const [selectedPromptsNames, setSelectedPromptsNames] = useState<string[]>(
+  /*  const [selectedPromptsNames, setSelectedPromptsNames] = useState<string[]>(
     []
   );
-  const [actionPlan, setActionPlan] = useState<any>([]);
+  const [actionPlan, setActionPlan] = useState<any>([]); */
   const [prompts, setPrompts] = useState<string[]>([]);
 
   useEffect(() => {
@@ -47,11 +46,11 @@ const CritiQ = () => {
     };
     fetchPrompts();
   }, [axiosInstance]);
-
+  /* 
   const renderPromptOptions = () => {
     // Render your prompt options here
     // This function should return an array of <Option> components
-  };
+  }; */
 
   const handleSubmit = () => {
     // Handle the submit action here
