@@ -3,7 +3,6 @@
   "version": "2.1.41",
   "private": true,
   "dependencies": {
-    "@emotion/styled": "^11.11.0",
     "@failean/shared-types": "^2.9.107",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
