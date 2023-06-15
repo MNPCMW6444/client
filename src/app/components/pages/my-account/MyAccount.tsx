@@ -8,7 +8,7 @@ import EditableTextField from "./EditableTextField";
 import PasswordTextField from "./PasswordTextField";
 import styled from "@emotion/styled";
 import UserContext from "../../../context/UserContext";
-import MainserverContext from "../../../context/WhiteserverContext";
+import MainserverContext from "../../../context/MainserverContext";
 
 const StyledContainer = styled(Container)`
   display: flex;

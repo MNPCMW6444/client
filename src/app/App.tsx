@@ -1,6 +1,6 @@
 import WhiteRouter from "./components/WhiteRouter";
 import { UserContextProvider } from "./context/UserContext";
-import { MainserverContextProvider } from "./context/WhiteserverContext";
+import { MainserverContextProvider } from "./context/MainserverContext";
 import WhiteThemeProvider from "./providers/style/WhiteThemeProvider";
 
 const App = () => (

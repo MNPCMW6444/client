@@ -1,6 +1,6 @@
 import { Grid, TextField, Button, Typography, Paper } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import MainserverContext from "../../../context/WhiteserverContext";
+import MainserverContext from "../../../context/MainserverContext";
 
 interface PromptEditorProps {
   promptName: string;

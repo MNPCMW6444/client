@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import version from "../../../util/version";
-import MainserverContext from "../../../context/WhiteserverContext";
+import MainserverContext from "../../../context/MainserverContext";
 import { useContext } from "react";
 import name from "../../../../content/name";
 
