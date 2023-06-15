@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import { Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
-import MainserverContext from "../../../context/WhiteserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 import { toast } from "react-toastify";
 import { Add, Delete, Save } from "@mui/icons-material";
 import { Button } from "@mui/material";

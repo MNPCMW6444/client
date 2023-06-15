@@ -14,7 +14,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import MainserverContext from "../../context/WhiteserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 import name from "../../../content/name";
 
 interface WhiteAppBarProps {

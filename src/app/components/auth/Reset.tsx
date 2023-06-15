@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LABELS, LablesConstants } from "./Login";
 import { StyledLinearProgressHOC } from "./Register";
-import MainserverContext from "../../context/WhiteserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 
 const Reset = () => {
   const [email, setEmail] = useState<string>("");

@@ -10,7 +10,7 @@ import UserContext from "../../context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import MainserverContext from "../../context/WhiteserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 
 export interface LablesConstants {
   IDLE: {

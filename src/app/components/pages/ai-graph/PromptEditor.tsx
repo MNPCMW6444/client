@@ -1,6 +1,6 @@
 import { Grid, TextField, Button, Typography, Paper } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
-import MainserverContext from "../../../context/WhiteserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptName } from "@failean/shared-types";
 
 interface PromptEditorProps {

@@ -11,7 +11,7 @@ import {
   TableCell,
 } from "@mui/material";
 import UserContext from "../../../context/UserContext";
-import MainserverContext from "../../../context/WhiteserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptGraph } from "@failean/shared-types";
 import PromptEditor from "../ai-graph/PromptEditor";
 
