@@ -2,24 +2,16 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Reset from "./Reset";
+import Checkemail from "./Checkemail";
+import Website from "./Website";
 
 const WhiteAuthRouter = () => (
   <Routes>
-    <Route
-      path="/*"
-      element={
-        <iframe
-          src={process.env.PUBLIC_URL + "/website/index.html"}
-          width="100%"
-          height="100%"
-          style={{ border: 0, margin: 0, padding: 0 }}
-          title="site"
-        ></iframe>
-      }
-    />
+    <Route path="/*" element={<Website />} />
     <Route path="/login" element={<Login />} />
     <Route path="/register" element={<Register />} />
     <Route path="/reset" element={<Reset />} />
+    <Route path="/checkemail" element={<Checkemail />} />
   </Routes>
 );
 
