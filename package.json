@@ -3,8 +3,8 @@
   "version": "2.1.43",
   "private": true,
   "dependencies": {
-    "@failean/mainserver-provider": "^2.6.79",
-    "@failean/shared-types": "^2.9.116",
+    "@failean/mainserver-provider": "^2.6.81",
+    "@failean/shared-types": "^2.9.126",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
