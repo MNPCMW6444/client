@@ -30,7 +30,8 @@ const columns: Column[] = [
 
 const CritiQ = () => {
   const { ideas } = useContext(UserContext);
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const [selectedIdeaId, setSelectedIdeaId] = useState<string>("");
   const [selectedPrompt, setSelectedPrompt] = useState<string>("");
   /*  const [selectedPromptsNames, setSelectedPromptsNames] = useState<string[]>(
@@ -40,11 +41,12 @@ const CritiQ = () => {
   const [prompts, setPrompts] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchPrompts = async () => {
-      const { data } = await axiosInstance.get("data/getPromptGraph");
+    /*  const fetchPrompts = async () => {
+      const { data } =
+        (await axiosInstance) & axiosInstance.get("data/getPromptGraph");
       setPrompts((data.graph as PromptGraph).map(({ name }) => name));
-    };
-    fetchPrompts();
+    }; */
+    // fetchPrompts();
   }, [axiosInstance]);
   /* 
   const renderPromptOptions = () => {

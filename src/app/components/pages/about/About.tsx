@@ -16,8 +16,9 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 }));
 
 const About = () => {
-  const { version: serverVersion } = useContext(MainserverContext);
-  return (
+  const mainserverContext = useContext(MainserverContext);
+  const serverVersion = mainserverContext?.version;
+  return serverVersion ? (
     <StyledBox>
       <StyledTypography variant="h4" gutterBottom>
         About {name.up}
@@ -29,6 +30,8 @@ const About = () => {
         Server version: ${serverVersion}
       </StyledTypography>
     </StyledBox>
+  ) : (
+    <></>
   );
 };
 

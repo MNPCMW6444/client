@@ -6,7 +6,8 @@ import PromptEditor from "./PromptEditor";
 import { PromptGraph } from "@failean/shared-types";
 
 const AIGraph = () => {
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
   const [currentIdeaId, setCurrentIdeaId] = useState<string>(
     ideas[0]?._id || ""
@@ -15,8 +16,10 @@ const AIGraph = () => {
 
   useEffect(() => {
     const fetchGraph = async () => {
-      const { data } = await axiosInstance.get("data/getPromptGraph");
-      setGraph(data.graph);
+      if (axiosInstance) {
+        const { data } = await axiosInstance.get("data/getPromptGraph");
+        setGraph(data.graph);
+      }
     };
     fetchGraph();
   }, [axiosInstance]);

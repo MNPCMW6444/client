@@ -9,41 +9,46 @@ interface PromptEditorProps {
 }
 
 const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const [promptResultValue, setPromptResultValue] = useState<string>("");
 
   useEffect(() => {
     const fetchPromptResult = async () => {
-      const { data } = await axiosInstance.post("data/getPromptResult", {
-        ideaId: idea?._id,
-        promptName,
-      });
-      setPromptResultValue(data.promptResult?.data || "");
+      if (axiosInstance) {
+        const { data } = await axiosInstance.post("data/getPromptResult", {
+          ideaId: idea?._id,
+          promptName,
+        });
+        setPromptResultValue(data.promptResult?.data || "");
+      }
     };
     promptName !== "idea" && fetchPromptResult();
   }, [axiosInstance, idea, promptName]);
 
   const run = async () => {
     setPromptResultValue("running....");
-    axiosInstance
-      .post("data/runAndGetPromptResult", {
-        ideaId: idea._id,
-        promptName,
-      })
-      .then(({ data }) => {
-        setPromptResultValue(data.response);
-      });
+    if (axiosInstance)
+      axiosInstance
+        .post("data/runAndGetPromptResult", {
+          ideaId: idea._id,
+          promptName,
+        })
+        .then(({ data }) => {
+          setPromptResultValue(data.response);
+        });
   };
 
   const save = async () => {
-    axiosInstance
-      .post("data/xxx", {
-        ideaId: idea._id,
-        promptName,
-      })
-      .then(({ data }) => {
-        setPromptResultValue(data.response);
-      });
+    if (axiosInstance)
+      axiosInstance
+        .post("data/xxx", {
+          ideaId: idea._id,
+          promptName,
+        })
+        .then(({ data }) => {
+          setPromptResultValue(data.response);
+        });
   };
 
   return (

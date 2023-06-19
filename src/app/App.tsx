@@ -1,15 +1,15 @@
 import WhiteRouter from "./components/WhiteRouter";
 import { UserContextProvider } from "./context/UserContext";
-import { MainserverContextProvider } from "@failean/mainserver-provider";
+import { MainserverProvider } from "@failean/mainserver-provider";
 import WhiteThemeProvider from "./providers/style/WhiteThemeProvider";
 
 const App = () => (
   <WhiteThemeProvider>
-    <MainserverContextProvider>
+    <MainserverProvider env="dev">
       <UserContextProvider>
         <WhiteRouter />
       </UserContextProvider>
-    </MainserverContextProvider>
+    </MainserverProvider>
   </WhiteThemeProvider>
 );
 

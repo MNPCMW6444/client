@@ -7,7 +7,8 @@ import { Add, Delete, Save } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
 const Notebook = () => {
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const { user, ideas, refreshUserData } = useContext(UserContext);
   const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
@@ -46,17 +47,18 @@ const Notebook = () => {
               ))}
               <Button
                 onClick={() => {
-                  axiosInstance
-                    .post("data/saveIdea", {
-                      idea: " ",
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
+                  if (axiosInstance)
+                    axiosInstance
+                      .post("data/saveIdea", {
+                        idea: " ",
+                      })
+                      .then(() => {
+                        refreshUserData();
+                      })
+                      .catch(() => {
+                        refreshUserData();
+                        toast("Error saving data to server");
+                      });
                 }}
               >
                 new
@@ -80,18 +82,19 @@ const Notebook = () => {
               <Button
                 disabled={ideas.length === 0}
                 onClick={() => {
-                  axiosInstance
-                    .post("data/saveIdea", {
-                      idea: inputText,
-                      ideaId: ideas[activeIdeaIndex]._id,
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
+                  if (axiosInstance)
+                    axiosInstance
+                      .post("data/saveIdea", {
+                        idea: inputText,
+                        ideaId: ideas[activeIdeaIndex]._id,
+                      })
+                      .then(() => {
+                        refreshUserData();
+                      })
+                      .catch(() => {
+                        refreshUserData();
+                        toast("Error saving data to server");
+                      });
                 }}
               >
                 <Save />
@@ -102,17 +105,18 @@ const Notebook = () => {
               <Button
                 disabled={ideas.length === 0}
                 onClick={() => {
-                  axiosInstance
-                    .post("data/archiveIdea", {
-                      ideaId: ideas[activeIdeaIndex]._id,
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
+                  if (axiosInstance)
+                    axiosInstance
+                      .post("data/archiveIdea", {
+                        ideaId: ideas[activeIdeaIndex]._id,
+                      })
+                      .then(() => {
+                        refreshUserData();
+                      })
+                      .catch(() => {
+                        refreshUserData();
+                        toast("Error saving data to server");
+                      });
                 }}
               >
                 <Delete />

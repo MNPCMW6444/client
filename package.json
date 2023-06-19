@@ -1,9 +1,9 @@
 {
   "name": "failean-client",
-  "version": "2.1.43",
+  "version": "2.1.44",
   "private": true,
   "dependencies": {
-    "@failean/mainserver-provider": "^2.6.81",
+    "@failean/mainserver-provider": "^2.6.82",
     "@failean/shared-types": "^2.9.126",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",

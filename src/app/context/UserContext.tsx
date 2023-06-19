@@ -31,31 +31,34 @@ const UserContext = createContext<{
 });
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const [user, setUser] = useState(undefined);
   const [ideas, setIdeas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refreshUserData = useCallback(async () => {
-    axiosInstance
-      .get("auth/signedin")
-      .then((userRes) => {
-        setUser(userRes.data);
-        axiosInstance
-          .get("data/getIdeas")
-          .then((res) => {
-            setIdeas(res.data.ideas);
-            setLoading(false);
-          })
-          .catch(() => {
-            setIdeas([]);
-            setLoading(false);
-          });
-      })
-      .catch(() => {
-        setUser(undefined);
-        setLoading(false);
-      });
+    if (axiosInstance)
+      axiosInstance
+        .get("auth/signedin")
+        .then((userRes) => {
+          setUser(userRes.data);
+          axiosInstance &&
+            axiosInstance
+              .get("data/getIdeas")
+              .then((res) => {
+                setIdeas(res.data.ideas);
+                setLoading(false);
+              })
+              .catch(() => {
+                setIdeas([]);
+                setLoading(false);
+              });
+        })
+        .catch(() => {
+          setUser(undefined);
+          setLoading(false);
+        });
   }, [axiosInstance]);
 
   useEffect(() => {

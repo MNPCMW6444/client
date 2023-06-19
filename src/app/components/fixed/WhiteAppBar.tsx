@@ -37,7 +37,8 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const { refreshUserData } = useContext(UserContext);
 
   return (
@@ -99,6 +100,7 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
               </MenuItem>
               <MenuItem
                 onClick={() =>
+                  axiosInstance &&
                   axiosInstance
                     .get("auth/signout")
                     .then(() => refreshUserData())

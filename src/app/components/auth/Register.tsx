@@ -62,7 +62,8 @@ const Register = () => {
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
 
   const navigate = useNavigate();
 
@@ -88,31 +89,35 @@ const Register = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!key) {
-      axiosInstance.post("auth/signupreq", { email });
-      setCheck(true);
+      if (axiosInstance) {
+        axiosInstance.post("auth/signupreq", { email });
+        setCheck(true);
+      }
     } else {
       if (
         password.length >= 6 &&
         name.length > 0 &&
         password === confirmPassword
       ) {
-        axiosInstance
-          .post("auth/signupfin", {
-            key,
-            fullname: name,
-            password,
-            passwordagain: confirmPassword,
-          })
-          .then(() => refreshUserData())
-          .catch((error) => {
-            setButtonLabel("IDLE");
-            toast.error(
-              error?.response?.data?.clientError ||
-                error?.message ||
-                "Unknown error, Make sure you are Online"
-            );
-          });
-        setButtonLabel("DOING");
+        if (axiosInstance) {
+          axiosInstance
+            .post("auth/signupfin", {
+              key,
+              fullname: name,
+              password,
+              passwordagain: confirmPassword,
+            })
+            .then(() => refreshUserData())
+            .catch((error) => {
+              setButtonLabel("IDLE");
+              toast.error(
+                error?.response?.data?.clientError ||
+                  error?.message ||
+                  "Unknown error, Make sure you are Online"
+              );
+            });
+          setButtonLabel("DOING");
+        }
       }
     }
   };
