@@ -17,7 +17,7 @@ const AIGraph = () => {
   useEffect(() => {
     const fetchGraph = async () => {
       if (axiosInstance) {
-        const { data } = await axiosInstance.get("data/getPromptGraph");
+        const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
         setGraph(data.graph);
       }
     };

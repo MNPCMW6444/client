@@ -45,7 +45,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
           setUser(userRes.data);
           axiosInstance &&
             axiosInstance
-              .get("data/getIdeas")
+              .get("data/ideas/getIdeas")
               .then((res) => {
                 setIdeas(res.data.ideas);
                 setLoading(false);

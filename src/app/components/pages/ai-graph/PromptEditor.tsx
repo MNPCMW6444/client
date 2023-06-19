@@ -16,10 +16,14 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
   useEffect(() => {
     const fetchPromptResult = async () => {
       if (axiosInstance) {
-        const { data } = await axiosInstance.post("data/getPromptResult", {
-          ideaId: idea?._id,
-          promptName,
-        });
+        const { data } = await axiosInstance.post(
+          "data/prompts/getPromptResult",
+          {
+            ideaId: idea?._id,
+            promptName,
+          }
+        );
+
         setPromptResultValue(data.promptResult?.data || "");
       }
     };
@@ -30,7 +34,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
     setPromptResultValue("running....");
     if (axiosInstance)
       axiosInstance
-        .post("data/runAndGetPromptResult", {
+        .post("data/prompts/runAndGetPromptResult", {
           ideaId: idea._id,
           promptName,
         })
@@ -42,7 +46,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
   const save = async () => {
     if (axiosInstance)
       axiosInstance
-        .post("data/xxx", {
+        .post("data/prompts/savePromptsResult", {
           ideaId: idea._id,
           promptName,
         })

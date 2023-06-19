@@ -49,7 +49,7 @@ const Notebook = () => {
                 onClick={() => {
                   if (axiosInstance)
                     axiosInstance
-                      .post("data/saveIdea", {
+                      .post("data/ideas/saveIdea", {
                         idea: " ",
                       })
                       .then(() => {
@@ -84,7 +84,7 @@ const Notebook = () => {
                 onClick={() => {
                   if (axiosInstance)
                     axiosInstance
-                      .post("data/saveIdea", {
+                      .post("data/ideas/saveIdea", {
                         idea: inputText,
                         ideaId: ideas[activeIdeaIndex]._id,
                       })
@@ -107,7 +107,7 @@ const Notebook = () => {
                 onClick={() => {
                   if (axiosInstance)
                     axiosInstance
-                      .post("data/archiveIdea", {
+                      .post("data/ideas/archiveIdea", {
                         ideaId: ideas[activeIdeaIndex]._id,
                       })
                       .then(() => {
