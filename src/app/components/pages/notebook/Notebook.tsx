@@ -29,7 +29,7 @@ const Notebook = () => {
       {ideas && (
         <Grid container direction="column" rowSpacing={2}>
           <Grid item>
-            <Typography>Hi {user.name}</Typography>
+            <Typography>Hi {user?.name}</Typography>
           </Grid>
           <Grid item>
             <Tabs

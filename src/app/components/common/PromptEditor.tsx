@@ -1,11 +1,12 @@
 import { Grid, TextField, Button, Typography, Paper } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
-import { PromptName } from "@failean/shared-types";
+import { PromptName, WhiteModels } from "@failean/shared-types";
+type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
 interface PromptEditorProps {
   promptName: PromptName;
-  idea: any;
+  idea: WhiteIdea | "NO IDEAS";
 }
 
 const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
@@ -19,7 +20,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         const { data } = await axiosInstance.post(
           "data/prompts/getPromptResult",
           {
-            ideaId: idea?._id,
+            ideaId: idea !== "NO IDEAS" && idea?._id,
             promptName,
           }
         );
@@ -27,7 +28,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         setPromptResultValue(data.promptResult?.data || "");
       }
     };
-    promptName !== "idea" && fetchPromptResult();
+    idea !== "NO IDEAS" && promptName !== "idea" && fetchPromptResult();
   }, [axiosInstance, idea, promptName]);
 
   const run = async () => {
@@ -35,7 +36,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
     if (axiosInstance)
       axiosInstance
         .post("data/prompts/runAndGetPromptResult", {
-          ideaId: idea._id,
+          ideaId: idea !== "NO IDEAS" && idea?._id,
           promptName,
         })
         .then(({ data }) => {
@@ -47,7 +48,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
     if (axiosInstance)
       axiosInstance
         .post("data/prompts/savePromptsResult", {
-          ideaId: idea._id,
+          ideaId: idea !== "NO IDEAS" && idea._id,
           promptName,
         })
         .then(({ data }) => {
@@ -85,7 +86,9 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
         <Grid item container direction="column" alignItems="center">
           <Grid item>
             <Button
-              disabled={!promptName || promptName === "idea"}
+              disabled={
+                idea === "NO IDEAS" || !promptName || promptName === "idea"
+              }
               onClick={() => !(!promptName || promptName === "idea") && run()}
             >
               run$
@@ -93,7 +96,12 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
           </Grid>
           <Grid item>
             <Button
-              disabled={true || !promptName || promptName === "idea"}
+              disabled={
+                true ||
+                idea === "NO IDEAS" ||
+                !promptName ||
+                promptName === "idea"
+              }
               onClick={() => !(!promptName || promptName === "idea") && save()}
             >
               override manual

@@ -8,21 +8,17 @@ import {
 } from "react";
 import { Typography } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
+import { WhiteModels } from "@failean/shared-types";
+type WhiteUser = WhiteModels.Auth.WhiteUser;
+type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
 const loadingMessage = (
   <Typography>Loading user account details and ideas...</Typography>
 );
 
-interface Idea {
-  prompts: any;
-  name: ReactNode;
-  _id: string;
-  idea: string;
-}
-
 const UserContext = createContext<{
-  user: any;
-  ideas: Idea[];
+  user?: WhiteUser;
+  ideas: WhiteIdea[];
   refreshUserData: () => Promise<void>;
 }>({
   user: undefined,
@@ -34,7 +30,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const [user, setUser] = useState(undefined);
-  const [ideas, setIdeas] = useState<any[]>([]);
+  const [ideas, setIdeas] = useState<WhiteIdea[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refreshUserData = useCallback(async () => {
