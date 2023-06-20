@@ -10,7 +10,7 @@ import About from "./pages/about/About";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import AIGraph from "./pages/ai-graph/AIGraph";
+import AIDeator from "./pages/aideator/AIDeator";
 //import CritiQ from "./pages/criticq/CritiQ";
 
 const WhiteRouter = () => {
@@ -47,7 +47,7 @@ const WhiteRouter = () => {
           >
             <Routes>
               <Route path="/*" element={<Notebook />} />
-              <Route path="/ai-graph" element={<AIGraph />} />
+              <Route path="/aideator" element={<AIDeator />} />
               <Route path="/my-account" element={<MyAccount />} />
               <Route path="/about" element={<About />} />
               {/* <Route path="/critiq" element={<CritiQ />} /> */}

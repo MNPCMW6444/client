@@ -6,14 +6,26 @@ import {
   useCallback,
   useContext,
 } from "react";
-import { Typography } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
+
+import { Typography } from "@mui/material";
+import { styled } from "@mui/system";
+
 import { WhiteModels } from "@failean/shared-types";
 type WhiteUser = WhiteModels.Auth.WhiteUser;
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
+const WhiteTypography = styled(Typography)(({ theme }) => ({
+  fontFamily: "Monospace",
+  fontWeight: "bold",
+  fontSize: 32,
+  letterSpacing: 2,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(1),
+}));
+
 const loadingMessage = (
-  <Typography>Loading user account details and ideas...</Typography>
+  <WhiteTypography>Loading user account details and ideas...</WhiteTypography>
 );
 
 const UserContext = createContext<{

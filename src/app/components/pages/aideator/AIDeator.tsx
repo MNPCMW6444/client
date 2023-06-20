@@ -5,7 +5,7 @@ import UserContext from "../../../context/UserContext";
 import PromptEditor from "../../common/PromptEditor";
 import { PromptGraph } from "@failean/shared-types";
 
-const AIGraph = () => {
+const AIDeator = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
@@ -73,17 +73,22 @@ const AIGraph = () => {
 
   return (
     <Grid container direction="column" rowSpacing={4} alignItems="center">
-      <Grid item>
-        <Select
-          value={currentIdeaId}
-          onChange={(e) => setCurrentIdeaId(e.target.value)}
-        >
-          {ideas.map((idea, index) => (
-            <MenuItem key={index} value={idea._id}>
-              {idea?.idea}
-            </MenuItem>
-          ))}
-        </Select>
+      <Grid item container>
+        <Grid item>
+          <Typography>Idea:</Typography>
+        </Grid>
+        <Grid item>
+          <Select
+            value={currentIdeaId}
+            onChange={(e) => setCurrentIdeaId(e.target.value)}
+          >
+            {ideas.map((idea, index) => (
+              <MenuItem key={index} value={idea._id}>
+                {idea?.idea}
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
       </Grid>
       <Grid item>
         <Paper sx={{ overflow: "scroll" }}>
@@ -94,4 +99,4 @@ const AIGraph = () => {
   );
 };
 
-export default AIGraph;
+export default AIDeator;
