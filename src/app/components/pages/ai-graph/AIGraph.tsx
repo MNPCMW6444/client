@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Grid, Select, MenuItem, Typography, Paper } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
 import UserContext from "../../../context/UserContext";
-import PromptEditor from "./PromptEditor";
+import PromptEditor from "../../common/PromptEditor";
 import { PromptGraph } from "@failean/shared-types";
 
 const AIGraph = () => {

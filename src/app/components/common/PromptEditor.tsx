@@ -39,7 +39,7 @@ const PromptEditor = ({ idea, promptName }: PromptEditorProps) => {
           promptName,
         })
         .then(({ data }) => {
-          setPromptResultValue(data.response);
+          setPromptResultValue(data);
         });
   };
 

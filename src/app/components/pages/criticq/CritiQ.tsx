@@ -13,7 +13,7 @@ import {
 import UserContext from "../../../context/UserContext";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptGraph } from "@failean/shared-types";
-import PromptEditor from "../ai-graph/PromptEditor";
+import PromptEditor from "../../common/PromptEditor";
 
 interface Column {
   headerName: string;
