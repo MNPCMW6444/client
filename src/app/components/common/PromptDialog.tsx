@@ -3,6 +3,7 @@ import { useContext, useState, useEffect } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptName, WhiteModels } from "@failean/shared-types";
 import { Dialog } from "@mui/material";
+import { Feedback, Refresh, Save } from "@mui/icons-material";
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
 interface PromptDialogProps {
@@ -64,14 +65,15 @@ const PromptDialog = ({ idea, promptName }: PromptDialogProps) => {
   };
 
   return (
-    <Dialog open /*  PaperProps={{ width: "80vw" }} */>
+    <Dialog open maxWidth="xl" PaperProps={{ sx: { width: "70vw" } }}>
       <Grid
         container
         direction="column"
         rowSpacing={2}
         alignItems="center"
         wrap="nowrap"
-        width="80vw"
+        paddingTop="5%"
+        paddingBottom="5%"
       >
         <Grid item>
           <Typography variant="h6">{capitalize(promptName)}</Typography>
@@ -93,7 +95,7 @@ const PromptDialog = ({ idea, promptName }: PromptDialogProps) => {
             disabled={idea === "NO IDEAS" || promptName === "idea"}
           />
         </Grid>
-        <Grid item container direction="column" alignItems="center">
+        <Grid item container justifyContent="center">
           <Grid item>
             <Button
               disabled={
@@ -101,7 +103,17 @@ const PromptDialog = ({ idea, promptName }: PromptDialogProps) => {
               }
               onClick={() => !(!promptName || promptName === "idea") && run()}
             >
-              run$
+              <Refresh /> Run Prompt
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              disabled={
+                idea === "NO IDEAS" || !promptName || promptName === "idea"
+              }
+              onClick={() => !(!promptName || promptName === "idea") && run()}
+            >
+              <Feedback /> Provide feedback
             </Button>
           </Grid>
           <Grid item>
@@ -114,7 +126,7 @@ const PromptDialog = ({ idea, promptName }: PromptDialogProps) => {
               }
               onClick={() => !(!promptName || promptName === "idea") && save()}
             >
-              override manual
+              <Save /> Save Current Text as Prompt Result
             </Button>
           </Grid>
         </Grid>
