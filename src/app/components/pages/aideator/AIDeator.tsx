@@ -2,8 +2,9 @@ import { useState, useEffect, useContext } from "react";
 import { Grid, Select, MenuItem, Typography, Paper } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
 import UserContext from "../../../context/UserContext";
-import PromptEditor from "../../common/PromptEditor";
-import { PromptGraph } from "@failean/shared-types";
+import Prompt from "../../common/Prompt";
+import PromptDialog from "../../common/PromptDialog";
+import { PromptGraph, PromptName } from "@failean/shared-types";
 
 const AIDeator = () => {
   const mainserverContext = useContext(MainserverContext);
@@ -13,6 +14,8 @@ const AIDeator = () => {
     ideas[0]?._id || ""
   );
   const [graph, setGraph] = useState<PromptGraph>();
+
+  const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
   useEffect(() => {
     const fetchGraph = async () => {
@@ -39,30 +42,18 @@ const AIDeator = () => {
       }
     }
     return (
-      <Grid
-        container
-        wrap="nowrap"
-        direction="column"
-        rowSpacing={10}
-        alignItems="center"
-      >
+      <Grid container direction="column" rowSpacing={10} alignItems="center">
         {result.map((level, index) => (
           <Grid
             item
             key={index}
             container
-            wrap="nowrap"
             justifyContent="center"
             columnSpacing={3}
           >
             {level.map(({ name }, index) => (
               <Grid key={index} item>
-                <PromptEditor
-                  idea={
-                    ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"
-                  }
-                  promptName={name}
-                />
+                <Prompt promptName={name} setOpenPrompt={setOpenPrompt} />
               </Grid>
             ))}
           </Grid>
@@ -72,30 +63,44 @@ const AIDeator = () => {
   };
 
   return (
-    <Grid container direction="column" rowSpacing={4} alignItems="center">
-      <Grid item container>
-        <Grid item>
-          <Typography>Idea:</Typography>
+    <>
+      {openPrompt !== "closed" && (
+        <PromptDialog
+          idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
+          promptName={openPrompt}
+        />
+      )}
+      <Grid container direction="column" rowSpacing={4} alignItems="center">
+        <Grid
+          item
+          container
+          justifyContent="center"
+          alignItems="center"
+          columnSpacing={4}
+        >
+          <Grid item>
+            <Typography sx={{ fontSize: "150%" }}>Idea:</Typography>
+          </Grid>
+          <Grid item>
+            <Select
+              value={currentIdeaId}
+              onChange={(e) => setCurrentIdeaId(e.target.value)}
+            >
+              {ideas.map((idea, index) => (
+                <MenuItem key={index} value={idea._id}>
+                  {idea?.idea}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
         </Grid>
         <Grid item>
-          <Select
-            value={currentIdeaId}
-            onChange={(e) => setCurrentIdeaId(e.target.value)}
-          >
-            {ideas.map((idea, index) => (
-              <MenuItem key={index} value={idea._id}>
-                {idea?.idea}
-              </MenuItem>
-            ))}
-          </Select>
+          <Paper sx={{ overflow: "scroll" }}>
+            {graph ? renderGraph(graph) : <Typography>Loading...</Typography>}
+          </Paper>
         </Grid>
       </Grid>
-      <Grid item>
-        <Paper sx={{ overflow: "scroll" }}>
-          {graph ? renderGraph(graph) : <Typography>Loading...</Typography>}
-        </Paper>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
