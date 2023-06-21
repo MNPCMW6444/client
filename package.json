@@ -1,6 +1,6 @@
 {
   "name": "failean-client",
-  "version": "2.1.45",
+  "version": "2.1.46",
   "private": true,
   "dependencies": {
     "@failean/mainserver-provider": "^2.6.85",
