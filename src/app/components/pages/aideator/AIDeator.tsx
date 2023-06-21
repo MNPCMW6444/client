@@ -68,6 +68,7 @@ const AIDeator = () => {
         <PromptDialog
           idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
           promptName={openPrompt}
+          setOpenPrompt={setOpenPrompt}
         />
       )}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
