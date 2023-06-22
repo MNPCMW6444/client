@@ -7,6 +7,7 @@ import WhiteAuthRouter from "./auth/WhiteAuthRouter";
 import Notebook from "./pages/notebook/Notebook";
 import MyAccount from "./pages/my-account/MyAccount";
 import About from "./pages/about/About";
+import CritIQ from "./pages/critiq/CritIQ";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
@@ -50,6 +51,8 @@ const WhiteRouter = () => {
               <Route path="/aideator" element={<AIDeator />} />
               <Route path="/my-account" element={<MyAccount />} />
               <Route path="/about" element={<About />} />
+              <Route path="/critiq" element={<CritIQ />} />
+
               {/* <Route path="/critiq" element={<CritiQ />} /> */}
             </Routes>
           </Box>
