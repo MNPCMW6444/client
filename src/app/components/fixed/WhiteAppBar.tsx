@@ -65,7 +65,7 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
           }}
         >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {name.allUp}
+            {name.up}
           </Typography>
         </Box>
         {user && (
