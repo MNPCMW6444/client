@@ -1,4 +1,11 @@
-import { Grid, TextField, Button, Typography, useTheme } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  useTheme,
+  Box,
+} from "@mui/material";
 import {
   useContext,
   useState,
@@ -10,7 +17,7 @@ import {
 import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptName, WhiteModels } from "@failean/shared-types";
 import { Dialog } from "@mui/material";
-import { Feedback, Refresh, Save } from "@mui/icons-material";
+import { Feedback, Refresh, Save, Warning } from "@mui/icons-material";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -37,6 +44,7 @@ const PromptDialog = ({
 }: PromptDialogProps) => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
+  const [dbpromptResultValue, setdbPromptResultValue] = useState<string>("");
   const [promptResultValue, setPromptResultValue] = useState<string>("");
 
   const fetchPromptResult = useCallback(async () => {
@@ -48,8 +56,10 @@ const PromptDialog = ({
           promptName,
         }
       );
+      const res = data.promptResult?.data || "";
 
-      setPromptResultValue(data.promptResult?.data || "");
+      setdbPromptResultValue(res);
+      setPromptResultValue(res);
     }
   }, [axiosInstance, idea, promptName]);
 
@@ -58,16 +68,13 @@ const PromptDialog = ({
   }, [fetchPromptResult]);
 
   const run = async () => {
-    setPromptResultValue("running....");
     if (axiosInstance)
       axiosInstance
         .post("data/prompts/runAndGetPromptResult", {
           ideaId: idea !== "NO IDEAS" && idea?._id,
           promptName,
         })
-        .then(({ data }) => {
-          setPromptResultValue(data);
-        });
+        .then(({ data }) => {});
   };
 
   const save = async () => {
@@ -78,9 +85,7 @@ const PromptDialog = ({
           promptName,
           data: promptResultValue,
         })
-        .then(({ data }) => {
-          setPromptResultValue(data.response);
-        });
+        .then(({ data }) => {});
   };
 
   const handleClose = () => setOpenPrompt("closed");
@@ -98,16 +103,18 @@ const PromptDialog = ({
         <Grid container width="100%" justifyContent="space-between">
           <Grid item>
             <Button variant="outlined" onClick={fetchPromptResult}>
-              <Refresh />
+              <Refresh sx={{ mr: 1 }} />
+              Reload Last Saved Result
             </Button>
           </Grid>
           <Grid item>
             <Button
               onClick={handleClose}
               variant="outlined"
-              sx={{ borderColor: "red" }}
+              sx={{ borderColor: "red", color: "red" }}
             >
-              <CloseIcon sx={{ color: "red" }} />
+              <CloseIcon sx={{ color: "red", mr: 1 }} />
+              Close
             </Button>
           </Grid>
         </Grid>
@@ -125,10 +132,10 @@ const PromptDialog = ({
               {capitalize(promptName)}
             </Typography>
           </Grid>
-          <Grid item paddingBottom="2%">
+          <Grid item paddingBottom="1%">
             <TextField
               multiline
-              rows={20}
+              rows={18}
               variant="filled"
               sx={{ width: "50vw" }}
               onChange={(e) => setPromptResultValue(e.target.value)}
@@ -142,6 +149,14 @@ const PromptDialog = ({
               disabled={idea === "NO IDEAS" || promptName === "idea"}
             />
           </Grid>
+          {promptResultValue !== dbpromptResultValue && (
+            <Grid item paddingBottom="1%">
+              <Box display="flex" alignItems="center">
+                <Warning sx={{ color: "warning.main", mr: 1 }} />
+                <Typography color="warning.main">unsaved changes</Typography>
+              </Box>
+            </Grid>
+          )}
           <Grid item container justifyContent="center" columnSpacing={2}>
             <Grid item>
               <Button
@@ -151,7 +166,8 @@ const PromptDialog = ({
                 }
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
-                <Refresh /> Run Prompt
+                <Refresh sx={{ mr: 1 }} />
+                Run Prompt
               </Button>
             </Grid>
             <Grid item>
@@ -162,7 +178,7 @@ const PromptDialog = ({
                 }
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
-                <Feedback /> Provide feedback and run prompt
+                <Feedback sx={{ mr: 1 }} /> Provide feedback and run prompt
               </Button>
             </Grid>
             <Grid item>
@@ -175,7 +191,7 @@ const PromptDialog = ({
                   !(!promptName || promptName === "idea") && save()
                 }
               >
-                <Save /> Save Current Text as Prompt Result
+                <Save sx={{ mr: 1 }} /> Save Current Text as Prompt Result
               </Button>
             </Grid>
           </Grid>

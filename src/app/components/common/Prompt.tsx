@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { Button } from "@mui/material";
 import { PromptName } from "@failean/shared-types";
-import { capitalize } from "./PromptDialog";
+import { capitalize } from "./prompt-dialog/PromptDialog";
 import { styled } from "@mui/material";
 
 interface PromptProps {
