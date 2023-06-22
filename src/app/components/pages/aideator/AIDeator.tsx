@@ -5,6 +5,7 @@ import UserContext from "../../../context/UserContext";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName } from "@failean/shared-types";
+import IdeaSelector from "../../common/IdeaSelector";
 
 const AIDeator = () => {
   const mainserverContext = useContext(MainserverContext);
@@ -83,16 +84,10 @@ const AIDeator = () => {
             <Typography sx={{ fontSize: "150%" }}>Idea:</Typography>
           </Grid>
           <Grid item>
-            <Select
-              value={currentIdeaId}
-              onChange={(e) => setCurrentIdeaId(e.target.value)}
-            >
-              {ideas.map((idea, index) => (
-                <MenuItem key={index} value={idea._id}>
-                  {idea?.idea}
-                </MenuItem>
-              ))}
-            </Select>
+            <IdeaSelector
+              selectedIdeaId={currentIdeaId}
+              setSelectedIdeaId={setCurrentIdeaId}
+            />
           </Grid>
         </Grid>
         <Grid item>
