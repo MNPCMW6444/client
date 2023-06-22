@@ -14,7 +14,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import MainserverContext from "../../context/MainserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 import name from "../../../content/name";
 
 interface WhiteAppBarProps {
@@ -37,7 +37,8 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const { refreshUserData } = useContext(UserContext);
 
   return (
@@ -64,7 +65,7 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
           }}
         >
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {name.allUp}
+            {name.up}
           </Typography>
         </Box>
         {user && (
@@ -99,6 +100,7 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
               </MenuItem>
               <MenuItem
                 onClick={() =>
+                  axiosInstance &&
                   axiosInstance
                     .get("auth/signout")
                     .then(() => refreshUserData())

@@ -6,23 +6,31 @@ import {
   useCallback,
   useContext,
 } from "react";
+import { MainserverContext } from "@failean/mainserver-provider";
+
 import { Typography } from "@mui/material";
-import MainserverContext from "./MainserverContext";
+import { styled } from "@mui/system";
+
+import { WhiteModels } from "@failean/shared-types";
+type WhiteUser = WhiteModels.Auth.WhiteUser;
+type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
+
+const WhiteTypography = styled(Typography)(({ theme }) => ({
+  fontFamily: "Monospace",
+  fontWeight: "bold",
+  fontSize: 32,
+  letterSpacing: 2,
+  color: theme.palette.primary.main,
+  marginBottom: theme.spacing(1),
+}));
 
 const loadingMessage = (
-  <Typography>Loading user account details and ideas...</Typography>
+  <WhiteTypography>Loading user account details and ideas...</WhiteTypography>
 );
 
-interface Idea {
-  prompts: any;
-  name: ReactNode;
-  _id: string;
-  idea: string;
-}
-
 const UserContext = createContext<{
-  user: any;
-  ideas: Idea[];
+  user?: WhiteUser;
+  ideas: WhiteIdea[];
   refreshUserData: () => Promise<void>;
 }>({
   user: undefined,
@@ -31,31 +39,34 @@ const UserContext = createContext<{
 });
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const [user, setUser] = useState(undefined);
-  const [ideas, setIdeas] = useState<any[]>([]);
+  const [ideas, setIdeas] = useState<WhiteIdea[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refreshUserData = useCallback(async () => {
-    axiosInstance
-      .get("auth/signedin")
-      .then((userRes) => {
-        setUser(userRes.data);
-        axiosInstance
-          .get("data/getIdeas")
-          .then((res) => {
-            setIdeas(res.data.ideas);
-            setLoading(false);
-          })
-          .catch(() => {
-            setIdeas([]);
-            setLoading(false);
-          });
-      })
-      .catch(() => {
-        setUser(undefined);
-        setLoading(false);
-      });
+    if (axiosInstance)
+      axiosInstance
+        .get("auth/signedin")
+        .then((userRes) => {
+          setUser(userRes.data);
+          axiosInstance &&
+            axiosInstance
+              .get("data/ideas/getIdeas")
+              .then((res) => {
+                setIdeas(res.data.ideas);
+                setLoading(false);
+              })
+              .catch(() => {
+                setIdeas([]);
+                setLoading(false);
+              });
+        })
+        .catch(() => {
+          setUser(undefined);
+          setLoading(false);
+        });
   }, [axiosInstance]);
 
   useEffect(() => {

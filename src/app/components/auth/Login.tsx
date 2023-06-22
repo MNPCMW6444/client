@@ -10,7 +10,7 @@ import UserContext from "../../context/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import MainserverContext from "../../context/MainserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 
 export interface LablesConstants {
   IDLE: {
@@ -42,7 +42,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
@@ -58,18 +59,20 @@ const Login = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (validateEmail(email) && password) {
-      axiosInstance
-        .post("auth/signin", { email, password })
-        .then(() => refreshUserData())
-        .catch((error) => {
-          setButtonLabel("IDLE");
-          toast.error(
-            error?.response?.data?.clientError ||
-              error?.message ||
-              "Unknown error, Make sure you are Online"
-          );
-        });
-      setButtonLabel("DOING");
+      if (axiosInstance) {
+        axiosInstance
+          .post("auth/signin", { email, password })
+          .then(() => refreshUserData())
+          .catch((error) => {
+            setButtonLabel("IDLE");
+            toast.error(
+              error?.response?.data?.clientError ||
+                error?.message ||
+                "Unknown error, Make sure you are Online"
+            );
+          });
+        setButtonLabel("DOING");
+      }
     }
   };
 
