@@ -8,7 +8,7 @@ import EditableTextField from "./EditableTextField";
 import PasswordTextField from "./PasswordTextField";
 import styled from "@emotion/styled";
 import UserContext from "../../../context/UserContext";
-import MainserverContext from "../../../context/MainserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 
 const StyledContainer = styled(Container)`
   display: flex;
@@ -44,7 +44,8 @@ const MyAccount: FC = () => {
   const setIsEditingName = setIsEditingNamex[1];
   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
 
   useEffect(() => {
     refreshUserData();
@@ -56,15 +57,17 @@ const MyAccount: FC = () => {
 
   const handleUpdateName = async () => {
     try {
-      await axiosInstance.post(
-        "auth/updatename",
-        { name },
-        { withCredentials: true }
-      );
-      setIsEditingName(false);
+      if (axiosInstance) {
+        axiosInstance.post(
+          "auth/updatename",
+          { name },
+          { withCredentials: true }
+        );
+        setIsEditingName(false);
 
-      toast("Name updated successfully!");
-      refreshUserData();
+        toast("Name updated successfully!");
+        refreshUserData();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -72,14 +75,16 @@ const MyAccount: FC = () => {
 
   const handleUpdatePassword = async () => {
     try {
-      await axiosInstance.post(
-        "auth/updatepassword",
-        { password },
-        { withCredentials: true }
-      );
-      setIsEditingPassword(false);
-      toast("Password updated successfully!");
-      refreshUserData();
+      if (axiosInstance) {
+        axiosInstance.post(
+          "auth/updatepassword",
+          { password },
+          { withCredentials: true }
+        );
+        setIsEditingPassword(false);
+        toast("Password updated successfully!");
+        refreshUserData();
+      }
     } catch (err) {
       console.error(err);
     }

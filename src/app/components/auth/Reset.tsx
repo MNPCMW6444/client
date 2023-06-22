@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LABELS, LablesConstants } from "./Login";
 import { StyledLinearProgressHOC } from "./Register";
-import MainserverContext from "../../context/MainserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 
 const Reset = () => {
   const [email, setEmail] = useState<string>("");
@@ -26,7 +26,8 @@ const Reset = () => {
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
 
   const navigate = useNavigate();
 
@@ -52,31 +53,35 @@ const Reset = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!key) {
-      axiosInstance.post("auth/passresreq", { email });
-      setCheck(true);
+      if (axiosInstance) {
+        axiosInstance.post("auth/passresreq", { email });
+        setCheck(true);
+      }
     } else {
       if (
         validateEmail(email) &&
         password.length >= 6 &&
         password === confirmPassword
       ) {
-        axiosInstance
-          .post("auth/passresfin", {
-            email,
-            key,
-            password,
-            passwordagain: confirmPassword,
-          })
-          .then(() => refreshUserData())
-          .catch((error) => {
-            setButtonLabel("IDLE");
-            toast.error(
-              error?.response?.data?.clientError ||
-                error?.message ||
-                "Unknown error, Make sure you are Online"
-            );
-          });
-        setButtonLabel("DOING");
+        if (axiosInstance) {
+          axiosInstance
+            .post("auth/passresfin", {
+              email,
+              key,
+              password,
+              passwordagain: confirmPassword,
+            })
+            .then(() => refreshUserData())
+            .catch((error) => {
+              setButtonLabel("IDLE");
+              toast.error(
+                error?.response?.data?.clientError ||
+                  error?.message ||
+                  "Unknown error, Make sure you are Online"
+              );
+            });
+          setButtonLabel("DOING");
+        }
       }
     }
   };

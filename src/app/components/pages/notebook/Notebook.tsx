@@ -1,13 +1,14 @@
 import { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import { Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
-import MainserverContext from "../../../context/MainserverContext";
+import { MainserverContext } from "@failean/mainserver-provider";
 import { toast } from "react-toastify";
 import { Add, Delete, Save } from "@mui/icons-material";
 import { Button } from "@mui/material";
 
 const Notebook = () => {
-  const { axiosInstance } = useContext(MainserverContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const { user, ideas, refreshUserData } = useContext(UserContext);
   const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
@@ -28,7 +29,7 @@ const Notebook = () => {
       {ideas && (
         <Grid container direction="column" rowSpacing={2}>
           <Grid item>
-            <Typography>Hi {user.name}</Typography>
+            <Typography>Hi {user?.name}</Typography>
           </Grid>
           <Grid item>
             <Tabs
@@ -46,17 +47,18 @@ const Notebook = () => {
               ))}
               <Button
                 onClick={() => {
-                  axiosInstance
-                    .post("data/saveIdea", {
-                      idea: " ",
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
+                  if (axiosInstance)
+                    axiosInstance
+                      .post("data/ideas/saveIdea", {
+                        idea: " ",
+                      })
+                      .then(() => {
+                        refreshUserData();
+                      })
+                      .catch(() => {
+                        refreshUserData();
+                        toast("Error saving data to server");
+                      });
                 }}
               >
                 new
@@ -80,18 +82,19 @@ const Notebook = () => {
               <Button
                 disabled={ideas.length === 0}
                 onClick={() => {
-                  axiosInstance
-                    .post("data/saveIdea", {
-                      idea: inputText,
-                      ideaId: ideas[activeIdeaIndex]._id,
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
+                  if (axiosInstance)
+                    axiosInstance
+                      .post("data/ideas/saveIdea", {
+                        idea: inputText,
+                        ideaId: ideas[activeIdeaIndex]._id,
+                      })
+                      .then(() => {
+                        refreshUserData();
+                      })
+                      .catch(() => {
+                        refreshUserData();
+                        toast("Error saving data to server");
+                      });
                 }}
               >
                 <Save />
@@ -102,17 +105,18 @@ const Notebook = () => {
               <Button
                 disabled={ideas.length === 0}
                 onClick={() => {
-                  axiosInstance
-                    .post("data/archiveIdea", {
-                      ideaId: ideas[activeIdeaIndex]._id,
-                    })
-                    .then(() => {
-                      refreshUserData();
-                    })
-                    .catch(() => {
-                      refreshUserData();
-                      toast("Error saving data to server");
-                    });
+                  if (axiosInstance)
+                    axiosInstance
+                      .post("data/ideas/archiveIdea", {
+                        ideaId: ideas[activeIdeaIndex]._id,
+                      })
+                      .then(() => {
+                        refreshUserData();
+                      })
+                      .catch(() => {
+                        refreshUserData();
+                        toast("Error saving data to server");
+                      });
                 }}
               >
                 <Delete />
