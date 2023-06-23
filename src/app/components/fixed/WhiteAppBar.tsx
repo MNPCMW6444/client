@@ -98,6 +98,9 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
               <MenuItem onClick={() => navigate("/my-account")}>
                 My Account
               </MenuItem>
+              <MenuItem onClick={() => navigate("/about")}>
+                About Failean
+              </MenuItem>
               <MenuItem
                 onClick={() =>
                   axiosInstance &&
