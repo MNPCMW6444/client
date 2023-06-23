@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { Grid, Select, MenuItem, Typography, Paper } from "@mui/material";
+import { Grid, Typography, Paper } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
 import UserContext from "../../../context/UserContext";
 import Prompt from "../../common/Prompt";
-import PromptDialog from "../../common/PromptDialog";
+import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 
