@@ -9,7 +9,7 @@ import PromptDialog, {
 import { PromptGraph, PromptName } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 
-const AIDeator = () => {
+const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
@@ -132,4 +132,4 @@ const AIDeator = () => {
   );
 };
 
-export default AIDeator;
+export default AIdeator;

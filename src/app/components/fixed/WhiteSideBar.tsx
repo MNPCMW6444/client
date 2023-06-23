@@ -27,7 +27,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   // Add a 'disabled' and 'comingSoon' property to the CritiQ object
   const menuItems = [
     { label: "Notebook", route: "/" },
-    { label: "AIDeator", route: "/aideator" },
+    { label: "AIdeator", route: "/aideator" },
     { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
   ];
 
