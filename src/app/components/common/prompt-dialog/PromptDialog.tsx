@@ -6,6 +6,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useRef,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptName, WhiteModels } from "@failean/shared-types";
@@ -42,6 +43,8 @@ const PromptDialog = ({
   const axiosInstance = mainserverContext?.axiosInstance;
   const [dbpromptResultValue, setdbPromptResultValue] = useState<string>("");
   const [promptResultValue, setPromptResultValue] = useState<string>("");
+
+  const [maxHeight, setMaxHeight] = useState("60vh");
 
   const fetchPromptResult = useCallback(async () => {
     if (axiosInstance && idea !== "NO IDEAS" && promptName !== "idea") {
@@ -88,11 +91,58 @@ const PromptDialog = ({
 
   const handleClose = () => setOpenPrompt("closed");
 
+  const dialogeRef = useRef<HTMLDivElement>(null);
+  const textFieldRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (
+        dialogeRef.current?.clientHeight &&
+        textFieldRef.current?.clientHeight
+      ) {
+        const tempDiv = document.createElement("div");
+        tempDiv.style.position = "absolute";
+        tempDiv.style.visibility = "hidden";
+        tempDiv.style.height = "auto";
+        tempDiv.style.width = textFieldRef.current.clientWidth + "px";
+        tempDiv.style.padding = textFieldRef.current.style.padding;
+        tempDiv.style.fontSize = textFieldRef.current.style.fontSize;
+        tempDiv.style.lineHeight = textFieldRef.current.style.lineHeight;
+        tempDiv.style.fontFamily = textFieldRef.current.style.fontFamily;
+        tempDiv.style.fontWeight = textFieldRef.current.style.fontWeight;
+        tempDiv.style.fontStyle = textFieldRef.current.style.fontStyle;
+        tempDiv.style.whiteSpace = textFieldRef.current.style.whiteSpace;
+        tempDiv.innerText = textFieldRef.current.value;
+        document.body.appendChild(tempDiv);
+
+        const visibleHeight = tempDiv.clientHeight;
+
+        let spaceTakenByOtherElements =
+          dialogeRef.current.clientHeight - visibleHeight;
+        document.body.removeChild(tempDiv);
+
+        let availableHeight = window.innerHeight - spaceTakenByOtherElements;
+        setMaxHeight(`${availableHeight}px`);
+      } else setMaxHeight("10vh");
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [promptResultValue]);
+
   return (
     <Dialog
       open
       maxWidth="xl"
-      PaperProps={{ sx: { width: isMobile ? "90vw" : "70vw" } }}
+      PaperProps={{
+        sx: { width: isMobile ? "90vw" : "70vw" },
+        ref: dialogeRef,
+      }}
       onClose={handleClose}
     >
       <DialogTitle>
@@ -137,16 +187,14 @@ const PromptDialog = ({
           </Grid>
           <Grid item paddingBottom="1%">
             <TextField
+              ref={textFieldRef}
               multiline
-              maxRows={10}
+              maxRows={1000}
               variant="filled"
               sx={{
                 width: isMobile ? "80vw" : "60vw",
-                maxHeight: "60vh", // for example
-                overflow: "auto", // add a scroll bar when it overflows
-                "& .MuiInputBase-inputMultiline": {
-                  lineHeight: "18px",
-                },
+                height: { maxHeight },
+                overflow: "auto",
               }}
               onChange={(e) => setPromptResultValue(e.target.value)}
               value={
