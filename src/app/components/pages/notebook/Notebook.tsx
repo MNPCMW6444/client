@@ -1,6 +1,14 @@
 import { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
-import { Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
+import {
+  Tab,
+  Tabs,
+  TabScrollButton,
+  TextField,
+  Typography,
+  Grid,
+  Tooltip,
+} from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { toast } from "react-toastify";
 import { Add, Delete, Save } from "@mui/icons-material";
@@ -31,40 +39,45 @@ const Notebook = () => {
           <Grid item>
             <Typography>Hi {user?.name}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item container alignItems="center">
             <Tabs
               value={activeIdeaIndex}
               onChange={(e: any, x) => {
                 setActiveIdeaIndex(x);
               }}
+              variant="scrollable"
+              scrollButtons="auto"
+              allowScrollButtonsMobile
+              style={{ flex: 1 }}
             >
               {ideas.map((idea, index) => (
-                <Tab
-                  key={index}
-                  label={`${index + 1}: ${idea?.idea?.substring(0, 20)}...`}
-                />
+                <Tooltip title={idea.idea} key={index}>
+                  <Tab
+                    label={`${index + 1}: ${idea.idea.substring(0, 30)}...`}
+                  />
+                </Tooltip>
               ))}
-              <Button
-                style={{ position: "sticky", bottom: "0" }}
-                onClick={() => {
-                  if (axiosInstance)
-                    axiosInstance
-                      .post("data/ideas/saveIdea", {
-                        idea: " ",
-                      })
-                      .then(() => {
-                        refreshUserData();
-                      })
-                      .catch(() => {
-                        refreshUserData();
-                        toast("Error saving data to server");
-                      });
-                }}
-              >
-                new
-                <Add />
-              </Button>
+              <TabScrollButton direction="right" orientation="horizontal" />
             </Tabs>
+            <Button
+              onClick={() => {
+                if (axiosInstance)
+                  axiosInstance
+                    .post("data/ideas/saveIdea", {
+                      idea: " ",
+                    })
+                    .then(() => {
+                      refreshUserData();
+                    })
+                    .catch(() => {
+                      refreshUserData();
+                      toast("Error saving data to server");
+                    });
+              }}
+              style={{ marginLeft: "16px" }}
+            >
+              New <Add />
+            </Button>
           </Grid>
           <Grid item>
             <TextField
@@ -120,7 +133,7 @@ const Notebook = () => {
                 }}
               >
                 <Delete />
-                Delele this Idea
+                Delete this Idea
               </Button>
             </Grid>
           </Grid>
