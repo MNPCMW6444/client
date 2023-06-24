@@ -47,7 +47,7 @@ const AIdeator = () => {
         setGraph(
           baseGraph.map((x: any, index: number) => ({
             ...x,
-            hasData: hasDatas[index],
+            hasData: index === 0 || hasDatas[index],
           }))
         );
       }
@@ -56,9 +56,18 @@ const AIdeator = () => {
     fetchGraph();
   }, [axiosInstance, currentIdeaId]);
 
-  const renderGraph = (graph: PromptGraph) => {
+  const renderGraph = (tempGraph: PromptGraph) => {
+    const graph: any = tempGraph.map((tg) => ({
+      ...tg,
+      locked: tempGraph
+        .find((g) => g.name === tg.name)
+        ?.deps.some(
+          (dep: PromptName) =>
+            !(tempGraph.find((g) => g.name === dep) as any).hasData
+        ),
+    }));
     const result: { level: any[]; unlocked: number }[] = [];
-    const grouped = graph.reduce((group: { [key: number]: any }, item) => {
+    const grouped = graph.reduce((group: { [key: number]: any }, item: any) => {
       if (!group[item.level]) {
         group[item.level] = [];
       }
@@ -77,9 +86,6 @@ const AIdeator = () => {
         prevLevel = level;
       }
     }
-    const checkIfAllDepsHasData = (graph: PromptGraph, name: any): boolean => {
-      throw new Error("Function not implemented.");
-    };
 
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
@@ -100,7 +106,7 @@ const AIdeator = () => {
               <Grid key={index} item>
                 <Prompt
                   promptName={name}
-                  locked={checkIfAllDepsHasData(graph, name)}
+                  locked={false}
                   setOpenPrompt={setOpenPrompt}
                 />
               </Grid>
