@@ -13,7 +13,7 @@ interface PromptProps {
 }
 
 const Prompt = ({ promptName, locked, setOpenPrompt }: PromptProps) => {
-  const name = capitalize("promptName");
+  const name = capitalize(promptName);
   return locked ? (
     <LockedPromptButton>{name}</LockedPromptButton>
   ) : (

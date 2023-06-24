@@ -84,7 +84,7 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            <Grid item>{locked && <Lock />}</Grid>
+            <Grid item>{locked && index !== 0 && <Lock />}</Grid>
             {level.map(({ name, hasData }, index) => (
               <Grid key={index} item>
                 <Prompt
