@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import { MainserverContext } from "@failean/mainserver-provider";
 import name from "../../../content/name";
+import useResponsive from "../../hooks/useRespnsive";
 
 interface WhiteAppBarProps {
   onMobileDrawerToggle: () => void;
@@ -34,8 +35,7 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
     setAnchorEl(null);
   };
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { isMobile } = useResponsive();
 
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;

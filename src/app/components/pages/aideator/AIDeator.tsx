@@ -101,22 +101,11 @@ const AIdeator = () => {
         />
       )}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
-        <Grid
-          item
-          container
-          justifyContent="center"
-          alignItems="center"
-          columnSpacing={4}
-        >
-          <Grid item>
-            <Typography sx={{ fontSize: "150%" }}>Idea:</Typography>
-          </Grid>
-          <Grid item>
-            <IdeaSelector
-              selectedIdeaId={currentIdeaId}
-              setSelectedIdeaId={setCurrentIdeaId}
-            />
-          </Grid>
+        <Grid item>
+          <IdeaSelector
+            selectedIdeaId={currentIdeaId}
+            setSelectedIdeaId={setCurrentIdeaId}
+          />
         </Grid>
         <Grid item>
           <Paper sx={{ overflow: "scroll" }}>

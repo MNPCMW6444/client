@@ -9,6 +9,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import Typography from "@mui/material/Typography";
+import useResponsive from "../../hooks/useRespnsive";
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
@@ -20,8 +21,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   onMobileDrawerToggle,
 }) => {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const { isMobile } = useResponsive();
+
   const location = useLocation();
 
   // Add a 'disabled' and 'comingSoon' property to the CritiQ object
