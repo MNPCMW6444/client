@@ -15,7 +15,7 @@ import useResponsive from "../hooks/useRespnsive";
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const { theme, isMobile } = useResponsive();
+  const { isMobile } = useResponsive();
 
   const handleMobileDrawerToggle = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
