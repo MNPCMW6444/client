@@ -33,7 +33,6 @@ const Notebook = () => {
           </Grid>
           <Grid item>
             <Tabs
-              variant="fullWidth"
               value={activeIdeaIndex}
               onChange={(e: any, x) => {
                 setActiveIdeaIndex(x);
@@ -42,10 +41,11 @@ const Notebook = () => {
               {ideas.map((idea, index) => (
                 <Tab
                   key={index}
-                  label={`${index + 1}: ${idea?.idea?.substring(0, 5)}...`}
+                  label={`${index + 1}: ${idea?.idea?.substring(0, 20)}...`}
                 />
               ))}
               <Button
+                style={{ position: "sticky", bottom: "0" }}
                 onClick={() => {
                   if (axiosInstance)
                     axiosInstance
