@@ -3,11 +3,11 @@ import { Grid, Typography, Paper } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
 import UserContext from "../../../context/UserContext";
 import Prompt from "../../common/Prompt";
-import PromptDialog, {
-  capitalize,
-} from "../../common/prompt-dialog/PromptDialog";
+import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
+import capitalize from "../../../util/capitalize";
+import { Lock } from "@mui/icons-material";
 
 const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
@@ -57,7 +57,7 @@ const AIdeator = () => {
   }, [axiosInstance, currentIdeaId]);
 
   const renderGraph = (graph: PromptGraph) => {
-    const result: any[][] = [];
+    const result: { level: any[]; locked: boolean }[] = [];
     const grouped = graph.reduce((group: { [key: number]: any }, item) => {
       if (!group[item.level]) {
         group[item.level] = [];
@@ -67,12 +67,16 @@ const AIdeator = () => {
     }, {});
     for (const level in grouped) {
       if (grouped.hasOwnProperty(level)) {
-        result.push(grouped[level]);
+        const res = grouped[level];
+        result.push({
+          level: res,
+          locked: !res.some(({ hasData }: any) => hasData),
+        });
       }
     }
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
-        {result.map((level, index) => (
+        {result.map(({ level, locked }, index) => (
           <Grid
             item
             key={index}
@@ -80,9 +84,14 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            {level.map(({ name }, index) => (
+            <Grid item>{locked && <Lock />}</Grid>
+            {level.map(({ name, hasData }, index) => (
               <Grid key={index} item>
-                <Prompt promptName={name} setOpenPrompt={setOpenPrompt} />
+                <Prompt
+                  promptName={name}
+                  locked={!hasData}
+                  setOpenPrompt={setOpenPrompt}
+                />
               </Grid>
             ))}
           </Grid>

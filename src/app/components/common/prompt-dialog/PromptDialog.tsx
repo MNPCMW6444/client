@@ -17,6 +17,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 import useResponsive from "../../../hooks/useRespnsive";
+import capitalize from "../../../util/capitalize";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -25,12 +26,6 @@ interface PromptDialogProps {
   idea: WhiteIdea | "NO IDEAS";
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
 }
-
-export const capitalize = (s: string) =>
-  s
-    .replace(/([A-Z])/g, " $1")
-    .charAt(0)
-    .toUpperCase() + s.replace(/([A-Z])/g, " $1").slice(1);
 
 const PromptDialog = ({
   idea,
