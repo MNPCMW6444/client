@@ -7,7 +7,7 @@ import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 import capitalize from "../../../util/capitalize";
-import { Lock } from "@mui/icons-material";
+import { Lock, LockOpen } from "@mui/icons-material";
 
 const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
@@ -57,7 +57,7 @@ const AIdeator = () => {
   }, [axiosInstance, currentIdeaId]);
 
   const renderGraph = (graph: PromptGraph) => {
-    const result: { level: any[]; locked: boolean }[] = [];
+    const result: { level: any[]; unlocked: number }[] = [];
     const grouped = graph.reduce((group: { [key: number]: any }, item) => {
       if (!group[item.level]) {
         group[item.level] = [];
@@ -65,18 +65,25 @@ const AIdeator = () => {
       group[item.level].push(item);
       return group;
     }, {});
+    let prevLevel: any;
     for (const level in grouped) {
       if (grouped.hasOwnProperty(level)) {
-        const res = grouped[level];
         result.push({
-          level: res,
-          locked: !res.some(({ hasData }: any) => hasData),
+          level: grouped[level],
+          unlocked: prevLevel
+            ? grouped[prevLevel].filter(({ hasData }: any) => hasData).length
+            : grouped[level].length,
         });
+        prevLevel = level;
       }
     }
+    const checkIfAllDepsHasData = (graph: PromptGraph, name: any): boolean => {
+      throw new Error("Function not implemented.");
+    };
+
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
-        {result.map(({ level, locked }, index) => (
+        {result.map(({ level, unlocked }, index) => (
           <Grid
             item
             key={index}
@@ -84,12 +91,16 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            <Grid item>{locked && index !== 0 && <Lock />}</Grid>
-            {level.map(({ name, hasData }, index) => (
+            {unlocked !== 0 && (
+              <Grid item>
+                {unlocked === level.length ? <Lock /> : <LockOpen />}
+              </Grid>
+            )}
+            {level.map(({ name }, index) => (
               <Grid key={index} item>
                 <Prompt
                   promptName={name}
-                  locked={!hasData}
+                  locked={checkIfAllDepsHasData(graph, name)}
                   setOpenPrompt={setOpenPrompt}
                 />
               </Grid>
