@@ -1,7 +1,5 @@
 import { FC } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";

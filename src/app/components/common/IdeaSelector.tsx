@@ -11,15 +11,36 @@ import UserContext from "../../context/UserContext";
 interface IdeaSelectorProps {
   selectedIdeaId: string;
   setSelectedIdeaId: Dispatch<SetStateAction<string>>;
+  label?: string | null;
+  fontSizeFactor?: number;
 }
 
 const IdeaSelector = ({
   selectedIdeaId,
   setSelectedIdeaId,
+  label,
+  fontSizeFactor,
 }: IdeaSelectorProps) => {
   const { ideas } = useContext(UserContext);
 
-  return (
+  const select = (
+    <Select
+      value={selectedIdeaId}
+      onChange={(event: SelectChangeEvent) =>
+        setSelectedIdeaId(event.target.value)
+      }
+    >
+      {ideas.map((idea, index) => (
+        <MenuItem key={index} value={idea._id}>
+          {idea?.idea.substring(0, 20)}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+
+  return label === null ? (
+    select
+  ) : (
     <Grid
       item
       container
@@ -28,22 +49,11 @@ const IdeaSelector = ({
       columnSpacing={4}
     >
       <Grid item>
-        <Typography sx={{ fontSize: "150%" }}>Idea:</Typography>
+        <Typography sx={{ fontSize: `${fontSizeFactor || 150}%` }}>
+          {label || "Idea:"}
+        </Typography>
       </Grid>
-      <Grid item>
-        <Select
-          value={selectedIdeaId}
-          onChange={(event: SelectChangeEvent) =>
-            setSelectedIdeaId(event.target.value)
-          }
-        >
-          {ideas.map((idea, index) => (
-            <MenuItem key={index} value={idea._id}>
-              {idea?.idea.substring(0, 20)}
-            </MenuItem>
-          ))}
-        </Select>
-      </Grid>
+      <Grid item></Grid>
     </Grid>
   );
 };
