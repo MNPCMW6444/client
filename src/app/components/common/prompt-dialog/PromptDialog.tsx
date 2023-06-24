@@ -138,11 +138,14 @@ const PromptDialog = ({
           <Grid item paddingBottom="1%">
             <TextField
               multiline
+              maxRows={10}
               variant="filled"
               sx={{
                 width: isMobile ? "80vw" : "60vw",
+                maxHeight: "60vh", // for example
+                overflow: "auto", // add a scroll bar when it overflows
                 "& .MuiInputBase-inputMultiline": {
-                  lineHeight: "18px", // adjust the value as needed
+                  lineHeight: "18px",
                 },
               }}
               onChange={(e) => setPromptResultValue(e.target.value)}
