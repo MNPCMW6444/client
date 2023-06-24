@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
 import Notebook from "./pages/notebook/Notebook";
 import MyAccount from "./pages/my-account/MyAccount";
@@ -11,13 +9,13 @@ import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import AIdeator from "./pages/aideator/AIdeator";
+import useResponsive from "../hooks/useRespnsive";
 //import CritiQ from "./pages/criticq/CritiQ";
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { theme, isMobile } = useResponsive();
 
   const handleMobileDrawerToggle = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);

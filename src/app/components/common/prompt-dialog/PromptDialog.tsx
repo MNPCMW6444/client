@@ -1,11 +1,4 @@
-import {
-  Grid,
-  TextField,
-  Button,
-  Typography,
-  useTheme,
-  Box,
-} from "@mui/material";
+import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import {
   useContext,
   useState,
@@ -22,6 +15,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
+import useResponsive from "../../../hooks/useRespnsive";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -42,6 +36,8 @@ const PromptDialog = ({
   promptName,
   setOpenPrompt,
 }: PromptDialogProps) => {
+  const { theme, isMobile } = useResponsive();
+
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const [dbpromptResultValue, setdbPromptResultValue] = useState<string>("");
@@ -70,11 +66,13 @@ const PromptDialog = ({
   const run = async () => {
     if (axiosInstance)
       axiosInstance
-        .post("data/prompts/runAndGetPromptResult", {
+        .post("data/prompts/preRunPrompt", {
           ideaId: idea !== "NO IDEAS" && idea?._id,
           promptName,
         })
-        .then(({ data }) => {});
+        .then(({ data }) => {
+          debugger;
+        });
   };
 
   const save = async () => {
@@ -90,17 +88,22 @@ const PromptDialog = ({
 
   const handleClose = () => setOpenPrompt("closed");
 
-  const theme = useTheme();
-
   return (
     <Dialog
       open
       maxWidth="xl"
-      PaperProps={{ sx: { width: "70vw" } }}
+      PaperProps={{ sx: { width: isMobile ? "90vw" : "70vw" } }}
       onClose={handleClose}
     >
       <DialogTitle>
-        <Grid container width="100%" justifyContent="space-between">
+        <Grid
+          container
+          width="100%"
+          direction={isMobile ? "column-reverse" : "row"}
+          rowSpacing={2}
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Grid item>
             <Button variant="outlined" onClick={fetchPromptResult}>
               <Refresh sx={{ mr: 1 }} />
@@ -137,7 +140,7 @@ const PromptDialog = ({
               multiline
               rows={18}
               variant="filled"
-              sx={{ width: "50vw" }}
+              sx={{ width: isMobile ? "90vw" : "50vw" }}
               onChange={(e) => setPromptResultValue(e.target.value)}
               value={
                 idea === "NO IDEAS"
@@ -157,7 +160,15 @@ const PromptDialog = ({
               </Box>
             </Grid>
           )}
-          <Grid item container justifyContent="center" columnSpacing={2}>
+          <Grid
+            item
+            container
+            direction={isMobile ? "column" : "row"}
+            justifyContent="center"
+            alignItems="center"
+            columnSpacing={2}
+            rowSpacing={2}
+          >
             <Grid item>
               <Button
                 variant="outlined"
