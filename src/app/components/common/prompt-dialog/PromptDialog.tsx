@@ -98,7 +98,7 @@ const PromptDialog = ({
       <DialogTitle>
         <Grid
           container
-          width="100%"
+          width="§0%"
           direction={isMobile ? "column-reverse" : "row"}
           rowSpacing={2}
           justifyContent="space-between"
@@ -138,9 +138,9 @@ const PromptDialog = ({
           <Grid item paddingBottom="1%">
             <TextField
               multiline
-              rows={18}
+              rows={isMobile ? 12 : 16}
               variant="filled"
-              sx={{ width: isMobile ? "90vw" : "50vw" }}
+              sx={{ width: isMobile ? "80vw" : "60vw" }}
               onChange={(e) => setPromptResultValue(e.target.value)}
               value={
                 idea === "NO IDEAS"

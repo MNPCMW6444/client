@@ -1,16 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext, useState, lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
-import Notebook from "./pages/notebook/Notebook";
-import MyAccount from "./pages/my-account/MyAccount";
-import About from "./pages/about/About";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import AIdeator from "./pages/aideator/AIdeator";
 import useResponsive from "../hooks/useRespnsive";
-//import CritiQ from "./pages/criticq/CritiQ";
+
+const AIdeator = lazy(() => import("./pages/aideator/AIdeator"));
+const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
+const About = lazy(() => import("./pages/about/About"));
+const Notebook = lazy(() => import("./pages/notebook/Notebook"));
+//const CritiQ = lazy(() => import("./pages/critiq/CritiQ"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
@@ -24,7 +25,7 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <Box paddingTop="20px">
+        <Box paddingTop="20px" overflow="hidden">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <WhiteSideBar
             mobileDrawerOpen={mobileDrawerOpen}
@@ -44,10 +45,38 @@ const WhiteRouter = () => {
             }}
           >
             <Routes>
-              <Route path="/*" element={<Notebook />} />
-              <Route path="/aideator" element={<AIdeator />} />
-              <Route path="/my-account" element={<MyAccount />} />
-              <Route path="/about" element={<About />} />
+              <Route
+                path="/*"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Notebook />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/aideator"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <AIdeator />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-account"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <MyAccount />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <About />
+                  </Suspense>
+                }
+              />
               {/* <Route path="/critiq" element={<CritiQ />} /> */}
             </Routes>
           </Box>

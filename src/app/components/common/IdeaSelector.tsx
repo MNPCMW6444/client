@@ -22,7 +22,7 @@ const IdeaSelector = ({
     >
       {ideas.map((idea, index) => (
         <MenuItem key={index} value={idea._id}>
-          {idea?.idea}
+          {idea?.idea.substring(0, 20)}
         </MenuItem>
       ))}
     </Select>
