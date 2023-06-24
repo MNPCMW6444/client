@@ -138,9 +138,13 @@ const PromptDialog = ({
           <Grid item paddingBottom="1%">
             <TextField
               multiline
-              rows={isMobile ? 12 : 16}
               variant="filled"
-              sx={{ width: isMobile ? "80vw" : "60vw" }}
+              sx={{
+                width: isMobile ? "80vw" : "60vw",
+                "& .MuiInputBase-inputMultiline": {
+                  lineHeight: "18px", // adjust the value as needed
+                },
+              }}
               onChange={(e) => setPromptResultValue(e.target.value)}
               value={
                 idea === "NO IDEAS"

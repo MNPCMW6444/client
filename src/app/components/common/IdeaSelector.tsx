@@ -23,7 +23,6 @@ const IdeaSelector = ({
 }: IdeaSelectorProps) => {
   const { ideas } = useContext(UserContext);
   const [open, setOpen] = useState(false);
-  const selectedIdea = ideas.find((idea) => idea._id === selectedIdeaId);
 
   const select = (
     <Select
