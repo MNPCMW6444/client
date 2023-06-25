@@ -36,9 +36,6 @@ const Notebook = () => {
     <>
       {ideas && (
         <Grid container direction="column" rowSpacing={2}>
-          <Grid item>
-            <Typography>Hi {user?.name}</Typography>
-          </Grid>
           <Grid item container alignItems="center">
             <Tabs
               value={activeIdeaIndex}
