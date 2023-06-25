@@ -64,7 +64,7 @@ const PromptDialog = ({
   const run = async () => {
     if (axiosInstance)
       axiosInstance
-        .post("data/prompts/preRunPrompt", {
+        .post("data/prompts/runAndGetPromptResult", {
           ideaId: idea !== "NO IDEAS" && idea?._id,
           promptName,
         })
