@@ -5,12 +5,17 @@ import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 import { Lock, LockOpen } from "@mui/icons-material";
-import AIdeatorContext from "../../../context/AIdeatorContext";
+import AIdeatorContext, {
+  AIdeatorContextProvider,
+} from "../../../context/AIdeatorContext";
+import UserContext from "../../../context/UserContext";
 
 const AIdeator = () => {
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
-  const { setCurrentIdeaId, graph, refreshGraph, loaded } =
+  const { ideas } = useContext(UserContext);
+
+  const { currentIdeaId, setCurrentIdeaId, graph, loaded } =
     useContext(AIdeatorContext);
 
   const renderGraph = (tempGraph: PromptGraph) => {
@@ -83,8 +88,13 @@ const AIdeator = () => {
     );
   };
 
+  const deb = (graph: any) => {
+    debugger;
+    return graph.length > 0 ? renderGraph(graph) : z(graph);
+  };
+
   return (
-    <>
+    <AIdeatorContextProvider>
       {openPrompt !== "closed" && (
         <PromptDialog
           idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
@@ -93,24 +103,25 @@ const AIdeator = () => {
         />
       )}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
+        {setCurrentIdeaId && (
+          <Grid item>
+            <IdeaSelector
+              selectedIdeaId={currentIdeaId}
+              setSelectedIdeaId={setCurrentIdeaId}
+            />
+          </Grid>
+        )}
         <Grid item>
-          <IdeaSelector
-            selectedIdeaId={currentIdeaId}
-            setSelectedIdeaId={setCurrentIdeaId}
-          />
-        </Grid>
-        <Grid item>
-          <Paper sx={{ overflow: "scroll" }}>
-            {graph ? (
-              renderGraph(graph)
-            ) : (
-              <Typography>Loading {loaded}...</Typography>
-            )}
-          </Paper>
+          <Paper sx={{ overflow: "scroll" }}>{deb(graph)}</Paper>
         </Grid>
       </Grid>
-    </>
+    </AIdeatorContextProvider>
   );
+};
+
+const z = (graph: any) => {
+  console.log(graph);
+  return <></>;
 };
 
 export default AIdeator;

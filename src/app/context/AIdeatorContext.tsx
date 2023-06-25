@@ -9,31 +9,18 @@ import {
   SetStateAction,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
-import { Typography } from "@mui/material";
-import { styled } from "@mui/system";
 import { PromptGraph, WhiteModels } from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
 
-const WhiteTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: "Monospace",
-  fontWeight: "bold",
-  fontSize: 32,
-  letterSpacing: 2,
-  color: theme.palette.primary.main,
-  marginBottom: theme.spacing(1),
-}));
-
-const loadingMessage = (
-  <WhiteTypography>Loading promt result...</WhiteTypography>
-);
-
 const AIdeatorContext = createContext<{
+  currentIdeaId: string;
   setCurrentIdeaId: Dispatch<SetStateAction<string>> | undefined;
   graph: PromptGraph;
   refreshGraph: () => Promise<void>;
   loaded: string;
 }>({
+  currentIdeaId: "",
   setCurrentIdeaId: undefined,
   graph: [],
   refreshGraph: () => Promise.resolve(),
@@ -71,6 +58,7 @@ export const AIdeatorContextProvider = ({
           ).data || "empty"
         );
       }
+      setLoaded("");
       setGraph(
         baseGraph.map((x: any, index: number) => ({
           ...x,
@@ -78,7 +66,7 @@ export const AIdeatorContextProvider = ({
         }))
       );
     }
-  }, [currentIdeaId]);
+  }, [axiosInstance, currentIdeaId]);
 
   useEffect(() => {
     refreshGraph();
@@ -87,13 +75,14 @@ export const AIdeatorContextProvider = ({
   return (
     <AIdeatorContext.Provider
       value={{
+        currentIdeaId,
         setCurrentIdeaId,
         graph,
         refreshGraph,
         loaded,
       }}
     >
-      {loaded ? loadingMessage : children}
+      {children}
     </AIdeatorContext.Provider>
   );
 };
