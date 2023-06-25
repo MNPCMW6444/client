@@ -42,7 +42,7 @@ const Notebook = () => {
               {ideas.map((idea, index) => (
                 <Tab
                   key={index}
-                  label={`${index + 1}: ${idea?.idea?.substring(0, 5)}...`}
+                  label={`${index + 1}: ${idea?.idea?.substring(0, 20)}...`}
                 />
               ))}
               <Button
