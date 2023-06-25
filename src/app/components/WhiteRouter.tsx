@@ -1,24 +1,22 @@
-import { useContext, useState } from "react";
+import { useContext, useState, lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
-import Notebook from "./pages/notebook/Notebook";
-import MyAccount from "./pages/my-account/MyAccount";
-import About from "./pages/about/About";
-import CritIQ from "./pages/critiq/CritIQ";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import AIDeator from "./pages/aideator/AIDeator";
-//import CritiQ from "./pages/criticq/CritiQ";
+import useResponsive from "../hooks/useRespnsive";
+
+const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
+const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
+const About = lazy(() => import("./pages/about/About"));
+const Notebook = lazy(() => import("./pages/notebook/Notebook"));
+//const CritiQ = lazy(() => import("./pages/critiq/CritiQ"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { isMobile } = useResponsive();
 
   const handleMobileDrawerToggle = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
@@ -27,7 +25,7 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <Box paddingTop="20px">
+        <Box paddingTop="20px" overflow="hidden">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <WhiteSideBar
             mobileDrawerOpen={mobileDrawerOpen}
@@ -47,12 +45,38 @@ const WhiteRouter = () => {
             }}
           >
             <Routes>
-              <Route path="/*" element={<Notebook />} />
-              <Route path="/aideator" element={<AIDeator />} />
-              <Route path="/my-account" element={<MyAccount />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/critiq" element={<CritIQ />} />
-
+              <Route
+                path="/*"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <Notebook />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/aideator"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <AIdeatorWrapper />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/my-account"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <MyAccount />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <About />
+                  </Suspense>
+                }
+              />
               {/* <Route path="/critiq" element={<CritiQ />} /> */}
             </Routes>
           </Box>
