@@ -8,11 +8,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IdeaSelector from "../../common/IdeaSelector";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 
 export default function RunCritiq() {
   const [value, setValue] = useState("");
@@ -38,10 +35,6 @@ export default function RunCritiq() {
       ...checkedState,
       [event.target.name]: event.target.checked,
     });
-  };
-
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
-    setValue(newValue);
   };
 
   return (
