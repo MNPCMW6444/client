@@ -1,56 +1,17 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { Grid, Typography, Paper } from "@mui/material";
-import { MainserverContext } from "@failean/mainserver-provider";
-import UserContext from "../../../context/UserContext";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
-import { PromptGraph, PromptName } from "@failean/shared-types";
+import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
-import capitalize from "../../../util/capitalize";
 import { Lock, LockOpen } from "@mui/icons-material";
+import AIdeatorContext from "../../../context/AIdeatorContext";
 
 const AIdeator = () => {
-  const mainserverContext = useContext(MainserverContext);
-  const axiosInstance = mainserverContext?.axiosInstance;
-  const { ideas } = useContext(UserContext);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>(
-    ideas[0]?._id || ""
-  );
-
-  const [loaded, setLoaded] = useState<string>("");
-
-  const [graph, setGraph] = useState<PromptGraph>();
-
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
-  useEffect(() => {
-    const fetchGraph = async () => {
-      if (axiosInstance) {
-        const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
-        const baseGraph = data.graph;
-        let hasDatas: boolean[] = [];
-        for (const prompt of baseGraph) {
-          setLoaded(capitalize(prompt.name));
-          hasDatas.push(
-            (
-              await axiosInstance.post("data/prompts/getPromptResult", {
-                ideaId: currentIdeaId,
-                promptName: prompt.name,
-              })
-            ).data.promptResult?.data?.length > 2
-          );
-        }
-        setGraph(
-          baseGraph.map((x: any, index: number) => ({
-            ...x,
-            hasData: index === 0 || hasDatas[index],
-          }))
-        );
-      }
-    };
-    setGraph(undefined);
-    fetchGraph();
-  }, [axiosInstance, currentIdeaId]);
+  const { setCurrentIdeaId, graph, refreshGraph, loaded } =
+    useContext(AIdeatorContext);
 
   const renderGraph = (tempGraph: PromptGraph) => {
     const graph: any = tempGraph.map((tg) => ({
@@ -59,7 +20,15 @@ const AIdeator = () => {
         .find((g) => g.name === tg.name)
         ?.deps.some(
           (dep: PromptName) =>
-            !(tempGraph.find((g) => g.name === dep) as any).hasData
+            (tempGraph.find((g) => g.name === dep) as any).result === "empty" ||
+            !(
+              (tempGraph.find((g) => g.name === dep) as any).result ===
+                "idea" ||
+              (
+                (tempGraph.find((g) => g.name === dep) as any).result
+                  .promptResult as WhiteModels.Data.Prompts.WhitePromptResult
+              )?.data?.length > 2
+            )
         ),
     }));
 

@@ -5,11 +5,15 @@ import {
   createContext,
   useCallback,
   useContext,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { Typography } from "@mui/material";
 import { styled } from "@mui/system";
-import { PromptGraph } from "@failean/shared-types";
+import { PromptGraph, WhiteModels } from "@failean/shared-types";
+import UserContext from "./UserContext";
+import capitalize from "../util/capitalize";
 
 const WhiteTypography = styled(Typography)(({ theme }) => ({
   fontFamily: "Monospace",
@@ -24,59 +28,74 @@ const loadingMessage = (
   <WhiteTypography>Loading promt result...</WhiteTypography>
 );
 
-const UserContext = createContext<{
+const AIdeatorContext = createContext<{
+  setCurrentIdeaId: Dispatch<SetStateAction<string>> | undefined;
   graph: PromptGraph;
   refreshGraph: () => Promise<void>;
+  loaded: string;
 }>({
+  setCurrentIdeaId: undefined,
   graph: [],
   refreshGraph: () => Promise.resolve(),
+  loaded: "",
 });
 
-export const UserContextProvider = ({ children }: { children: ReactNode }) => {
+export const AIdeatorContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const mainserverContext = useContext(MainserverContext);
+  const { ideas } = useContext(UserContext);
+
   const axiosInstance = mainserverContext?.axiosInstance;
   const [graph, setGraph] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [currentIdeaId, setCurrentIdeaId] = useState<string>(
+    ideas[0]?._id || ""
+  );
+  const [loaded, setLoaded] = useState<string>("");
 
-  const refreshUserData = useCallback(async () => {
-    if (axiosInstance)
-      axiosInstance
-        .get("auth/signedin")
-        .then((userRes) => {
-          setUser(userRes.data);
-          axiosInstance &&
-            axiosInstance
-              .get("data/ideas/getIdeas")
-              .then((res) => {
-                setIdeas(res.data.ideas);
-                setLoading(false);
-              })
-              .catch(() => {
-                setIdeas([]);
-                setLoading(false);
-              });
-        })
-        .catch(() => {
-          setUser(undefined);
-          setLoading(false);
-        });
-  }, [axiosInstance]);
+  const refreshGraph = useCallback(async () => {
+    if (axiosInstance) {
+      const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
+      const baseGraph = data.graph;
+      let results: WhiteModels.Data.Prompts.WhitePromptResult[] = [];
+      for (const prompt of baseGraph) {
+        setLoaded(capitalize(prompt.name));
+        results.push(
+          (
+            await axiosInstance.post("data/prompts/getPromptResult", {
+              ideaId: currentIdeaId,
+              promptName: prompt.name,
+            })
+          ).data || "empty"
+        );
+      }
+      setGraph(
+        baseGraph.map((x: any, index: number) => ({
+          ...x,
+          result: index === 0 ? "idea" : results[index],
+        }))
+      );
+    }
+  }, [currentIdeaId]);
 
   useEffect(() => {
-    refreshUserData();
-  }, [refreshUserData]);
+    refreshGraph();
+  }, [refreshGraph]);
 
   return (
-    <UserContext.Provider
+    <AIdeatorContext.Provider
       value={{
-        user,
-        ideas,
-        refreshUserData,
+        setCurrentIdeaId,
+        graph,
+        refreshGraph,
+        loaded,
       }}
     >
-      {loading ? loadingMessage : children}
-    </UserContext.Provider>
+      {loaded ? loadingMessage : children}
+    </AIdeatorContext.Provider>
   );
 };
 
-export default UserContext;
+export default AIdeatorContext;
