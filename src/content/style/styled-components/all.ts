@@ -8,3 +8,4 @@ export const PromptButton = styled(Button)(({ theme }) => ({
 export const LockedPromptButton = styled(Button)(({ theme }) => ({
   color: "gray" || theme.palette.primary.main,
 }));
+//seorpiutr
