@@ -17,7 +17,7 @@ import { Button } from "@mui/material";
 const Notebook = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
-  const { user, ideas, refreshUserData } = useContext(UserContext);
+  const { ideas, refreshUserData } = useContext(UserContext);
   const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
   const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
 
