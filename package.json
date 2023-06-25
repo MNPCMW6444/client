@@ -1,10 +1,10 @@
 {
   "name": "failean-client",
-  "version": "3.1.52",
+  "version": "3.1.46",
   "private": true,
   "dependencies": {
-    "@failean/mainserver-provider": "^2.6.87",
-    "@failean/shared-types": "^2.9.137",
+    "@failean/mainserver-provider": "^2.6.85",
+    "@failean/shared-types": "^2.9.129",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -13,7 +13,7 @@
     "@types/zxcvbn": "^4.4.1",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.7",
-    "react-router-dom": "^6.14.0",
+    "react-router-dom": "^6.13.0",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.1.3",
     "web-vitals": "^3.3.2",
@@ -21,9 +21,7 @@
   },
   "scripts": {
     "predev": "npm install",
-    "preupdate": "npx npm-check-updates -u",
-    "update": "npm i",
-    "clean": "rm -rf node_modules package-lock.json",
+    "update": "npx npm-check-updates -u",
     "start": "react-scripts start",
     "dev": "PORT=5999 react-scripts start",
     "build": "react-scripts build",
