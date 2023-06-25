@@ -19,11 +19,7 @@ const AIdeator = () => {
 
   const [loaded, setLoaded] = useState<string>("");
 
-  interface Graph extends PromptGraph {
-    hasData: boolean;
-  }
-
-  const [graph, setGraph] = useState<Graph>();
+  const [graph, setGraph] = useState<PromptGraph>();
 
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
