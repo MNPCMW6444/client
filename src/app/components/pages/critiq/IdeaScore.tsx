@@ -1,8 +1,6 @@
-import React from "react";
-
-const RunCritIQ = () => {
+const IdeaScore = () => {
   // your component logic here...
-  return <div>{/* your JSX here... */}</div>;
+  return <div>{4}</div>;
 };
 
-export default RunCritIQ;
+export default IdeaScore;
