@@ -3,8 +3,8 @@
   "version": "3.1.48",
   "private": true,
   "dependencies": {
-    "@failean/mainserver-provider": "^2.6.85",
-    "@failean/shared-types": "^2.9.132",
+    "@failean/mainserver-provider": "^2.6.87",
+    "@failean/shared-types": "^2.9.133",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -21,7 +21,9 @@
   },
   "scripts": {
     "predev": "npm install",
-    "update": "npx npm-check-updates -u",
+    "preupdate": "npx npm-check-updates -u",
+    "update": "npm i",
+    "clean": "rm -rf node_modules package-lock.json",
     "start": "react-scripts start",
     "dev": "PORT=5999 react-scripts start",
     "build": "react-scripts build",
