@@ -7,7 +7,7 @@ import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
 
-const AIdeator = lazy(() => import("./pages/aideator/AIdeator"));
+const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
 const About = lazy(() => import("./pages/about/About"));
 const Notebook = lazy(() => import("./pages/notebook/Notebook"));
@@ -57,7 +57,7 @@ const WhiteRouter = () => {
                 path="/aideator"
                 element={
                   <Suspense fallback={<div>Loading...</div>}>
-                    <AIdeator />
+                    <AIdeatorWrapper />
                   </Suspense>
                 }
               />
