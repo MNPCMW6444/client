@@ -66,7 +66,8 @@ const AIdeator = () => {
             !(tempGraph.find((g) => g.name === dep) as any).hasData
         ),
     }));
-    const result: { level: any[]; unlocked: number }[] = [];
+
+    const result: { level: any[]; lockedCount: number }[] = [];
     const grouped = graph.reduce((group: { [key: number]: any }, item: any) => {
       if (!group[item.level]) {
         group[item.level] = [];
@@ -79,9 +80,9 @@ const AIdeator = () => {
       if (grouped.hasOwnProperty(level)) {
         result.push({
           level: grouped[level],
-          unlocked: prevLevel
-            ? grouped[prevLevel].filter(({ hasData }: any) => hasData).length
-            : grouped[level].length,
+          lockedCount: prevLevel
+            ? grouped[level].filter(({ locked }: any) => locked).length
+            : 0,
         });
         prevLevel = level;
       }
@@ -89,7 +90,7 @@ const AIdeator = () => {
 
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
-        {result.map(({ level, unlocked }, index) => (
+        {result.map(({ level, lockedCount }, index) => (
           <Grid
             item
             key={index}
@@ -97,16 +98,16 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            {unlocked !== 0 && (
+            {lockedCount !== 0 && (
               <Grid item>
-                {unlocked === level.length ? <Lock /> : <LockOpen />}
+                {lockedCount === level.length ? <Lock /> : <LockOpen />}
               </Grid>
             )}
-            {level.map(({ name }, index) => (
+            {level.map(({ name, locked }, index) => (
               <Grid key={index} item>
                 <Prompt
                   promptName={name}
-                  locked={false}
+                  locked={locked}
                   setOpenPrompt={setOpenPrompt}
                 />
               </Grid>
