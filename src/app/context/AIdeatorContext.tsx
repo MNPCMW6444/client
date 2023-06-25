@@ -17,13 +17,11 @@ const AIdeatorContext = createContext<{
   currentIdeaId: string;
   setCurrentIdeaId: Dispatch<SetStateAction<string>> | undefined;
   graph: PromptGraph;
-  refreshGraph: () => Promise<void>;
   loaded: string;
 }>({
   currentIdeaId: "",
   setCurrentIdeaId: undefined,
   graph: [],
-  refreshGraph: () => Promise.resolve(),
   loaded: "",
 });
 
@@ -42,7 +40,7 @@ export const AIdeatorContextProvider = ({
   );
   const [loaded, setLoaded] = useState<string>("");
 
-  const refreshGraph = useCallback(async () => {
+  const fetchGraph = useCallback(async () => {
     if (axiosInstance) {
       const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
       const baseGraph = data.graph;
@@ -69,8 +67,8 @@ export const AIdeatorContextProvider = ({
   }, [axiosInstance, currentIdeaId]);
 
   useEffect(() => {
-    refreshGraph();
-  }, [refreshGraph]);
+    fetchGraph();
+  }, [fetchGraph]);
 
   return (
     <AIdeatorContext.Provider
@@ -78,7 +76,6 @@ export const AIdeatorContextProvider = ({
         currentIdeaId,
         setCurrentIdeaId,
         graph,
-        refreshGraph,
         loaded,
       }}
     >

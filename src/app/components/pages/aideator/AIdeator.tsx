@@ -6,11 +6,13 @@ import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 import { Lock, LockOpen } from "@mui/icons-material";
 import AIdeatorContext from "../../../context/AIdeatorContext";
+import UserContext from "../../../context/UserContext";
 
 const AIdeator = () => {
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
-  const { setCurrentIdeaId, graph, refreshGraph, loaded } =
+  const { ideas } = useContext(UserContext);
+  const { currentIdeaId, setCurrentIdeaId, graph, loaded } =
     useContext(AIdeatorContext);
 
   const renderGraph = (tempGraph: PromptGraph) => {
@@ -93,15 +95,17 @@ const AIdeator = () => {
         />
       )}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
-        <Grid item>
-          <IdeaSelector
-            selectedIdeaId={currentIdeaId}
-            setSelectedIdeaId={setCurrentIdeaId}
-          />
-        </Grid>
+        {setCurrentIdeaId && (
+          <Grid item>
+            <IdeaSelector
+              selectedIdeaId={currentIdeaId}
+              setSelectedIdeaId={setCurrentIdeaId}
+            />
+          </Grid>
+        )}
         <Grid item>
           <Paper sx={{ overflow: "scroll" }}>
-            {graph ? (
+            {graph.length > 0 ? (
               renderGraph(graph)
             ) : (
               <Typography>Loading {loaded}...</Typography>
