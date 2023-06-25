@@ -1,24 +1,22 @@
 import { Dispatch, SetStateAction } from "react";
+import { Button } from "@mui/material";
 import { PromptName } from "@failean/shared-types";
-import {
-  PromptButton,
-  LockedPromptButton,
-} from "../../../content/style/styled-components/all";
-import capitalize from "../../util/capitalize";
+import { capitalize } from "./prompt-dialog/PromptDialog";
+import { styled } from "@mui/material";
 
 interface PromptProps {
   promptName: PromptName;
-  locked: boolean;
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
 }
 
-const Prompt = ({ promptName, locked, setOpenPrompt }: PromptProps) => {
-  const name = capitalize(promptName);
-  return locked ? (
-    <LockedPromptButton>{name}</LockedPromptButton>
-  ) : (
+const PromptButton = styled(Button)(({ theme }) => ({
+  color: "black" || theme.palette.primary.main,
+}));
+
+const Prompt = ({ promptName, setOpenPrompt }: PromptProps) => {
+  return (
     <PromptButton onClick={() => setOpenPrompt(promptName)}>
-      {name}
+      {capitalize(promptName)}
     </PromptButton>
   );
 };

@@ -1,4 +1,11 @@
-import { Grid, TextField, Button, Typography, Box } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  useTheme,
+  Box,
+} from "@mui/material";
 import {
   useContext,
   useState,
@@ -6,7 +13,6 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  useRef,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptName, WhiteModels } from "@failean/shared-types";
@@ -16,8 +22,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
-import useResponsive from "../../../hooks/useRespnsive";
-import capitalize from "../../../util/capitalize";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -27,19 +31,21 @@ interface PromptDialogProps {
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
 }
 
+export const capitalize = (s: string) =>
+  s
+    .replace(/([A-Z])/g, " $1")
+    .charAt(0)
+    .toUpperCase() + s.replace(/([A-Z])/g, " $1").slice(1);
+
 const PromptDialog = ({
   idea,
   promptName,
   setOpenPrompt,
 }: PromptDialogProps) => {
-  const { theme, isMobile } = useResponsive();
-
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const [dbpromptResultValue, setdbPromptResultValue] = useState<string>("");
   const [promptResultValue, setPromptResultValue] = useState<string>("");
-
-  const [maxHeight, setMaxHeight] = useState("60vh");
 
   const fetchPromptResult = useCallback(async () => {
     if (axiosInstance && idea !== "NO IDEAS" && promptName !== "idea") {
@@ -64,13 +70,11 @@ const PromptDialog = ({
   const run = async () => {
     if (axiosInstance)
       axiosInstance
-        .post("data/prompts/preRunPrompt", {
+        .post("data/prompts/runAndGetPromptResult", {
           ideaId: idea !== "NO IDEAS" && idea?._id,
           promptName,
         })
-        .then(({ data }) => {
-          debugger;
-        });
+        .then(({ data }) => {});
   };
 
   const save = async () => {
@@ -86,69 +90,17 @@ const PromptDialog = ({
 
   const handleClose = () => setOpenPrompt("closed");
 
-  const dialogeRef = useRef<HTMLDivElement>(null);
-  const textFieldRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (
-        dialogeRef.current?.clientHeight &&
-        textFieldRef.current?.clientHeight
-      ) {
-        const tempDiv = document.createElement("div");
-        tempDiv.style.position = "absolute";
-        tempDiv.style.visibility = "hidden";
-        tempDiv.style.height = "auto";
-        tempDiv.style.width = textFieldRef.current.clientWidth + "px";
-        tempDiv.style.padding = textFieldRef.current.style.padding;
-        tempDiv.style.fontSize = textFieldRef.current.style.fontSize;
-        tempDiv.style.lineHeight = textFieldRef.current.style.lineHeight;
-        tempDiv.style.fontFamily = textFieldRef.current.style.fontFamily;
-        tempDiv.style.fontWeight = textFieldRef.current.style.fontWeight;
-        tempDiv.style.fontStyle = textFieldRef.current.style.fontStyle;
-        tempDiv.style.whiteSpace = textFieldRef.current.style.whiteSpace;
-        tempDiv.innerText = textFieldRef.current.value;
-        document.body.appendChild(tempDiv);
-
-        const visibleHeight = tempDiv.clientHeight;
-
-        let spaceTakenByOtherElements =
-          dialogeRef.current.clientHeight - visibleHeight;
-        document.body.removeChild(tempDiv);
-
-        let availableHeight = window.innerHeight - spaceTakenByOtherElements;
-        setMaxHeight(`${availableHeight}px`);
-      } else setMaxHeight("10vh");
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [promptResultValue]);
+  const theme = useTheme();
 
   return (
     <Dialog
       open
       maxWidth="xl"
-      PaperProps={{
-        sx: { width: isMobile ? "90vw" : "70vw" },
-        ref: dialogeRef,
-      }}
+      PaperProps={{ sx: { width: "70vw" } }}
       onClose={handleClose}
     >
       <DialogTitle>
-        <Grid
-          container
-          width="§0%"
-          direction={isMobile ? "column-reverse" : "row"}
-          rowSpacing={2}
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Grid container width="100%" justifyContent="space-between">
           <Grid item>
             <Button variant="outlined" onClick={fetchPromptResult}>
               <Refresh sx={{ mr: 1 }} />
@@ -182,15 +134,10 @@ const PromptDialog = ({
           </Grid>
           <Grid item paddingBottom="1%">
             <TextField
-              ref={textFieldRef}
               multiline
-              maxRows={1000}
+              rows={18}
               variant="filled"
-              sx={{
-                width: isMobile ? "80vw" : "60vw",
-                height: { maxHeight },
-                overflow: "auto",
-              }}
+              sx={{ width: "50vw" }}
               onChange={(e) => setPromptResultValue(e.target.value)}
               value={
                 idea === "NO IDEAS"
@@ -210,15 +157,7 @@ const PromptDialog = ({
               </Box>
             </Grid>
           )}
-          <Grid
-            item
-            container
-            direction={isMobile ? "column" : "row"}
-            justifyContent="center"
-            alignItems="center"
-            columnSpacing={2}
-            rowSpacing={2}
-          >
+          <Grid item container justifyContent="center" columnSpacing={2}>
             <Grid item>
               <Button
                 variant="outlined"

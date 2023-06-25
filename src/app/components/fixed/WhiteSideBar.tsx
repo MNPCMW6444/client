@@ -1,13 +1,12 @@
 import { FC } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import Typography from "@mui/material/Typography";
-import useResponsive from "../../hooks/useRespnsive";
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
@@ -19,16 +18,15 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   onMobileDrawerToggle,
 }) => {
   const navigate = useNavigate();
-
-  const { isMobile } = useResponsive();
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const location = useLocation();
 
-  // Add a 'disabled' and 'comingSoon' property to the CritiQ object
   const menuItems = [
     { label: "Notebook", route: "/" },
-    { label: "AIdeator", route: "/aideator" },
-    { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
+    { label: "AIDeator", route: "/aideator" },
+    { label: "About", route: "/about" },
+    { label: "CritiQ", route: "/critiq" },
   ];
 
   const handleMenuItemClick = (route: string) => {
@@ -43,25 +41,18 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
       {menuItems.map((item, index) => (
         <ListItem
           key={index}
-          onClick={() => !item.disabled && handleMenuItemClick(item.route)}
+          onClick={() => handleMenuItemClick(item.route)}
           sx={{
             bgcolor:
               location.pathname === item.route ? "action.selected" : "inherit",
           }}
-          disabled={item.disabled}
         >
           <ListItemText primary={item.label} />
-          {item.comingSoon && (
-            <ListItemSecondaryAction>
-              <Typography variant="body2" color="text.secondary">
-                Coming Soon!
-              </Typography>
-            </ListItemSecondaryAction>
-          )}
         </ListItem>
       ))}
     </List>
   );
+
   return (
     <Box
       sx={{
