@@ -1,52 +1,18 @@
-import React, { useState, useEffect } from "react";
-import Checkbox from "@mui/material/Checkbox";
-import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
+import { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import IdeaSelector from "../../common/IdeaSelector";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-
 import RunCritIQ from "./RunCritIQ";
 import IdeaScore from "./IdeaScore";
 import ActionList from "./ActionList";
 import ValidationRoadmap from "./ValidationRoadmap";
 
 export default function Critiq() {
-  const [Category, setCategory] = useState("");
-  const [ideaId, setIdeaId] = useState<string>("");
-  const [value, setValue] = React.useState("Run CritIQ");
-  const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
-  };
-
-  const [checkedState, setCheckedState] = useState({
-    angel: false,
-    vc: false,
-    customer: false,
-  });
-
-  const handleCategoryChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value);
-  };
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    setDisabled(!ideaId);
-  }, [ideaId]);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckedState({
-      ...checkedState,
-      [event.target.name]: event.target.checked,
-    });
+  const [value, setValue] = useState("");
+  const handleChange = (event: React.SyntheticEvent, newValue: any) => {
+    setValue(newValue);
   };
 
   const renderTabContent = () => {
