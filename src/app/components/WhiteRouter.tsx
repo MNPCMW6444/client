@@ -11,7 +11,7 @@ import CritIQ from "./pages/critiq/CritIQ";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import AIDeator from "./pages/aideator/AIDeator";
+import AIDeator from "./pages/aideator/AIdeator";
 //import CritiQ from "./pages/criticq/CritiQ";
 
 const WhiteRouter = () => {

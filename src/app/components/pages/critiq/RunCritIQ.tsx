@@ -11,81 +11,215 @@ import {
   Select,
   MenuItem,
   FormControl,
+  TextField,
   Typography,
   Grid,
+  Box,
+  Link,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
-const steps = [
+
+type StepType = {
+  title: string;
+  questions: {
+    text: string;
+    answers: string[];
+  }[];
+};
+
+const steps: StepType[] = [
   {
-    title: "Market validation",
+    title: "Value Verification",
     questions: [
-      "Have you conducted any user interviews or surveys to validate the problem and your solution? If yes, what were the key insights?",
-      "Have you used any tools or methodologies to validate your customer's needs? For example, Lean Canvas, Value Proposition Design, etc.",
+      {
+        text: "Did you actually experience the problem you're solving, or is it somone else's problem?",
+        answers: [
+          "Experienced it first-hand",
+          "Found it in a report",
+          "Someone told me about it",
+          "Chat GPT told me about it",
+        ],
+      },
+      {
+        text: "Did you chat with real potential customers, or just imagined what they could possibly want?",
+        answers: [
+          "Had heart-to-heart with customers",
+          "Conducted non-biased user interviews",
+          "Conducted user questionirs",
+          "Conducted focus groups",
+          "I am my own customer",
+          "Playing guessing games",
+          "More then one of the above",
+        ],
+      },
+      {
+        text: "Did you validate your idea with real people, or just your mom and her book club?",
+        answers: [
+          "Asked my Facebook friends",
+          "Beyond my social circle",
+          "With investors/entrepreneurs/domain experts",
+          "Google is my validation",
+        ],
+      },
     ],
   },
   {
-    title: "User/customer feedback",
+    title: "Market Validation",
     questions: [
-      "Have you run any marketing tests, such as building a landing page for your product/service and seeing if people sign up or express interest?",
-      "Did you test your CAC (Customer Acquisition Cost) on your main marketing channels? If yes, what is your average CAC?",
-      "Have you created a minimum viable product (MVP)? If yes, what feedback have you received?",
-      "Do you have any beta users or early adopters? What has been their experience and feedback?",
-      "Have you done any A/B testing or usability testing for your product/service?",
-      "Have you received any customer testimonials or feedback from early users?",
-      "Have you organized focus groups or usability testing sessions to gather feedback from potential users?",
+      {
+        text: "Did you dive deep into competitor analysis, or are you hoping to learn hoe to swim with sharks?",
+        answers: [
+          "I know my competitors better then them",
+          "Did some snooping",
+          "Competitors? Who are they?",
+        ],
+      },
+      {
+        text: "Are you an insider in your industry/domain?",
+        answers: [
+          "No, but somone on my team is",
+          "We are a team of insiders",
+          "No, but i have connections",
+          "Well, no",
+        ],
+      },
+      {
+        text: "Did you validate there's a decent-sized market for your idea or are you just throwing darts in the dark?",
+        answers: [
+          "Big fish in a big pond",
+          "Small fish in a big pond",
+          "What's a market?",
+        ],
+      },
+      {
+        text: "Did you validate a unique value proposition, or are you just another 'me too' wannabe?",
+        answers: [
+          "I'm the next big thing",
+          "We're pretty similar, but...",
+          "We're still figuring it out",
+        ],
+      },
     ],
   },
   {
-    title: "Financial resources",
+    title: "Business Validation",
     questions: [
-      "How did you validate your market size and target audience?",
-      "Did you validate your revenue model and price points with potential customers or through market data?",
-      "Have you sought and received feedback from industry experts, advisors, or mentors?",
+      {
+        text: "Have you drafted a business plan, or are you just letting fate steer your ship?",
+        answers: [
+          "Business plan in hand",
+          "Fate's at the wheel",
+          "It's a work in progress",
+        ],
+      },
+      {
+        text: "Have you predicted potential cash flows or is your financial strategy 'hope for the best'?",
+        answers: [
+          "We have cash flow forecasts",
+          "Hoping for the best",
+          "Cash what now?",
+        ],
+      },
+      {
+        text: "Did you break down your startup costs or are you still playing hide and seek with numbers?",
+        answers: [
+          "Costs broken down",
+          "Still counting",
+          "I prefer not to think about it",
+        ],
+      },
+      {
+        text: "Have you secured funding needed to jump start from friends and family? or are you funding it from your pocket?",
+        answers: [
+          "Secured for now",
+          "Still in discussions",
+          "We take care of us",
+          "What is this 'funding' you speak of?",
+        ],
+      },
     ],
   },
   {
-    title: "Technical resources",
+    title: "Team Validation",
     questions: [
-      "How have you validated your go-to-market strategy? Did you use any experiments like launch on a small scale or in a limited area?",
-      "If you have started sales, what have you learned from your sales efforts? What worked, and what didn't?",
+      {
+        text: "Is your team an Avengers-like squad of experts, or a motley crew of zealous novices?",
+        answers: ["We're the Avengers", "The Goonies", "We got a mix"],
+      },
+      {
+        text: "Did you assign key roles in your startup or are you hoping for a workplace fairy tale?",
+        answers: [
+          "Roles are crystal clear",
+          "Winging the organization",
+          "Still figuring it out",
+        ],
+      },
+      {
+        text: "Do you have a hiring plan, or are you betting on the 'multiplicity' theory?",
+        answers: [
+          "Hiring plan is in place",
+          "Expecting clones to appear",
+          "Making it up as we go",
+        ],
+      },
     ],
   },
   {
-    title: "Partners & stakeholders",
+    title: "Economic Validation",
     questions: [
-      "Have you pitched to any investors? If so, what feedback did you receive?",
-      "If you've received funding, who are your investors, and why did they choose to invest in your startup?",
+      {
+        text: "Have you plotted your revenue streams, or are you counting on the kindness of users?",
+        answers: [
+          "Got our financial GPS",
+          "Will ask users nicely",
+          "Looking for the money tree",
+        ],
+      },
+      {
+        text: "Did you work out your customer acquisition cost, or are you betting on 'viral' to do the job?",
+        answers: [
+          "CAC calculated",
+          "Hoping for viral spread",
+          "Maybe we'll get lucky",
+        ],
+      },
     ],
   },
   {
-    title: "Primary offering",
+    title: "Compliance & Legal Validation",
     questions: [
-      "Have you built a prototype/POC of your product/service? If yes, what were the results and feedback?",
-      "Have you iterated your prototype based on the feedback received?",
-      "Have you developed a financial model for your startup? If yes, have you shared it with a financial expert for validation?",
-      "Have you validated your cost structure and revenue streams? How?",
-      "Have you validated your operational processes? If so, how efficient are they, and what feedback have you received?",
-      "Have you validated your business against legal and regulatory requirements? Have you consulted a lawyer or a relevant regulatory body?",
-      "If applicable, have you validated your intellectual property rights, such as patents, trademarks, copyrights, etc.?",
-      "Have you received any awards, industry recognition, or media coverage for your startup or its product/service?",
-      "Have you participated in any industry events or trade shows? If yes, what was the response?",
-      "If your business model involves working with other businesses, have you validated your solution with potential partners? What feedback or expressions of interest have you received?",
-      "Have you secured any strategic partnerships or collaborations?",
-      "What is the size and structure of your current team? What are their skills and areas of expertise?",
-      "Do you have the necessary talent in-house to achieve your short-term and long-term goals? If not, what are your hiring plans?",
-      "If your team needs to grow, how will you recruit new members and what skills will you prioritize?",
-      "What is your current financial status? How long can your business operate with your current funds?",
-      "Have you secured any external funding? If so, who are your investors and how much have they invested?",
-      "What are your plans for raising additional funding? If you don't plan to raise funds, how will you ensure financial sustainability?",
-      "What physical assets does your business have or need (e.g., office space, equipment, inventory)?",
-      "Do you own these assets or are they leased/rented? How does this affect your operating costs?",
-      "How do you plan to scale your physical resources as your business grows?",
-      "What technology or software tools are you currently using to operate your business?",
-      "Do you have the technical capacity in-house to develop, maintain, and upgrade your product/service, or will you rely on external partners/vendors?",
-      "How do you plan to keep up with technological advancements relevant to your industry?",
-      "Do you have any proprietary technology, patents, trademarks, or copyrights?",
-      "How do you plan to protect your intellectual property as you grow?",
-      "Do you have access to networks or partnerships that can provide valuable resources or support (e.g., industry contacts, mentors, strategic partners)?",
+      {
+        text: "Did you check the legal boxes, or are you hoping 'not knowing' will be your shield?",
+        answers: [
+          "We've lawyered up",
+          "What is law?",
+          "Taking it step by step",
+        ],
+      },
+      {
+        text: "Have formed a legal entity yet? if yes which and where",
+        answers: [
+          "We have a company",
+          "working on it",
+          "waiting for it to be necessary",
+        ],
+      },
+      {
+        text: "Did you secure necessary patents or trademarks, or are you planning a logo-thon later?",
+        answers: [
+          "Got the legal stuff sorted",
+          "Don't need it",
+          "Still on the to-do list",
+        ],
+      },
+      {
+        text: "Did you size up potential legal risks, or are you treating your startup like a Vegas roll?",
+        answers: [
+          "We've assessed the risks",
+          "What happens in Vegas...",
+          "Working on it",
+        ],
+      },
     ],
   },
 ];
@@ -94,15 +228,37 @@ const IdeaValidationQuestionnaire = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<{
-    [key: string]: number | "";
+    [key: string]: string | "";
   }>({});
+  const [showTextField, setShowTextField] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const [freeText, setFreeText] = useState<{ [key: string]: string | "" }>({});
 
   const handleChange =
     (stepIndex: number, questionIndex: number) =>
-    (event: SelectChangeEvent<number>) => {
+    (event: SelectChangeEvent<string>) => {
       setSelectedValue((prev) => ({
         ...prev,
-        [`${stepIndex}-${questionIndex}`]: event.target.value as number,
+        [`${stepIndex}-${questionIndex}`]: event.target.value as string,
+      }));
+    };
+
+  const handleRadioChange =
+    (stepIndex: number, questionIndex: number) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSelectedValue((prev) => ({
+        ...prev,
+        [`${stepIndex}-${questionIndex}`]: event.target.value,
+      }));
+    };
+
+  const handleFreeTextChange =
+    (stepIndex: number, questionIndex: number) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFreeText((prev) => ({
+        ...prev,
+        [`${stepIndex}-${questionIndex}`]: event.target.value,
       }));
     };
 
@@ -115,29 +271,52 @@ const IdeaValidationQuestionnaire = () => {
   };
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const currentStepQuestions = steps[activeStep].questions;
+    const isStepCompleted = currentStepQuestions.every((_, index) =>
+      Boolean(selectedValue[`${activeStep}-${index}`])
+    );
+
+    if (isStepCompleted) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } else {
+      alert("Please answer all questions before proceeding.");
+    }
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleFinish = () => {
+    const isFormCompleted = steps.every((step, stepIndex) =>
+      step.questions.every((_, questionIndex) =>
+        Boolean(selectedValue[`${stepIndex}-${questionIndex}`])
+      )
+    );
+
+    if (isFormCompleted) {
+      handleClose();
+    } else {
+      alert("Please complete all questions in the questionnaire.");
+    }
+  };
+
   return (
     <Grid
       container
-      direction="row"
+      direction="column"
       justifyContent="center"
       alignItems="center"
-      style={{ minHeight: "100vh" }}
+      style={{ minHeight: "100vh", padding: "0 15px" }}
     >
       <Grid item>
         <Button variant="outlined" onClick={handleClickOpen}>
-          Open form dialog
+          Start Validation questionnaire
         </Button>
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
-          <DialogTitle>Idea Validation Questionnaire</DialogTitle>
+          <DialogTitle>Validation Questionnaire</DialogTitle>
           <DialogContent>
-            <Stepper activeStep={activeStep}>
+            <Stepper activeStep={activeStep} style={{ maxWidth: "100%" }}>
               {steps.map((step, index) => (
                 <Step key={step.title}>
                   <StepLabel>{step.title}</StepLabel>
@@ -145,20 +324,48 @@ const IdeaValidationQuestionnaire = () => {
               ))}
             </Stepper>
             {steps[activeStep].questions.map((question, index) => (
-              <React.Fragment key={`${activeStep}-${index}`}>
+              <Box my={2} key={`${activeStep}-${index}`}>
                 <Typography variant="h6" gutterBottom>
-                  {question}
+                  {question.text}
                 </Typography>
-                <FormControl sx={{ m: 1, minWidth: 250 }}>
+                <FormControl sx={{ m: 1, minWidth: 120, width: "100%" }}>
                   <Select
                     value={selectedValue[`${activeStep}-${index}`] || ""}
                     onChange={handleChange(activeStep, index)}
+                    required
                   >
-                    <MenuItem value={10}>Option 1</MenuItem>
-                    <MenuItem value={20}>Option 2</MenuItem>
+                    <MenuItem value="">None</MenuItem>
+                    {question.answers.map(
+                      (answer: string, answerIndex: number) => (
+                        <MenuItem key={answerIndex} value={answer}>
+                          {answer}
+                        </MenuItem>
+                      )
+                    )}
                   </Select>
                 </FormControl>
-              </React.Fragment>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() =>
+                    setShowTextField((prev) => ({
+                      ...prev,
+                      [`${activeStep}-${index}`]: true,
+                    }))
+                  }
+                >
+                  Add more details
+                </Link>
+                {showTextField[`${activeStep}-${index}`] && (
+                  <TextField
+                    label="Please provide details"
+                    value={freeText[`${activeStep}-${index}`] || ""}
+                    onChange={handleFreeTextChange(activeStep, index)}
+                    fullWidth
+                    margin="normal"
+                  />
+                )}
+              </Box>
             ))}
           </DialogContent>
           <DialogActions>
@@ -168,7 +375,7 @@ const IdeaValidationQuestionnaire = () => {
             <Button
               variant="contained"
               onClick={
-                activeStep === steps.length - 1 ? handleClose : handleNext
+                activeStep === steps.length - 1 ? handleFinish : handleNext
               }
             >
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
