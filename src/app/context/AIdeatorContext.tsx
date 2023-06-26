@@ -51,11 +51,10 @@ export const AIdeatorContextProvider = ({
   const [loaded, setLoaded] = useState<string>("");
 
   const JOBS_SUBSCRIPTION = gql`
-    subscription JobUpdated {
+    subscription Subscription {
       jobUpdated {
-        email
         id
-        username
+        status
       }
     }
   `;
