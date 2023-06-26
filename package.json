@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.16",
-    "@failean/mainserver-provider": "^2.6.87",
+    "@failean/mainserver-provider": "^2.6.89",
     "@failean/shared-types": "^2.9.137",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",

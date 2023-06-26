@@ -17,7 +17,7 @@ import {
 } from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
-import { useSubscription } from "@apollo/client";
+import { gql, useSubscription } from "@apollo/client";
 
 const AIdeatorContext = createContext<{
   currentIdeaId: string;
@@ -50,7 +50,21 @@ export const AIdeatorContextProvider = ({
   );
   const [loaded, setLoaded] = useState<string>("");
 
-  //const x = useSubscription(())
+  const JOBS_SUBSCRIPTION = gql`
+    subscription JobUpdated {
+      jobUpdated {
+        email
+        id
+        username
+      }
+    }
+  `;
+
+  const { data, loading } = useSubscription(JOBS_SUBSCRIPTION, {
+    variables: {},
+  });
+
+  console.log(data);
 
   const [jobs, setjobs] = useState<number[]>([]);
 
