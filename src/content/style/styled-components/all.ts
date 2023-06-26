@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { styled } from "@mui/material";
 
 export const PromptButton = styled(Button)(({ theme }) => ({
-  color: "yellow" || theme.palette.primary.main,
+  color: "gray" || theme.palette.primary.main,
   backgroundColor: "transparent",
   border: `2px solid ${theme.palette.primary.main}`,
   borderRadius: "5px",
