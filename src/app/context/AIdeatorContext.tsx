@@ -17,6 +17,7 @@ import {
 } from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
+import { useSubscription } from "@apollo/client";
 
 const AIdeatorContext = createContext<{
   currentIdeaId: string;
@@ -48,6 +49,9 @@ export const AIdeatorContextProvider = ({
     ideas[0]?._id || ""
   );
   const [loaded, setLoaded] = useState<string>("");
+
+  //const x = useSubscription(())
+
   const [jobs, setjobs] = useState<number[]>([]);
 
   const fetchGraph = useCallback(async () => {
