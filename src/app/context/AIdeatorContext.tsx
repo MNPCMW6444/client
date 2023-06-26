@@ -9,7 +9,12 @@ import {
   SetStateAction,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
-import { PromptGraph, WhiteModels } from "@failean/shared-types";
+import {
+  Prompt,
+  PromptGraph,
+  PromptName,
+  WhiteModels,
+} from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
 
@@ -18,11 +23,15 @@ const AIdeatorContext = createContext<{
   setCurrentIdeaId: Dispatch<SetStateAction<string>> | undefined;
   graph: PromptGraph;
   loaded: string;
+  fetchGraph: () => Promise<void>;
+  fetchOneResult: (name: PromptName) => Promise<void>;
 }>({
   currentIdeaId: "",
   setCurrentIdeaId: undefined,
   graph: [],
   loaded: "",
+  fetchGraph: async () => {},
+  fetchOneResult: async () => {},
 });
 
 export const AIdeatorContextProvider = ({
@@ -34,11 +43,12 @@ export const AIdeatorContextProvider = ({
   const { ideas } = useContext(UserContext);
 
   const axiosInstance = mainserverContext?.axiosInstance;
-  const [graph, setGraph] = useState([]);
+  const [graph, setGraph] = useState<PromptGraph>([]);
   const [currentIdeaId, setCurrentIdeaId] = useState<string>(
     ideas[0]?._id || ""
   );
   const [loaded, setLoaded] = useState<string>("");
+  const [jobs, setjobs] = useState<number[]>([]);
 
   const fetchGraph = useCallback(async () => {
     if (axiosInstance) {
@@ -66,6 +76,26 @@ export const AIdeatorContextProvider = ({
     }
   }, [axiosInstance, currentIdeaId]);
 
+  const fetchOneResult = async (name: PromptName) => {
+    if (axiosInstance) {
+      setLoaded(capitalize(name));
+      const res =
+        (
+          await axiosInstance.post("data/prompts/getPromptResult", {
+            ideaId: currentIdeaId,
+            promptName: name,
+          })
+        ).data || "empty";
+      setGraph(
+        graph.map((graphNode: Prompt) => ({
+          ...graphNode,
+          result: res,
+        }))
+      );
+      setLoaded("");
+    }
+  };
+
   useEffect(() => {
     fetchGraph();
   }, [fetchGraph]);
@@ -77,6 +107,8 @@ export const AIdeatorContextProvider = ({
         setCurrentIdeaId,
         graph,
         loaded,
+        fetchGraph,
+        fetchOneResult,
       }}
     >
       {children}
