@@ -5,19 +5,32 @@ import {
   LockedPromptButton,
 } from "../../../content/style/styled-components/all";
 import capitalize from "../../util/capitalize";
+import { Tooltip } from "@mui/material";
 
 interface PromptProps {
-  promptName: PromptName;
-  locked: boolean;
+  level: any;
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
 }
 
-const Prompt = ({ promptName, locked, setOpenPrompt }: PromptProps) => {
-  const name = capitalize(promptName);
-  return locked ? (
-    <LockedPromptButton>{name}</LockedPromptButton>
+const Prompt = ({
+  level,
+
+  setOpenPrompt,
+}: PromptProps) => {
+  const name = capitalize(level.name);
+
+  return level.locked ? (
+    <Tooltip
+      title={
+        "The dependencies:" +
+        level.missingDeps.map((name: string) => " " + capitalize(name)) +
+        " are empty"
+      }
+    >
+      <LockedPromptButton>{name}</LockedPromptButton>
+    </Tooltip>
   ) : (
-    <PromptButton onClick={() => setOpenPrompt(promptName)}>
+    <PromptButton onClick={() => setOpenPrompt(level.promptName)}>
       {name}
     </PromptButton>
   );

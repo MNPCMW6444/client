@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Grid, Typography, Paper } from "@mui/material";
+import { Grid, Typography, Paper, Tooltip } from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
@@ -7,6 +7,7 @@ import IdeaSelector from "../../common/IdeaSelector";
 import { Lock, LockOpen } from "@mui/icons-material";
 import AIdeatorContext from "../../../context/AIdeatorContext";
 import UserContext from "../../../context/UserContext";
+import capitalize from "../../../util/capitalize";
 
 const AIdeator = () => {
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
@@ -16,11 +17,10 @@ const AIdeator = () => {
     useContext(AIdeatorContext);
 
   const renderGraph = (tempGraph: PromptGraph) => {
-    const graph: any = tempGraph.map((tg) => ({
-      ...tg,
-      locked: tempGraph
+    const graph: any = tempGraph.map((tg) => {
+      const missingDeps = tempGraph
         .find((g) => g.name === tg.name)
-        ?.deps.some(
+        ?.deps.filter(
           (dep: PromptName) =>
             (tempGraph.find((g) => g.name === dep) as any).result === "empty" ||
             !(
@@ -31,10 +31,15 @@ const AIdeator = () => {
                   .promptResult as WhiteModels.Data.Prompts.WhitePromptResult
               )?.data?.length > 2
             )
-        ),
-    }));
+        );
+      return {
+        ...tg,
+        missingDeps,
+        locked: missingDeps && missingDeps.length > 0,
+      };
+    });
 
-    const result: { level: any[]; lockedCount: number }[] = [];
+    const result: { level: any[]; lockedPrompts: PromptName[] }[] = [];
     const grouped = graph.reduce((group: { [key: number]: any }, item: any) => {
       if (!group[item.level]) {
         group[item.level] = [];
@@ -47,9 +52,9 @@ const AIdeator = () => {
       if (grouped.hasOwnProperty(level)) {
         result.push({
           level: grouped[level],
-          lockedCount: prevLevel
-            ? grouped[level].filter(({ locked }: any) => locked).length
-            : 0,
+          lockedPrompts: prevLevel
+            ? grouped[level].filter(({ locked }: any) => locked)
+            : [],
         });
         prevLevel = level;
       }
@@ -57,7 +62,7 @@ const AIdeator = () => {
 
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
-        {result.map(({ level, lockedCount }, index) => (
+        {result.map(({ level, lockedPrompts }, index) => (
           <Grid
             item
             key={index}
@@ -65,18 +70,30 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            {lockedCount !== 0 && (
+            {lockedPrompts.length !== 0 && (
               <Grid item>
-                {lockedCount === level.length ? <Lock /> : <LockOpen />}
+                {lockedPrompts.length === level.length ? (
+                  <Tooltip title="All the prompts in this group are locked">
+                    <Lock />
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    title={
+                      "The promtps:" +
+                      lockedPrompts.map(
+                        ({ name }: any) => " " + capitalize(name)
+                      ) +
+                      " are locked"
+                    }
+                  >
+                    <LockOpen />
+                  </Tooltip>
+                )}
               </Grid>
             )}
-            {level.map(({ name, locked }, index) => (
+            {level.map((level, index) => (
               <Grid key={index} item>
-                <Prompt
-                  promptName={name}
-                  locked={locked}
-                  setOpenPrompt={setOpenPrompt}
-                />
+                <Prompt level={level} setOpenPrompt={setOpenPrompt} />
               </Grid>
             ))}
           </Grid>
