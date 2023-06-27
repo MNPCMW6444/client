@@ -18,7 +18,6 @@ const Prompt = ({
   setOpenPrompt,
 }: PromptProps) => {
   const name = capitalize(level.name);
-
   return level.locked ? (
     <Tooltip
       title={
@@ -30,7 +29,7 @@ const Prompt = ({
       <LockedPromptButton>{name}</LockedPromptButton>
     </Tooltip>
   ) : (
-    <PromptButton onClick={() => setOpenPrompt(level.promptName)}>
+    <PromptButton onClick={() => setOpenPrompt(level.name)}>
       {name}
     </PromptButton>
   );
