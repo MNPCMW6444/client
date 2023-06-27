@@ -1,22 +1,36 @@
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "@mui/material";
 import { PromptName } from "@failean/shared-types";
-import { capitalize } from "./prompt-dialog/PromptDialog";
-import { styled } from "@mui/material";
+import {
+  PromptButton,
+  LockedPromptButton,
+} from "../../../content/style/styled-components/all";
+import capitalize from "../../util/capitalize";
+import { Tooltip } from "@mui/material";
 
 interface PromptProps {
-  promptName: PromptName;
+  level: any;
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
 }
 
-const PromptButton = styled(Button)(({ theme }) => ({
-  color: "black" || theme.palette.primary.main,
-}));
+const Prompt = ({
+  level,
 
-const Prompt = ({ promptName, setOpenPrompt }: PromptProps) => {
-  return (
-    <PromptButton onClick={() => setOpenPrompt(promptName)}>
-      {capitalize(promptName)}
+  setOpenPrompt,
+}: PromptProps) => {
+  const name = capitalize(level.name);
+  return level.locked ? (
+    <Tooltip
+      title={
+        "The dependencies:" +
+        level.missingDeps.map((name: string) => " " + capitalize(name)) +
+        " are empty"
+      }
+    >
+      <LockedPromptButton>{name}</LockedPromptButton>
+    </Tooltip>
+  ) : (
+    <PromptButton onClick={() => setOpenPrompt(level.name)}>
+      {name}
     </PromptButton>
   );
 };

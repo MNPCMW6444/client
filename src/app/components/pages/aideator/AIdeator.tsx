@@ -1,50 +1,68 @@
-import { useState, useEffect, useContext } from "react";
-import { Grid, Select, MenuItem, Typography, Paper } from "@mui/material";
-import { MainserverContext } from "@failean/mainserver-provider";
-import UserContext from "../../../context/UserContext";
+import { useState, useContext } from "react";
+import { Grid, Typography, Paper, Tooltip } from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
-import { PromptGraph, PromptName } from "@failean/shared-types";
+import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
+import { Lock, LockOpen } from "@mui/icons-material";
+import AIdeatorContext from "../../../context/AIdeatorContext";
+import UserContext from "../../../context/UserContext";
+import capitalize from "../../../util/capitalize";
 
 const AIdeator = () => {
-  const mainserverContext = useContext(MainserverContext);
-  const axiosInstance = mainserverContext?.axiosInstance;
-  const { ideas } = useContext(UserContext);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>(
-    ideas[0]?._id || ""
-  );
-  const [graph, setGraph] = useState<PromptGraph>();
-
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
-  useEffect(() => {
-    const fetchGraph = async () => {
-      if (axiosInstance) {
-        const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
-        setGraph(data.graph);
-      }
-    };
-    fetchGraph();
-  }, [axiosInstance]);
+  const { ideas } = useContext(UserContext);
+  const { currentIdeaId, setCurrentIdeaId, graph, loaded } =
+    useContext(AIdeatorContext);
 
-  const renderGraph = (graph: PromptGraph) => {
-    const result: any[][] = [];
-    const grouped = graph.reduce((group: { [key: number]: any }, item) => {
+  const renderGraph = (tempGraph: PromptGraph) => {
+    const graph: any = tempGraph.map((tg) => {
+      const missingDeps = tempGraph
+        .find((g) => g.name === tg.name)
+        ?.deps.filter(
+          (dep: PromptName) =>
+            (tempGraph.find((g) => g.name === dep) as any).result === "empty" ||
+            !(
+              (tempGraph.find((g) => g.name === dep) as any).result ===
+                "idea" ||
+              (
+                (tempGraph.find((g) => g.name === dep) as any).result
+                  .promptResult as WhiteModels.Data.Prompts.WhitePromptResult
+              )?.data?.length > 2
+            )
+        );
+      return {
+        ...tg,
+        missingDeps,
+        locked: missingDeps && missingDeps.length > 0,
+      };
+    });
+
+    const result: { level: any[]; lockedPrompts: PromptName[] }[] = [];
+    const grouped = graph.reduce((group: { [key: number]: any }, item: any) => {
       if (!group[item.level]) {
         group[item.level] = [];
       }
       group[item.level].push(item);
       return group;
     }, {});
+    let prevLevel: any;
     for (const level in grouped) {
       if (grouped.hasOwnProperty(level)) {
-        result.push(grouped[level]);
+        result.push({
+          level: grouped[level],
+          lockedPrompts: prevLevel
+            ? grouped[level].filter(({ locked }: any) => locked)
+            : [],
+        });
+        prevLevel = level;
       }
     }
+
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
-        {result.map((level, index) => (
+        {result.map(({ level, lockedPrompts }, index) => (
           <Grid
             item
             key={index}
@@ -52,9 +70,30 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            {level.map(({ name }, index) => (
+            {lockedPrompts.length !== 0 && (
+              <Grid item>
+                {lockedPrompts.length === level.length ? (
+                  <Tooltip title="All the prompts in this group are locked">
+                    <Lock />
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    title={
+                      "The promtps:" +
+                      lockedPrompts.map(
+                        ({ name }: any) => " " + capitalize(name)
+                      ) +
+                      " are locked"
+                    }
+                  >
+                    <LockOpen />
+                  </Tooltip>
+                )}
+              </Grid>
+            )}
+            {level.map((level, index) => (
               <Grid key={index} item>
-                <Prompt promptName={name} setOpenPrompt={setOpenPrompt} />
+                <Prompt level={level} setOpenPrompt={setOpenPrompt} />
               </Grid>
             ))}
           </Grid>
@@ -73,26 +112,21 @@ const AIdeator = () => {
         />
       )}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
-        <Grid
-          item
-          container
-          justifyContent="center"
-          alignItems="center"
-          columnSpacing={4}
-        >
-          <Grid item>
-            <Typography sx={{ fontSize: "150%" }}>Idea:</Typography>
-          </Grid>
+        {setCurrentIdeaId && (
           <Grid item>
             <IdeaSelector
               selectedIdeaId={currentIdeaId}
               setSelectedIdeaId={setCurrentIdeaId}
             />
           </Grid>
-        </Grid>
+        )}
         <Grid item>
           <Paper sx={{ overflow: "scroll" }}>
-            {graph ? renderGraph(graph) : <Typography>Loading...</Typography>}
+            {graph.length > 0 ? (
+              renderGraph(graph)
+            ) : (
+              <Typography>Loading {loaded}...</Typography>
+            )}
           </Paper>
         </Grid>
       </Grid>
