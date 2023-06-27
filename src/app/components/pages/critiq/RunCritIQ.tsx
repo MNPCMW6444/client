@@ -80,22 +80,6 @@ export default function RunCritiq() {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={6} display="flex" justifyContent="center">
-            <FormControl fullWidth sx={{ maxWidth: "250px" }}>
-              <InputLabel id="category">Category</InputLabel>
-              <Select
-                labelId="category"
-                id="cat"
-                value={Category}
-                onChange={handleCategoryChange}
-                label="Category"
-              >
-                <MenuItem value={1}>Product</MenuItem>
-                <MenuItem value={2}>Business</MenuItem>
-                <MenuItem value={3}>Marketing</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
         </Grid>
 
         <Grid item>

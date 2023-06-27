@@ -16,7 +16,6 @@ import {
   WhiteModels,
 } from "@failean/shared-types";
 import UserContext from "./UserContext";
-import capitalize from "../util/capitalize";
 import { gql, useSubscription } from "@apollo/client";
 
 const AIdeatorContext = createContext<{
@@ -73,7 +72,7 @@ export const AIdeatorContextProvider = ({
       const baseGraph = data.graph;
       let results: WhiteModels.Data.Prompts.WhitePromptResult[] = [];
       for (const prompt of baseGraph) {
-        setLoaded(capitalize(prompt.name));
+        setLoaded(prompt.name);
         results.push(
           (
             await axiosInstance.post("data/prompts/getPromptResult", {
@@ -95,7 +94,7 @@ export const AIdeatorContextProvider = ({
 
   const fetchOneResult = async (name: PromptName) => {
     if (axiosInstance) {
-      setLoaded(capitalize(name));
+      setLoaded(name);
       const res =
         (
           await axiosInstance.post("data/prompts/getPromptResult", {
