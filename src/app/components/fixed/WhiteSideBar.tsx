@@ -24,7 +24,6 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
 
   const location = useLocation();
 
-  // Add a 'disabled' and 'comingSoon' property to the CritiQ object
   const menuItems = [
     { label: "Notebook", route: "/" },
     { label: "AIdeator", route: "/aideator" },
@@ -62,6 +61,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
       ))}
     </List>
   );
+
   return (
     <Box
       sx={{
