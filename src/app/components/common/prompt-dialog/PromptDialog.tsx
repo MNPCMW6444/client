@@ -61,17 +61,12 @@ const PromptDialog = ({
     fetchPromptResult();
   }, [fetchPromptResult]);
 
-  const run = async () => {
-    if (axiosInstance)
-      axiosInstance
-        .post("data/prompts/runAndGetPromptResult", {
-          ideaId: idea !== "NO IDEAS" && idea?._id,
-          promptName,
-        })
-        .then(({ data }) => {
-          debugger;
-        });
-  };
+  const run = async () =>
+    axiosInstance &&
+    axiosInstance.post("data/prompts/runAndGetPromptResult", {
+      ideaId: idea !== "NO IDEAS" && idea?._id,
+      promptName,
+    });
 
   const save = async () => {
     if (axiosInstance)
