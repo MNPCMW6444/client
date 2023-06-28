@@ -73,7 +73,7 @@ export default function RunCritiq() {
         >
           <Grid item xs={6} display="flex" justifyContent="center">
             <FormControl fullWidth sx={{ maxWidth: "250px" }}>
-              <InputLabel id="idea">Idea</InputLabel>
+              <InputLabel id="Select Idea"></InputLabel>
               <IdeaSelector
                 selectedIdeaId={ideaId}
                 setSelectedIdeaId={setIdeaId}
@@ -109,10 +109,10 @@ export default function RunCritiq() {
                 <Checkbox
                   checked={checkedState.customer}
                   onChange={handleCheckboxChange}
-                  name="customer"
+                  name="TechWhiz"
                 />
               }
-              label="Customer"
+              label="Tech Whiz"
             />
           </FormGroup>
         </Grid>
