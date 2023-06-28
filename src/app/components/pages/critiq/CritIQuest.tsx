@@ -133,15 +133,6 @@ const steps: StepType[] = [
         ],
       },
       {
-        text: "Did you take your product for a test drive with real users, or are you crossing fingers for a smooth ride?",
-        answers: [
-          "Usability tests? Completed it, mate",
-          "Conducted a few test drives",
-          "Getting there",
-          "What is a 'usability test'?",
-        ],
-      },
-      {
         text: "Got a tech whiz steering your ship, or outsourcing to the highest bidder?",
         answers: [
           "Got a tech team and a CTO",
