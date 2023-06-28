@@ -67,8 +67,6 @@ export const AIdeatorContextProvider = ({
   console.log("Error:", error);
   console.log("Data:", data);
 
-  const [jobs, setjobs] = useState<number[]>([]);
-
   const fetchGraph = useCallback(async () => {
     if (axiosInstance) {
       const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
