@@ -1,11 +1,11 @@
 {
   "name": "failean-client",
-  "version": "3.1.52",
+  "version": "3.1.58",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.16",
     "@failean/mainserver-provider": "^2.6.104",
-    "@failean/shared-types": "^2.9.137",
+    "@failean/shared-types": "^2.9.141",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
