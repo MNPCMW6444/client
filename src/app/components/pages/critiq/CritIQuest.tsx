@@ -29,7 +29,7 @@ type StepType = {
 
 const steps: StepType[] = [
   {
-    title: "Value Verification",
+    title: "Value validation",
     questions: [
       {
         text: "Did you actually experience the problem you're solving, or is it somone else's problem?",
@@ -102,6 +102,76 @@ const steps: StepType[] = [
     ],
   },
   {
+    title: "Technological Validation",
+    questions: [
+      {
+        text: "Have you conducted a feasibility study, or are you navigating in the dark?",
+        answers: [
+          "Feasibility study? Check!",
+          "In the process of studying feasibility",
+          "We plan to do it soon",
+          "Feasibility... what now?",
+        ],
+      },
+      {
+        text: "Do you have a Proof of Concept (PoC) that shows your idea works, or are you still in the 'trust me, it'll work' stage?",
+        answers: [
+          "We've got a successful PoC",
+          "We're in the middle of creating a PoC",
+          "PoC is on the to-do list",
+          "'Trust me, it'll work'",
+        ],
+      },
+
+      {
+        text: "Do you have a minimum viable product, or is your idea still just a cool doodle on a napkin?",
+        answers: [
+          "MVP up and running",
+          "Got a neat prototype",
+          "Still in the dev dungeon",
+          "We have a napkin",
+        ],
+      },
+      {
+        text: "Got a tech whiz steering your ship, or outsourcing to the highest bidder?",
+        answers: [
+          "Got a tech team and a CTO",
+          "Got a tech team, no CTO yet",
+          "Outsourcing our battles",
+          "Building our tech dream team",
+        ],
+      },
+      {
+        text: "Did you lock in your tech stack, or are you lost in the tech supermarket?",
+        answers: [
+          "Tech stack, checked",
+          "Still perusing the tech aisle",
+          "Our dev team will handle it",
+          "Tech stack? Sounds delicious",
+        ],
+      },
+      {
+        text: "Thought about scalability, or hoping your server won't crash at the first sign of success?",
+        answers: [
+          "Scaling like a seasoned mountaineer",
+          "Eyeing that mountain",
+          "Will cross that bridge when we come to it",
+          "Scalability sounds like a brand of fish food",
+        ],
+      },
+      {
+        text: "Have you fortified your cyber castle, or inviting hackers for a free-for-all?",
+        answers: [
+          "Our cyber castle is a fortress",
+          "Building the cyber walls",
+          "Defenses are on the agenda",
+          "Cyber...security? Is that a new game?",
+        ],
+      },
+    ],
+  },
+
+  {
     title: "Business Validation",
     questions: [
       {
@@ -143,8 +213,13 @@ const steps: StepType[] = [
     title: "Team Validation",
     questions: [
       {
-        text: "Is your team an Avengers-like squad of experts, or a motley crew of zealous novices?",
-        answers: ["We're the Avengers", "The Goonies", "We got a mix"],
+        text: "Is your team an Avengers-like squad of experts, or a motley crew of zealous novices? Please add details about the background of each team member. ",
+        answers: [
+          "We're the Avengers",
+          "The Goonies",
+          "We got a mix",
+          "I don't have a team yet",
+        ],
       },
       {
         text: "Did you assign key roles in your startup or are you hoping for a workplace fairy tale?",
