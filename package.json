@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.16",
-    "@failean/mainserver-provider": "^2.6.104",
+    "@failean/mainserver-provider": "^2.6.105",
     "@failean/shared-types": "^2.9.141",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
@@ -28,6 +28,8 @@
     "clean": "rm -rf node_modules package-lock.json",
     "start": "react-scripts start",
     "dev": "PORT=5999 react-scripts start",
+    "preudev": "npm run udpate",
+    "udev": "npm run dev",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
