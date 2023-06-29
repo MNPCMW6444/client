@@ -50,16 +50,13 @@ export const AIdeatorContextProvider = ({
   );
   const [loaded, setLoaded] = useState<string>("");
 
-  const JOBS_SUBSCRIPTION = gql`
-    subscription {
-      jobCompleted {
-        id
-        name
-      }
+  const JOB_COMPLETED = gql`
+    subscription Subscription {
+      jobCompleted
     }
   `;
 
-  const { data, loading, error } = useSubscription(JOBS_SUBSCRIPTION, {
+  const { data, loading, error } = useSubscription(JOB_COMPLETED, {
     variables: {},
   });
 
