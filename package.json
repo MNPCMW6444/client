@@ -28,7 +28,7 @@
     "clean": "rm -rf node_modules package-lock.json",
     "start": "react-scripts start",
     "dev": "PORT=5999 react-scripts start",
-    "preudev": "npm run udpate",
+    "preudev": "npm run update",
     "udev": "npm run dev",
     "build": "react-scripts build",
     "test": "react-scripts test",
