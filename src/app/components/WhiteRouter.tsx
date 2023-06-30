@@ -47,6 +47,22 @@ const WhiteRouter = () => {
           >
             <Routes>
               <Route
+                path="/my-account"
+                element={
+                  <Suspense fallback={loading()}>
+                    <MyAccount />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <Suspense fallback={loading()}>
+                    <About />
+                  </Suspense>
+                }
+              />
+              <Route
                 path="/*"
                 element={
                   <Suspense fallback={loading()}>
@@ -63,10 +79,18 @@ const WhiteRouter = () => {
                 }
               />
               <Route
-                path="/my-account"
+                path="/deck"
                 element={
                   <Suspense fallback={loading()}>
-                    <MyAccount />
+                    <AIdeatorWrapper />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/backlog"
+                element={
+                  <Suspense fallback={loading()}>
+                    <AIdeatorWrapper />
                   </Suspense>
                 }
               />
@@ -75,14 +99,6 @@ const WhiteRouter = () => {
                 element={
                   <Suspense fallback={loading()}>
                     <CritiQ />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/about"
-                element={
-                  <Suspense fallback={loading()}>
-                    <About />
                   </Suspense>
                 }
               />
