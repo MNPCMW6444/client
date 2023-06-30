@@ -25,8 +25,10 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const location = useLocation();
 
   const menuItems = [
-    { label: "Notebook", route: "/" },
+    { label: "Idea Notebook", route: "/" },
     { label: "AIdeator", route: "/aideator" },
+    { label: "Deck", route: "/deck" },
+    { label: "Idea Backlog", route: "/backlog" },
     { label: "CritiQ", route: "/critiq", disabled: false, comingSoon: true },
   ];
 

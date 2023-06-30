@@ -6,6 +6,7 @@ import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
+import { loading } from "../../content/style/styled-components/all";
 
 const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
@@ -48,7 +49,7 @@ const WhiteRouter = () => {
               <Route
                 path="/*"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={loading()}>
                     <Notebook />
                   </Suspense>
                 }
@@ -56,7 +57,7 @@ const WhiteRouter = () => {
               <Route
                 path="/aideator"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={loading()}>
                     <AIdeatorWrapper />
                   </Suspense>
                 }
@@ -64,7 +65,7 @@ const WhiteRouter = () => {
               <Route
                 path="/my-account"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={loading()}>
                     <MyAccount />
                   </Suspense>
                 }
@@ -72,7 +73,7 @@ const WhiteRouter = () => {
               <Route
                 path="/critiq"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={loading()}>
                     <CritiQ />
                   </Suspense>
                 }
@@ -80,7 +81,7 @@ const WhiteRouter = () => {
               <Route
                 path="/about"
                 element={
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={loading()}>
                     <About />
                   </Suspense>
                 }
