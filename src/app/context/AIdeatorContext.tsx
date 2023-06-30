@@ -50,24 +50,19 @@ export const AIdeatorContextProvider = ({
   );
   const [loaded, setLoaded] = useState<string>("");
 
-  const JOBS_SUBSCRIPTION = gql`
-    subscription asd {
-      asd {
-        id
-        status
-      }
+  const JOB_COMPLETED = gql`
+    subscription Subscription {
+      jobCompleted
     }
   `;
 
-  const { data, loading, error } = useSubscription(JOBS_SUBSCRIPTION, {
+  const { data, loading, error } = useSubscription(JOB_COMPLETED, {
     variables: {},
   });
 
   console.log("Loading:", loading);
   console.log("Error:", error);
   console.log("Data:", data);
-
-  const [jobs, setjobs] = useState<number[]>([]);
 
   const fetchGraph = useCallback(async () => {
     if (axiosInstance) {
