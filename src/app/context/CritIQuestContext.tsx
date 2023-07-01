@@ -51,7 +51,7 @@ export const CritIQuestContextProvider = ({
   const fetchAnswerHistory = useCallback(async () => {
     if (axiosInstance && currentIdeaId) {
       const { data } = await axiosInstance.get(
-        `/data/answers/${currentIdeaId}`
+        `/data/critiqQuestionire/${currentIdeaId}`
       );
       setAnswerHistory(data || []);
     }
@@ -61,7 +61,7 @@ export const CritIQuestContextProvider = ({
     async (answer: Answer) => {
       if (axiosInstance) {
         const { data } = await axiosInstance.post(
-          "/data/answers/update",
+          "/data/critiqQuestionire/update",
           answer
         );
         fetchAnswerHistory();
