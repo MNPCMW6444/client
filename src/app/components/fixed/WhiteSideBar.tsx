@@ -54,7 +54,17 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           <ListItemText primary={item.label} />
           {item.comingSoon && (
             <ListItemSecondaryAction>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  display: "block",
+                  fontSize: {
+                    xs: "0.6rem",
+                    sm: "1rem",
+                  },
+                }}
+              >
                 Coming Soon!
               </Typography>
             </ListItemSecondaryAction>

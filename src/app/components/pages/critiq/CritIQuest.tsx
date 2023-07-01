@@ -382,7 +382,7 @@ const IdeaValidationQuestionnaire = () => {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      style={{ minHeight: "100vh", padding: "0 15px" }}
+      style={{ minHeight: "10vh", padding: "0 15px" }}
     >
       <Grid item>
         <Button variant="outlined" onClick={handleClickOpen}>
