@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import { SelectChangeEvent } from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import RunCritIQ from "./RunCritIQ";
 import IdeaScore from "./IdeaScore";
-import ActionList from "./ActionList";
+import CritIQChat from "./CritiChat";
 import ValidationRoadmap from "./ValidationRoadmap";
 
 export default function Critiq() {
   const [value, setValue] = useState("");
+
   const handleChange = (event: React.SyntheticEvent, newValue: any) => {
     setValue(newValue);
   };
@@ -21,8 +21,8 @@ export default function Critiq() {
         return <RunCritIQ />;
       case "Idea Score":
         return <IdeaScore />;
-      case "Action List":
-        return <ActionList />;
+      case "CritIQ Chat":
+        return <CritIQChat />;
       case "Validation Roadmap":
         return <ValidationRoadmap />;
       default:
@@ -47,7 +47,7 @@ export default function Critiq() {
         >
           <Tab value="Run CritIQ" label="Run CritIQ" />
           <Tab value="Idea Score" label="Idea Score" />
-          <Tab value="Action List" label="Action List" />
+          <Tab value="CritIQ Chat" label="CritIQ Chat" />
           <Tab value="Validation Roadmap" label="Validation Roadmap " />
         </Tabs>
       </Box>
@@ -58,9 +58,7 @@ export default function Critiq() {
         direction="column"
         justifyContent="center"
         spacing={2}
-      >
-        8
-      </Grid>
+      ></Grid>
     </>
   );
 }

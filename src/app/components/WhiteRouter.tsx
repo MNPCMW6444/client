@@ -14,7 +14,7 @@ const About = lazy(() => import("./pages/about/About"));
 const Notebook = lazy(() => import("./pages/notebook/Notebook"));
 const Deck = lazy(() => import("./pages/deck/Deck"));
 const Backlog = lazy(() => import("./pages/backlog/Backlog"));
-const CritiQ = lazy(() => import("./pages/critiq/RunCritIQ"));
+const CritiQ = lazy(() => import("./pages/critiq/CritIQ"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
