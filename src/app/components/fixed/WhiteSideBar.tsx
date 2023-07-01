@@ -59,11 +59,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                 color="text.secondary"
                 sx={{
                   display: "block",
-                  "@media screen and (max-width: 600px)": {
-                    fontSize: "0.6rem",
-                  },
-                  "@media screen and (min-width: 601px)": {
-                    fontSize: "1rem",
+                  fontSize: {
+                    xs: "0.6rem",
+                    sm: "1rem",
                   },
                 }}
               >
