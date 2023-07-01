@@ -1,12 +1,11 @@
-import { FC } from "react";
+import { useState, useEffect, FC } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
+import Collapse from "@mui/material/Collapse";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import Typography from "@mui/material/Typography";
 import useResponsive from "../../hooks/useRespnsive";
 
 interface WhiteSideBarProps {
@@ -19,18 +18,28 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   onMobileDrawerToggle,
 }) => {
   const navigate = useNavigate();
-
   const { isMobile } = useResponsive();
-
   const location = useLocation();
+  const [openSubMenu, setOpenSubMenu] = useState(false);
 
   const menuItems = [
-    { label: "Idea Notebook", route: "/" },
+    { label: "Idea Notebook", route: "/Notebook" },
     { label: "AIdeator", route: "/aideator" },
     { label: "Deck", route: "/deck" },
     { label: "Idea Backlog", route: "/backlog" },
-    { label: "CritiQ", route: "/critiq", disabled: false, comingSoon: true },
+    { label: "Run CritIQ", route: "/critiq/RunCritiQ" }
   ];
+
+  const critiqSubItems = [
+    { label: "Idea Score", route: "/critiq/IdeaScore" },
+    { label: "CritIQ Chat", route: "/critiq/CritiChat" },
+    { label: "Validation Roadmap", route: "/critiq/ValidationRoadMap" },
+  ];
+
+  useEffect(() => {
+    const isCritiqRoute = ["/critiq/RunCritiQ", ...critiqSubItems.map(item => item.route)].includes(location.pathname);
+    setOpenSubMenu(isCritiqRoute);
+  }, [location, critiqSubItems]);
 
   const handleMenuItemClick = (route: string) => {
     navigate(route);
@@ -42,34 +51,34 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const renderMenuItems = () => (
     <List>
       {menuItems.map((item, index) => (
-        <ListItem
-          key={index}
-          onClick={() => !item.disabled && handleMenuItemClick(item.route)}
-          sx={{
-            bgcolor:
-              location.pathname === item.route ? "action.selected" : "inherit",
-          }}
-          disabled={item.disabled}
-        >
-          <ListItemText primary={item.label} />
-          {item.comingSoon && (
-            <ListItemSecondaryAction>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  display: "block",
-                  fontSize: {
-                    xs: "0.6rem",
-                    sm: "1rem",
-                  },
-                }}
-              >
-                Coming Soon!
-              </Typography>
-            </ListItemSecondaryAction>
+        <div key={index}>
+          <ListItem
+            onClick={() => handleMenuItemClick(item.route)}
+            sx={{
+              bgcolor: location.pathname.startsWith(item.route) ? "action.selected" : "inherit",
+            }}
+          >
+            <ListItemText primary={item.label} />
+          </ListItem>
+          {item.label === 'Run CritIQ' && (
+            <Collapse in={openSubMenu} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                {critiqSubItems.map((subItem, subIndex) => (
+                  <ListItem
+                    key={subIndex}
+                    onClick={() => handleMenuItemClick(subItem.route)}
+                    sx={{
+                      bgcolor: location.pathname === subItem.route ? "action.selected" : "inherit",
+                      pl: 4,
+                    }}
+                  >
+                    <ListItemText primary={subItem.label} />
+                  </ListItem>
+                ))}
+              </List>
+            </Collapse>
           )}
-        </ListItem>
+        </div>
       ))}
     </List>
   );

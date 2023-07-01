@@ -7,6 +7,7 @@ import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
 import { loading } from "../../content/style/styled-components/all";
+import RunCritiq from "./pages/critiq/RunCritIQ";
 
 const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
@@ -15,6 +16,9 @@ const Notebook = lazy(() => import("./pages/notebook/Notebook"));
 const Deck = lazy(() => import("./pages/deck/Deck"));
 const Backlog = lazy(() => import("./pages/backlog/Backlog"));
 const CritiQ = lazy(() => import("./pages/critiq/CritIQ"));
+const CritiChat = lazy(() => import("./pages/critiq/CritiChat"));
+const IdeaScore = lazy(() => import("./pages/critiq/IdeaScore"));
+const ValidationRoadmap = lazy(() => import("./pages/critiq/ValidationRoadmap"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
@@ -97,13 +101,23 @@ const WhiteRouter = () => {
                 }
               />
               <Route
-                path="/critiq"
+                path="/critiq/RunCritiQ"
                 element={
                   <Suspense fallback={loading()}>
-                    <CritiQ />
+                    <RunCritiq />
                   </Suspense>
                 }
               />
+              <Route
+                path="/critiq/IdeaScore"
+                element={
+                  <Suspense fallback={loading()}>
+                    <IdeaScore />
+                  </Suspense>
+                }
+              />
+              <Route path="/critiq/CritiChat" element={<Suspense fallback={loading()}><CritiChat /></Suspense>} />
+  <Route path="/critiq/ValidationRoadMap" element={<Suspense fallback={loading()}><ValidationRoadmap /></Suspense>} />
             </Routes>
           </Box>
         </Box>
