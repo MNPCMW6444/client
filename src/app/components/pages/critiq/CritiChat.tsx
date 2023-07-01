@@ -62,10 +62,6 @@ const CritiChat = () => {
     setCurrentIdeaId(ideaId);
   };
 
-  const handleSidebarToggle = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   return (
     <Box
       sx={{
@@ -75,57 +71,6 @@ const CritiChat = () => {
         overflow: "hidden",
       }}
     >
-      {sidebarOpen && (
-        <Box
-          sx={{
-            width: ["100%", "100%", "25%"],
-            overflowY: "auto",
-            height: "100%",
-            position: "relative",
-          }}
-        >
-          <Paper
-            sx={{
-              height: "60vh",
-              padding: "1em",
-              position: "relative",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <IconButton
-                style={{ position: "absolute", top: 10, right: 10 }}
-                onClick={handleSidebarToggle}
-                aria-label="Close Sidebar"
-              >
-                <ViewSidebar />
-              </IconButton>
-            </div>
-            <List style={{ marginTop: 48 }}>
-              {ideas.map((idea, index) => (
-                <ListItem
-                  button
-                  key={index}
-                  onClick={() => handleIdeaClick(idea._id)}
-                  selected={idea._id === currentIdeaId} // Add selected prop
-                >
-                  <ListItemText
-                    primary={idea?.idea.split(" ").slice(0, 8).join(" ")}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        </Box>
-      )}
-      {!sidebarOpen && (
-        <IconButton
-          onClick={handleSidebarToggle}
-          style={{ color: "#333", margin: "10px", padding: "10px" }}
-          aria-label="Open Sidebar"
-        >
-          <ViewSidebar />
-        </IconButton>
-      )}
       <Box
         sx={{
           display: "flex",

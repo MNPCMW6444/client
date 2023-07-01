@@ -72,13 +72,7 @@ export default function RunCritiq() {
           justifyContent="center"
         >
           <Grid item xs={6} display="flex" justifyContent="center">
-            <FormControl fullWidth sx={{ maxWidth: "250px" }}>
-              <InputLabel id="Select Idea"></InputLabel>
-              <IdeaSelector
-                selectedIdeaId={ideaId}
-                setSelectedIdeaId={setIdeaId}
-              />
-            </FormControl>
+            <Questionire />
           </Grid>
         </Grid>
 
@@ -124,11 +118,7 @@ export default function RunCritiq() {
           alignItems="center"
           direction="row"
           rowSpacing={0}
-        >
-          <Grid item xs={12} sm={6} md={4}>
-            <Questionire />
-          </Grid>
-        </Grid>
+        ></Grid>
         <Grid item xs={12} sm={6} md={4}>
           <Button variant="contained">Run CritIQ</Button>
         </Grid>
