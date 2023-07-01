@@ -9,17 +9,15 @@ import AIdeatorContext from "../../../context/AIdeatorContext";
 import UserContext from "../../../context/UserContext";
 import capitalize from "../../../util/capitalize";
 import { MainserverContext } from "@failean/mainserver-provider";
+import { set } from "lodash";
 
 const AIdeator = () => {
-  const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
-
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
-
   const { ideas } = useContext(UserContext);
-  const { currentIdeaId, setCurrentIdeaId, graph, loaded } =
+  const { currentIdeaId, setCurrentIdeaId, graph, loaded, setPolled } =
     useContext(AIdeatorContext);
-
+  const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
   const renderGraph = (tempGraph: PromptGraph) => {
     const graph: any = tempGraph.map((tg) => {
       const missingDeps = tempGraph
@@ -68,13 +66,15 @@ const AIdeator = () => {
       <Grid container direction="column" rowSpacing={10} alignItems="center">
         <Grid item>
           <Button
-            onClick={() =>
+            onClick={() => {
               axiosInstance &&
-              axiosInstance.post("data/prompts/runAndGetPromptResult", {
-                ideaId: currentIdeaId,
-                promptNames: graph.map(({ name }: any) => name),
-              })
-            }
+                axiosInstance.post("data/prompts/runAndGetPromptResult", {
+                  ideaId: currentIdeaId,
+                  promptNames: graph.map(({ name }: any) => name),
+                });
+              setPolled &&
+                setPolled((p) => [...p, graph.map(({ name }: any) => name)]);
+            }}
           >
             Run All
           </Button>

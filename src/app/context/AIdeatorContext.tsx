@@ -9,15 +9,9 @@ import {
   SetStateAction,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
-import {
-  Prompt,
-  PromptGraph,
-  PromptName,
-  WhiteModels,
-} from "@failean/shared-types";
+import { Prompt, PromptGraph, PromptName } from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
-import { gql, useSubscription } from "@apollo/client";
 
 const AIdeatorContext = createContext<{
   currentIdeaId: string;
@@ -26,6 +20,7 @@ const AIdeatorContext = createContext<{
   loaded: string;
   fetchGraph: () => Promise<void>;
   fetchOneResult: (name: PromptName) => Promise<void>;
+  setPolled: Dispatch<SetStateAction<PromptName[]>> | undefined;
 }>({
   currentIdeaId: "",
   setCurrentIdeaId: undefined,
@@ -33,6 +28,7 @@ const AIdeatorContext = createContext<{
   loaded: "",
   fetchGraph: async () => {},
   fetchOneResult: async () => {},
+  setPolled: undefined,
 });
 
 export const AIdeatorContextProvider = ({
@@ -41,15 +37,15 @@ export const AIdeatorContextProvider = ({
   children: ReactNode;
 }) => {
   const mainserverContext = useContext(MainserverContext);
-  const { ideas } = useContext(UserContext);
-
   const axiosInstance = mainserverContext?.axiosInstance;
+  const { ideas } = useContext(UserContext);
   const [graph, setGraph] = useState<PromptGraph>([]);
   const [currentIdeaId, setCurrentIdeaId] = useState<string>(
     ideas[0]?._id || ""
   );
   const [loaded, setLoaded] = useState<string>("");
-
+  const [polled, setPolled] = useState<PromptName[]>([]);
+  /* 
   const JOB_COMPLETED = gql`
     subscription Subscription {
       jobCompleted
@@ -62,75 +58,93 @@ export const AIdeatorContextProvider = ({
 
   console.log("Loading:", loading);
   console.log("Error:", error);
-  console.log("Data:", data);
+  console.log("Data:", data); */
 
   const fetchGraph = useCallback(async () => {
-    if (axiosInstance) {
-      const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
-      const baseGraph = data.graph;
-      setLoaded("graph");
-      setGraph([]);
-      let results = (
-        await axiosInstance.post("data/prompts/getPromptResult", {
-          ideaId: currentIdeaId,
-          promptName: "all",
-        })
-      ).data.promptResult;
+    console.log("fetchGraph");
 
-      results.sort(
-        (a: any, b: any) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-
-      let result: { [key: string]: { data: string; updatedAt: string } } = {};
-
-      // We are now iterating over sorted array
-      results.forEach((item: any) => {
-        // If the key doesn't exist in the result object, or the current item's date is more recent, update the value
-        if (
-          !result[item.promptName] ||
-          new Date(item.updatedAt).getTime() >
-            new Date(result[item.promptName].updatedAt).getTime()
-        ) {
-          result[item.promptName] = {
-            data: item.data,
-            updatedAt: item.updatedAt,
-          };
-        }
-      });
-      setGraph(
-        baseGraph.map((x: any, index: number) => ({
-          ...x,
-          result: index === 0 ? "idea" : result[x.promptName] || "empty",
-        }))
-      );
-      setLoaded("");
-    }
-  }, [axiosInstance, currentIdeaId]);
-
-  const fetchOneResult = async (name: PromptName) => {
-    if (axiosInstance) {
-      setLoaded(capitalize(name));
-      const res =
-        (
+    try {
+      if (axiosInstance) {
+        const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
+        const baseGraph = data.graph;
+        setLoaded("graph");
+        setGraph([]);
+        let results = (
           await axiosInstance.post("data/prompts/getPromptResult", {
             ideaId: currentIdeaId,
-            promptName: name,
+            promptName: "all",
           })
-        ).data || "empty";
-      setGraph(
-        graph.map((graphNode: Prompt) => ({
-          ...graphNode,
-          result: res,
-        }))
-      );
-      setLoaded("");
-    }
-  };
+        ).data.promptResult;
+
+        results.sort(
+          (a: any, b: any) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+
+        let result: { [key: string]: { data: string; updatedAt: string } } = {};
+
+        // We are now iterating over sorted array
+        results.forEach((item: any) => {
+          // If the key doesn't exist in the result object, or the current item's date is more recent, update the value
+          if (
+            !result[item.promptName] ||
+            new Date(item.updatedAt).getTime() >
+              new Date(result[item.promptName].updatedAt).getTime()
+          ) {
+            result[item.promptName] = {
+              data: item.data,
+              updatedAt: item.updatedAt,
+            };
+          }
+        });
+        setGraph(
+          baseGraph.map((x: any, index: number) => ({
+            ...x,
+            result: index === 0 ? "idea" : result[x.promptName] || "empty",
+          }))
+        );
+        setLoaded("");
+      }
+    } catch (e) {}
+  }, [axiosInstance, currentIdeaId]);
+
+  const fetchOneResult = useCallback(
+    async (name: PromptName) => {
+      console.log("fetchOneResult");
+      try {
+        if (axiosInstance) {
+          setGraph([]);
+          setLoaded(capitalize(name));
+          const res =
+            (
+              await axiosInstance.post("data/prompts/getPromptResult", {
+                ideaId: currentIdeaId,
+                promptName: name,
+              })
+            ).data || "empty";
+          if (res.length > 2 && res !== "empty")
+            setPolled((pp) => pp.filter((x) => x !== name));
+          setGraph((pg) =>
+            pg.map((graphNode: Prompt) => ({
+              ...graphNode,
+              result: res,
+            }))
+          );
+          setLoaded("");
+        }
+      } catch (e) {}
+    },
+    [axiosInstance, currentIdeaId]
+  );
 
   useEffect(() => {
     fetchGraph();
-  }, [fetchGraph]);
+    const interval = setInterval(
+      () => polled.forEach((name) => fetchOneResult(name)),
+      2000
+    );
+    return () => clearInterval(interval);
+  }, [fetchGraph, fetchOneResult, polled]);
 
   return (
     <AIdeatorContext.Provider
@@ -141,6 +155,7 @@ export const AIdeatorContextProvider = ({
         loaded,
         fetchGraph,
         fetchOneResult,
+        setPolled,
       }}
     >
       {children}
