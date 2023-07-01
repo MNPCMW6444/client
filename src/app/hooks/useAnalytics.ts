@@ -1,4 +1,4 @@
 const logRouteRender = () => {};
 const logRouteClick = () => {};
 
-export { useAnalytics };
+export { logRouteRender, logRouteClick };

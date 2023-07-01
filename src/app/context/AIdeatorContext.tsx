@@ -68,25 +68,43 @@ export const AIdeatorContextProvider = ({
     if (axiosInstance) {
       const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
       const baseGraph = data.graph;
-      let results: WhiteModels.Data.Prompts.WhitePromptResult[] = [];
-      for (const prompt of baseGraph) {
-        setLoaded(capitalize(prompt.name));
-        results.push(
-          (
-            await axiosInstance.post("data/prompts/getPromptResult", {
-              ideaId: currentIdeaId,
-              promptName: prompt.name,
-            })
-          ).data || "empty"
-        );
-      }
-      setLoaded("");
+      setLoaded("graph");
+      setGraph([]);
+      let results = (
+        await axiosInstance.post("data/prompts/getPromptResult", {
+          ideaId: currentIdeaId,
+          promptName: "all",
+        })
+      ).data.promptResult;
+
+      results.sort(
+        (a: any, b: any) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+
+      let result: { [key: string]: { data: string; updatedAt: string } } = {};
+
+      // We are now iterating over sorted array
+      results.forEach((item: any) => {
+        // If the key doesn't exist in the result object, or the current item's date is more recent, update the value
+        if (
+          !result[item.promptName] ||
+          new Date(item.updatedAt).getTime() >
+            new Date(result[item.promptName].updatedAt).getTime()
+        ) {
+          result[item.promptName] = {
+            data: item.data,
+            updatedAt: item.updatedAt,
+          };
+        }
+      });
       setGraph(
         baseGraph.map((x: any, index: number) => ({
           ...x,
-          result: index === 0 ? "idea" : results[index],
+          result: index === 0 ? "idea" : result[x.promptName] || "empty",
         }))
       );
+      setLoaded("");
     }
   }, [axiosInstance, currentIdeaId]);
 

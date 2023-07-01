@@ -65,7 +65,7 @@ const PromptDialog = ({
     axiosInstance &&
     axiosInstance.post("data/prompts/runAndGetPromptResult", {
       ideaId: idea !== "NO IDEAS" && idea?._id,
-      promptName,
+      promptNames: [promptName],
     });
 
   const save = async () => {
