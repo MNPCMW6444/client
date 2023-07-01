@@ -68,6 +68,7 @@ export const AIdeatorContextProvider = ({
         const { data } = await axiosInstance.get("data/prompts/getPromptGraph");
         const baseGraph = data.graph;
         setLoaded("graph");
+
         setGraph([]);
         let results = (
           await axiosInstance.post("data/prompts/getPromptResult", {
@@ -91,16 +92,13 @@ export const AIdeatorContextProvider = ({
             new Date(item.updatedAt).getTime() >
               new Date(result[item.promptName].updatedAt).getTime()
           ) {
-            result[item.promptName] = {
-              data: item.data,
-              updatedAt: item.updatedAt,
-            };
+            result[item.promptName] = item.data;
           }
         });
         setGraph(
           baseGraph.map((x: any, index: number) => ({
             ...x,
-            result: index === 0 ? "idea" : result[x.promptName] || "empty",
+            result: index === 0 ? "idea" : result[x.name] || "empty",
           }))
         );
         setLoaded("");

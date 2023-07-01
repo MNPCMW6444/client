@@ -18,6 +18,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 import useResponsive from "../../../hooks/useRespnsive";
 import capitalize from "../../../util/capitalize";
+import { TypeOfSetOpenDialog } from "../../pages/aideator/AIdeator";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -25,12 +26,16 @@ interface PromptDialogProps {
   promptName: PromptName;
   idea: WhiteIdea | "NO IDEAS";
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
+  setOpenDialog: TypeOfSetOpenDialog;
+  setPrice: Dispatch<SetStateAction<number>>;
 }
 
 const PromptDialog = ({
   idea,
   promptName,
   setOpenPrompt,
+  setOpenDialog,
+  setPrice,
 }: PromptDialogProps) => {
   const { theme, isMobile } = useResponsive();
 
@@ -61,12 +66,21 @@ const PromptDialog = ({
     fetchPromptResult();
   }, [fetchPromptResult]);
 
-  const run = async () =>
-    axiosInstance &&
-    axiosInstance.post("data/prompts/runAndGetPromptResult", {
-      ideaId: idea !== "NO IDEAS" && idea?._id,
-      promptNames: [promptName],
-    });
+  const run = async () => {
+    let price = 9999;
+    if (axiosInstance) {
+      try {
+        price = (
+          await axiosInstance.post("data/prompts/preRunPrompt", {
+            ideaId: idea !== "NO IDEAS" && idea?._id,
+            promptNames: [promptName],
+          })
+        ).data.price;
+        setPrice(price);
+        setOpenDialog("run");
+      } catch (e) {}
+    }
+  };
 
   const save = async () => {
     if (axiosInstance)
@@ -128,6 +142,7 @@ const PromptDialog = ({
   return (
     <Dialog
       open
+      style={{ zIndex: 10 }}
       maxWidth="xl"
       PaperProps={{
         sx: { width: isMobile ? "90vw" : "70vw" },
