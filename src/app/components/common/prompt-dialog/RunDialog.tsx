@@ -11,12 +11,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import useResponsive from "../../../hooks/useRespnsive";
 import capitalize from "../../../util/capitalize";
 import { TypeOfSetOpenDialog } from "../../pages/aideator/AIdeator";
+import AIdeatorContext from "../../../context/AIdeatorContext";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
 interface RunDialogProps {
   idea: WhiteIdea | "NO IDEAS";
-  promptName: PromptName;
+  promptName: PromptName | PromptName[];
   setOpenDialog: TypeOfSetOpenDialog;
   price: number;
 }
@@ -32,11 +33,25 @@ const RunDialog = ({
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
 
+  const { setPolled } = useContext(AIdeatorContext);
+
   const run = async () => {
     axiosInstance &&
       axiosInstance.post("data/prompts/runAndGetPromptResult", {
         ideaId: idea !== "NO IDEAS" && idea?._id,
-        promptNames: [promptName],
+        promptNames:
+          promptName[0].length && promptName[0].length > 2
+            ? promptName
+            : [promptName],
+      });
+    setPolled &&
+      setPolled((pp) => {
+        const arr =
+          promptName[0].length && promptName[0].length > 2
+            ? promptName
+            : [promptName];
+        (arr as PromptName[]).forEach((p) => p !== "idea" && pp.push(p));
+        return pp;
       });
     setOpenDialog("closed");
   };
@@ -84,7 +99,11 @@ const RunDialog = ({
         >
           <Grid item>
             <Typography variant="h4" color={theme.palette.primary.main}>
-              {capitalize(promptName === "closed" ? "All Prompts" : promptName)}
+              {capitalize(
+                promptName[0].length && promptName[0].length > 2
+                  ? "All Prompts"
+                  : (promptName as PromptName)
+              )}
             </Typography>
           </Grid>
           <Grid item>

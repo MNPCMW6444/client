@@ -12,11 +12,7 @@ interface PromptProps {
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
 }
 
-const Prompt = ({
-  level,
-
-  setOpenPrompt,
-}: PromptProps) => {
+const Prompt = ({ level, setOpenPrompt }: PromptProps) => {
   const name = capitalize(level.name);
   return level.locked ? (
     <Tooltip

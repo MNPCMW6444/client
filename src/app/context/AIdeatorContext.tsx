@@ -21,6 +21,7 @@ const AIdeatorContext = createContext<{
   fetchGraph: () => Promise<void>;
   fetchOneResult: (name: PromptName) => Promise<void>;
   setPolled: Dispatch<SetStateAction<PromptName[]>> | undefined;
+  polled: PromptName[];
 }>({
   currentIdeaId: "",
   setCurrentIdeaId: undefined,
@@ -29,6 +30,7 @@ const AIdeatorContext = createContext<{
   fetchGraph: async () => {},
   fetchOneResult: async () => {},
   setPolled: undefined,
+  polled: [],
 });
 
 export const AIdeatorContextProvider = ({
@@ -111,7 +113,6 @@ export const AIdeatorContextProvider = ({
       console.log("fetchOneResult");
       try {
         if (axiosInstance) {
-          setGraph([]);
           setLoaded(capitalize(name));
           const res =
             (
@@ -119,7 +120,7 @@ export const AIdeatorContextProvider = ({
                 ideaId: currentIdeaId,
                 promptName: name,
               })
-            ).data || "empty";
+            ).data.promptResult.data || "empty";
           if (res.length > 2 && res !== "empty")
             setPolled((pp) => pp.filter((x) => x !== name));
           setGraph((pg) =>
@@ -139,7 +140,7 @@ export const AIdeatorContextProvider = ({
     fetchGraph();
     const interval = setInterval(
       () => polled.forEach((name) => fetchOneResult(name)),
-      2000
+      5000
     );
     return () => clearInterval(interval);
   }, [fetchGraph, fetchOneResult, polled]);
@@ -154,6 +155,7 @@ export const AIdeatorContextProvider = ({
         fetchGraph,
         fetchOneResult,
         setPolled,
+        polled,
       }}
     >
       {children}

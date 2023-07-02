@@ -1,10 +1,10 @@
 import { useState, useContext, Dispatch, SetStateAction } from "react";
-import { Grid, Typography, Paper, Tooltip, Button } from "@mui/material";
+import { Grid, Typography, Paper, Tooltip, Button, Box } from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
-import { Lock, LockOpen } from "@mui/icons-material";
+import { Lock, LockOpen, Warning } from "@mui/icons-material";
 import AIdeatorContext from "../../../context/AIdeatorContext";
 import UserContext from "../../../context/UserContext";
 import capitalize from "../../../util/capitalize";
@@ -16,11 +16,21 @@ import SaveDialog from "../../common/prompt-dialog/SaveDialog";
 type TypeOfOpenDialog = "closed" | "run" | "feedback" | "save";
 export type TypeOfSetOpenDialog = Dispatch<SetStateAction<TypeOfOpenDialog>>;
 
+const removePrefix = (str: string): string => {
+  if (str.startsWith(", Idea, ")) {
+    return str.slice(", Idea, ".length);
+  } else if (str.startsWith(", ")) {
+    return str.slice(", ".length);
+  } else {
+    return str;
+  }
+};
+
 const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
-  const { currentIdeaId, setCurrentIdeaId, graph, loaded, setPolled } =
+  const { currentIdeaId, setCurrentIdeaId, graph, loaded, polled } =
     useContext(AIdeatorContext);
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
   const [openDialog, setOpenDialog] = useState<TypeOfOpenDialog>("closed");
@@ -72,6 +82,25 @@ const AIdeator = () => {
 
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
+        {polled.length > 0 && (
+          <>
+            <Grid item>
+              <Box display="flex" alignItems="center">
+                <Warning sx={{ color: "warning.main", mr: 1 }} />
+                <Typography color="warning.main">
+                  These prompts are now running:
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item>
+              <Typography color="warning.main" textAlign="center">
+                {removePrefix(
+                  polled.map((name: string) => ", " + capitalize(name)).join("")
+                )}
+              </Typography>
+            </Grid>
+          </>
+        )}
         <Grid item>
           <Button
             disabled={allLabel !== "Run All"}
@@ -86,6 +115,7 @@ const AIdeator = () => {
                       promptNames: graph.map(({ name }: any) => name),
                     })
                   ).data.price;
+                  setOpenPrompt(graph.map(({ name }: any) => name));
                   setPrice(price);
                   setOpenDialog("run");
                   setAllLabel("Run All");
@@ -140,15 +170,16 @@ const AIdeator = () => {
 
   return (
     <>
-      {openPrompt !== "closed" && (
-        <PromptDialog
-          idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
-          promptName={openPrompt}
-          setOpenPrompt={setOpenPrompt}
-          setOpenDialog={setOpenDialog}
-          setPrice={setPrice}
-        />
-      )}
+      {openPrompt !== "closed" &&
+        !(openPrompt[0].length && openPrompt.length > 2) && (
+          <PromptDialog
+            idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
+            promptName={openPrompt}
+            setOpenPrompt={setOpenPrompt}
+            setOpenDialog={setOpenDialog}
+            setPrice={setPrice}
+          />
+        )}
       {openDialog !== "closed" &&
         (openDialog === "run" ? (
           <RunDialog
