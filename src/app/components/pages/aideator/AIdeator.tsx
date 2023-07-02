@@ -1,4 +1,10 @@
-import { useState, useContext, Dispatch, SetStateAction } from "react";
+import {
+  useState,
+  useContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { Grid, Typography, Paper, Tooltip, Button, Box } from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
@@ -36,6 +42,26 @@ const AIdeator = () => {
   const [openDialog, setOpenDialog] = useState<TypeOfOpenDialog>("closed");
   const [price, setPrice] = useState<number>(999999);
   const [allLabel, setAllLabel] = useState<string>("Run All");
+  const [missingLabel, setMissingLabel] = useState<string>("Run Missing");
+  const [missing, setMissing] = useState<PromptName[]>([]);
+
+  useEffect(() => {
+    if (graph.length > 0) {
+      setMissing(
+        graph
+          .map(({ name, result }: any) => {
+            if (
+              result === "empty" ||
+              result ===
+                "One of the dependencies or feedback is invalid, please try to change it"
+            )
+              return name;
+            return !(result?.length > 2) ? name : null;
+          })
+          .filter((name: any) => name) as PromptName[]
+      );
+    }
+  }, [graph]);
 
   const renderGraph = (tempGraph: PromptGraph) => {
     const graph: any = tempGraph.map((tg) => {
@@ -83,7 +109,13 @@ const AIdeator = () => {
     return (
       <Grid container direction="column" rowSpacing={10} alignItems="center">
         {polled.length > 0 && (
-          <>
+          <Grid
+            item
+            container
+            direction="column"
+            rowSpacing={4}
+            alignItems="center"
+          >
             <Grid item>
               <Box display="flex" alignItems="center">
                 <Warning sx={{ color: "warning.main", mr: 1 }} />
@@ -99,34 +131,71 @@ const AIdeator = () => {
                 )}
               </Typography>
             </Grid>
-          </>
+          </Grid>
         )}
-        <Grid item>
-          <Button
-            disabled={allLabel !== "Run All"}
-            onClick={async () => {
-              setAllLabel("Estimating cost...");
-              let price = 9999;
-              if (axiosInstance) {
-                try {
-                  price = (
-                    await axiosInstance.post("data/prompts/preRunPrompt", {
-                      ideaId: currentIdeaId,
-                      promptNames: graph.map(({ name }: any) => name),
-                    })
-                  ).data.price;
-                  setOpenPrompt(graph.map(({ name }: any) => name));
-                  setPrice(price);
-                  setOpenDialog("run");
-                  setAllLabel("Run All");
-                } catch (e) {
-                  setAllLabel("Run All");
+        <Grid
+          item
+          container
+          columnSpacing={6}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <Button
+              variant="outlined"
+              disabled={allLabel !== "Run All"}
+              onClick={async () => {
+                setAllLabel("Estimating cost...");
+                let price = 9999;
+                if (axiosInstance) {
+                  try {
+                    price = (
+                      await axiosInstance.post("data/prompts/preRunPrompt", {
+                        ideaId: currentIdeaId,
+                        promptNames: graph.map(({ name }: any) => name),
+                      })
+                    ).data.price;
+                    setOpenPrompt(graph.map(({ name }: any) => name));
+                    setPrice(price);
+                    setOpenDialog("run");
+                    setAllLabel("Run All");
+                  } catch (e) {
+                    setAllLabel("Run All");
+                  }
                 }
-              }
-            }}
-          >
-            {allLabel}
-          </Button>
+              }}
+            >
+              {allLabel}
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              disabled={missingLabel !== "Run Missing"}
+              onClick={async () => {
+                setMissingLabel("Estimating cost...");
+                let price = 9999;
+                if (axiosInstance) {
+                  try {
+                    price = (
+                      await axiosInstance.post("data/prompts/preRunPrompt", {
+                        ideaId: currentIdeaId,
+                        promptNames: missing,
+                      })
+                    ).data.price;
+                    setOpenPrompt(missing as any);
+                    setPrice(price);
+                    setOpenDialog("run");
+                    setMissingLabel("Run Missing");
+                  } catch (e) {
+                    setMissingLabel("Run Missing");
+                  }
+                }
+              }}
+            >
+              {missingLabel}
+            </Button>
+          </Grid>
         </Grid>
         {result.map(({ level, lockedPrompts }, index) => (
           <Grid

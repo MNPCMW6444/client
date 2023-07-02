@@ -123,6 +123,7 @@ export const AIdeatorContextProvider = ({
             ).data.promptResult.data || "empty";
           if (res.length > 2 && res !== "empty")
             setPolled((pp) => pp.filter((x) => x !== name));
+          setPolled((pp) => [...new Set(pp)]);
           setGraph((pg) =>
             pg.map((graphNode: Prompt) => ({
               ...graphNode,
