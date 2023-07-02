@@ -110,7 +110,7 @@ export const AIdeatorContextProvider = ({
 
   const fetchOneResult = useCallback(
     async (name: PromptName) => {
-      console.log("fetchOneResult");
+      setPolled((pp) => [...new Set(pp)]);
       try {
         if (axiosInstance) {
           setLoaded(capitalize(name));
@@ -123,7 +123,7 @@ export const AIdeatorContextProvider = ({
             ).data.promptResult.data || "empty";
           if (res.length > 2 && res !== "empty")
             setPolled((pp) => pp.filter((x) => x !== name));
-          setPolled((pp) => [...new Set(pp)]);
+
           setGraph((pg) =>
             pg.map((graphNode: Prompt) => ({
               ...graphNode,
@@ -132,7 +132,9 @@ export const AIdeatorContextProvider = ({
           );
           setLoaded("");
         }
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     },
     [axiosInstance, currentIdeaId]
   );
