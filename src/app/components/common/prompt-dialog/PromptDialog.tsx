@@ -45,6 +45,7 @@ const PromptDialog = ({
   const [promptResultValue, setPromptResultValue] = useState<string>("");
 
   const [maxHeight, setMaxHeight] = useState("60vh");
+  const [label, setLabel] = useState<string>("Run Prompt");
 
   const fetchPromptResult = useCallback(async () => {
     if (axiosInstance && idea !== "NO IDEAS" && promptName !== "idea") {
@@ -67,6 +68,7 @@ const PromptDialog = ({
   }, [fetchPromptResult]);
 
   const run = async () => {
+    setLabel("Estimating cost...");
     let price = 9999;
     if (axiosInstance) {
       try {
@@ -78,7 +80,10 @@ const PromptDialog = ({
         ).data.price;
         setPrice(price);
         setOpenDialog("run");
-      } catch (e) {}
+        setLabel("Run Prompt");
+      } catch (e) {
+        setLabel("Run Prompt");
+      }
     }
   };
 
@@ -233,12 +238,15 @@ const PromptDialog = ({
               <Button
                 variant="outlined"
                 disabled={
-                  idea === "NO IDEAS" || !promptName || promptName === "idea"
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  label !== "Run Prompt"
                 }
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
                 <Refresh sx={{ mr: 1 }} />
-                Run Prompt
+                {label}
               </Button>
             </Grid>
             <Grid item>
