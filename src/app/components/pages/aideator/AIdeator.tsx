@@ -25,6 +25,7 @@ const AIdeator = () => {
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
   const [openDialog, setOpenDialog] = useState<TypeOfOpenDialog>("closed");
   const [price, setPrice] = useState<number>(999999);
+  const [allLabel, setAllLabel] = useState<string>("Run All");
 
   const renderGraph = (tempGraph: PromptGraph) => {
     const graph: any = tempGraph.map((tg) => {
@@ -73,17 +74,28 @@ const AIdeator = () => {
       <Grid container direction="column" rowSpacing={10} alignItems="center">
         <Grid item>
           <Button
-            onClick={() => {
-              axiosInstance &&
-                axiosInstance.post("data/prompts/runAndGetPromptResult", {
-                  ideaId: currentIdeaId,
-                  promptNames: graph.map(({ name }: any) => name),
-                });
-              setPolled &&
-                setPolled((p) => [...p, graph.map(({ name }: any) => name)]);
+            disabled={allLabel !== "Run All"}
+            onClick={async () => {
+              setAllLabel("Estimating cost...");
+              let price = 9999;
+              if (axiosInstance) {
+                try {
+                  price = (
+                    await axiosInstance.post("data/prompts/preRunPrompt", {
+                      ideaId: currentIdeaId,
+                      promptNames: graph.map(({ name }: any) => name),
+                    })
+                  ).data.price;
+                  setPrice(price);
+                  setOpenDialog("run");
+                  setAllLabel("Run All");
+                } catch (e) {
+                  setAllLabel("Run All");
+                }
+              }
             }}
           >
-            Run All
+            {allLabel}
           </Button>
         </Grid>
         {result.map(({ level, lockedPrompts }, index) => (

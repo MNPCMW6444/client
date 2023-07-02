@@ -82,7 +82,7 @@ const RunDialog = ({
         >
           <Grid item>
             <Typography variant="h4" color={theme.palette.primary.main}>
-              {capitalize(promptName)}
+              {capitalize(promptName === "closed" ? "All Prompts" : promptName)}
             </Typography>
           </Grid>
           <Grid item>
@@ -109,7 +109,7 @@ const RunDialog = ({
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
                 <PlayArrow sx={{ mr: 1 }} />
-                Run Prompt
+                Run
               </Button>
             </Grid>
           </Grid>
