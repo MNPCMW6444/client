@@ -32,12 +32,14 @@ const RunDialog = ({
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
 
-  const run = async () =>
+  const run = async () => {
     axiosInstance &&
-    axiosInstance.post("data/prompts/runAndGetPromptResult", {
-      ideaId: idea !== "NO IDEAS" && idea?._id,
-      promptNames: [promptName],
-    });
+      axiosInstance.post("data/prompts/runAndGetPromptResult", {
+        ideaId: idea !== "NO IDEAS" && idea?._id,
+        promptNames: [promptName],
+      });
+    setOpenDialog("closed");
+  };
 
   const handleClose = () => setOpenDialog("closed");
 
