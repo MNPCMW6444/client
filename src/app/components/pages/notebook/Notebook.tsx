@@ -2,17 +2,18 @@ import { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import {
   Tab,
-  Tabs,
   TabScrollButton,
   TextField,
-  Typography,
   Grid,
   Tooltip,
+  Fab
 } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { toast } from "react-toastify";
 import { Add, Delete, Save } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { StyledButton as Button,
+  StyledTypography as Typography,
+  StyledTabs as Tabs, } from "../../../../content/style/styled-components/all";
 
 const Notebook = () => {
   const mainserverContext = useContext(MainserverContext);
@@ -56,7 +57,9 @@ const Notebook = () => {
               ))}
               <TabScrollButton direction="right" orientation="horizontal" />
             </Tabs>
-            <Button
+            <Fab
+              color="primary"
+              aria-label="add"
               onClick={() => {
                 if (axiosInstance)
                   axiosInstance
@@ -71,18 +74,19 @@ const Notebook = () => {
                       toast("Error saving data to server");
                     });
               }}
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: "16px", position: "fixed", bottom: 40, right: 40 }}
             >
-              New <Add />
-            </Button>
+              <Add />
+            </Fab>
           </Grid>
           <Grid item>
             <TextField
               disabled={ideas.length === 0}
               multiline
               rows={10}
-              variant="outlined"
               fullWidth
+              placeholder="An insane Idea"
+              variant="outlined"
               onChange={handleInputChange}
               value={inputText}
             />

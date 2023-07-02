@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Grid, Typography, Paper, Tooltip, Button } from "@mui/material";
+import { Grid, Typography, Paper, Tooltip, /*Button*/ } from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
@@ -9,7 +9,8 @@ import AIdeatorContext from "../../../context/AIdeatorContext";
 import UserContext from "../../../context/UserContext";
 import capitalize from "../../../util/capitalize";
 import { MainserverContext } from "@failean/mainserver-provider";
-
+import { StyledLinearProgress, StyledTypography, StyledCard, StyledContainer } from '../../../../content/style/styled-components/all';
+import { StyledButton as Button} from "../../../../content/style/styled-components/all";
 const AIdeator = () => {
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
 
@@ -138,13 +139,20 @@ const AIdeator = () => {
           </Grid>
         )}
         <Grid item>
-          <Paper sx={{ overflow: "scroll" }}>
+          {/* <Paper> */}
             {graph.length > 0 ? (
               renderGraph(graph)
             ) : (
-              <Typography>Loading {loaded}...</Typography>
+              <StyledContainer>
+              <StyledCard>
+                <StyledTypography variant="h6" align="center">
+                  Loading {loaded}, please wait...
+                </StyledTypography>
+                <StyledLinearProgress />
+              </StyledCard>
+            </StyledContainer>
             )}
-          </Paper>
+          {/* </Paper> */}
         </Grid>
       </Grid>
     </>

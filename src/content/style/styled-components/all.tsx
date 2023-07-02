@@ -19,11 +19,11 @@ import { Avatar, Badge, Chip, Divider, List, Table, Typography } from '@mui/mate
 // Utils
 import { ClickAwayListener, NoSsr, Popper, Portal} from '@mui/material';
 
-// Styles
-import { styled, ThemeProvider } from '@mui/material/styles';
-
 // Theme
 import theme from '../whiteTheme';
+
+// Styles
+import { styled, ThemeProvider } from '@mui/material/styles';
 
 export const PromptButton = styled(Button)(({ theme }) => ({
   color: "black" || theme.palette.primary.main,
@@ -37,7 +37,7 @@ export const loading = () => <Typography>Loading...</Typography>;
 
 // Inputs
 const StyledButton = styled(Button)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main, // assuming blue is defined in your theme
+  backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
   padding: theme.spacing(1),
   transition: theme.transitions.create(['background-color', 'color', 'border'], {
@@ -95,8 +95,7 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 // Navigation
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  padding: theme.spacing(1),
-  '&.Mui-focused': { backgroundColor: theme.palette.primary.dark },
+  '&.Mui-focused': { backgroundColor: theme.palette.secondary.main },
 }));
 
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
