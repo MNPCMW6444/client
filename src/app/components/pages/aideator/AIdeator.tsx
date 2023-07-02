@@ -171,7 +171,7 @@ const AIdeator = () => {
   return (
     <>
       {openPrompt !== "closed" &&
-        !(openPrompt[0].length && openPrompt.length > 2) && (
+        !(openPrompt[0].length && openPrompt[0].length > 2) && (
           <PromptDialog
             idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
             promptName={openPrompt}
