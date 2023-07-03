@@ -43,6 +43,7 @@ const AIdeator = () => {
   const [price, setPrice] = useState<number>(999999);
   const [allLabel, setAllLabel] = useState<string>("Run All");
   const [missingLabel, setMissingLabel] = useState<string>("Run Missing");
+  const [groupLabel, setGroupLabel] = useState<string>("Run Group");
   const [missing, setMissing] = useState<PromptName[]>([]);
 
   useEffect(() => {
@@ -205,13 +206,13 @@ const AIdeator = () => {
             justifyContent="center"
             columnSpacing={3}
           >
-            {lockedPrompts.length !== 0 && (
+            {
               <Grid item>
                 {lockedPrompts.length === level.length ? (
                   <Tooltip title="All the prompts in this group are locked">
                     <Lock />
                   </Tooltip>
-                ) : (
+                ) : lockedPrompts.length > 0 ? (
                   <Tooltip
                     title={
                       "The promtps:" +
@@ -223,9 +224,42 @@ const AIdeator = () => {
                   >
                     <LockOpen />
                   </Tooltip>
+                ) : (
+                  level.length !== 1 && (
+                    <Button
+                      variant="outlined"
+                      disabled={groupLabel !== "Run Group"}
+                      onClick={async () => {
+                        setGroupLabel("Estimating cost...");
+                        let price = 9999;
+                        if (axiosInstance) {
+                          try {
+                            debugger;
+                            price = (
+                              await axiosInstance.post(
+                                "data/prompts/preRunPrompt",
+                                {
+                                  ideaId: currentIdeaId,
+                                  promptNames: level.map(({ name }) => name),
+                                }
+                              )
+                            ).data.price;
+                            setOpenPrompt(level.map(({ name }) => name) as any);
+                            setPrice(price);
+                            setOpenDialog("run");
+                            setGroupLabel("Run Group");
+                          } catch (e) {
+                            setGroupLabel("Run Group");
+                          }
+                        }
+                      }}
+                    >
+                      {groupLabel}
+                    </Button>
+                  )
                 )}
               </Grid>
-            )}
+            }
             {level.map((level, index) => (
               <Grid key={index} item>
                 <Prompt level={level} setOpenPrompt={setOpenPrompt} />

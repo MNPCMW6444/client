@@ -101,7 +101,7 @@ const RunDialog = ({
             <Typography variant="h4" color={theme.palette.primary.main}>
               {capitalize(
                 promptName[0].length && promptName[0].length > 2
-                  ? "All Prompts"
+                  ? "MultiPrompt Run"
                   : (promptName as PromptName)
               )}
             </Typography>
