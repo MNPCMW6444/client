@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect, FC, useContext } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Collapse from "@mui/material/Collapse";
 import Drawer from "@mui/material/Drawer";
@@ -7,7 +7,10 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import useResponsive from "../../hooks/useRespnsive";
-
+import { Select, MenuItem } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
+import UserContext from "../../context/UserContext";
+import Divider from "@mui/material/Divider";
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
   onMobileDrawerToggle: () => void;
@@ -21,6 +24,8 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const { isMobile } = useResponsive();
   const location = useLocation();
   const [openSubMenu, setOpenSubMenu] = useState(false);
+  const { ideas } = useContext(UserContext);
+  const [selectedIdeaId, setSelectedIdeaId] = useState("");
 
   const menuItems = [
     { label: "Idea Notebook", route: "/Notebook" },
@@ -46,6 +51,10 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
     if (isMobile) {
       onMobileDrawerToggle();
     }
+  };
+
+  const handleIdeaSelect = (event: SelectChangeEvent<string>) => {
+    setSelectedIdeaId(event.target.value);
   };
 
   const renderMenuItems = () => (
@@ -96,7 +105,33 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           open={mobileDrawerOpen}
           onClose={onMobileDrawerToggle}
         >
-          {renderMenuItems()}
+          <>
+            <Select
+              value={selectedIdeaId}
+              onChange={handleIdeaSelect}
+              variant="outlined"
+              displayEmpty
+              sx={{
+                width: "calc(100% - 20px)",
+                mt: "16px",
+                ml: "10px",
+                maxWidth: "220",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+            >
+              <MenuItem value="" disabled>
+                Select Idea
+              </MenuItem>
+              {ideas.map((idea, index) => (
+                <MenuItem key={index} value={idea._id}>
+                  {idea.idea}
+                </MenuItem>
+              ))}
+            </Select>
+            <Divider sx={{ mt: "10px", ml: "10px", mr: "10px" }} />
+            <Box sx={{ padding: "10px" }}>{renderMenuItems()}</Box>
+          </>
         </Drawer>
       ) : (
         <Drawer
@@ -111,7 +146,33 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             },
           }}
         >
-          {renderMenuItems()}
+          <>
+            <Select
+              value={selectedIdeaId}
+              onChange={handleIdeaSelect}
+              variant="outlined"
+              displayEmpty
+              sx={{
+                width: "calc(100% - 20px)",
+                mt: "10px",
+                ml: "10px",
+                maxWidth: "220px",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+            >
+              <MenuItem value="" disabled>
+                Select Idea
+              </MenuItem>
+              {ideas.map((idea, index) => (
+                <MenuItem key={index} value={idea._id}>
+                  {idea.idea}
+                </MenuItem>
+              ))}
+            </Select>
+            <Divider sx={{ mt: "10px", ml: "10px", mr: "10px" }} />
+            <Box sx={{ padding: "10px" }}>{renderMenuItems()}</Box>
+          </>
         </Drawer>
       )}
     </Box>

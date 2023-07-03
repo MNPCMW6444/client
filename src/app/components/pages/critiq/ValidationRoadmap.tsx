@@ -1,5 +1,5 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
+import { StyledTypography as Typography } from "../../../../content/style/styled-components/all";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/system";
 import { ThemeProvider } from "@mui/material/styles";
