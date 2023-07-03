@@ -6,7 +6,7 @@
     "@apollo/client": "^3.7.16",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@failean/mainserver-provider": "^2.6.105",
-    "@failean/shared-types": "^2.9.143",
+    "@failean/shared-types": "^2.9.150",
     "@mui/icons-material": "^5.11.16",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
