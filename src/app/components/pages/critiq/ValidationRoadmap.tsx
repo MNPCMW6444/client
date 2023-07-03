@@ -11,41 +11,102 @@ const Container = styled("div")({
   alignItems: "center",
 });
 
+const Table = styled("table")({
+  width: "100%",
+  borderCollapse: "collapse",
+  borderRadius: "1rem",
+});
+
+const TableCell = styled("td")({
+  padding: "1rem",
+  borderBottom: "1px solid #ccc",
+});
+
+const Heading = styled("h2")({
+  fontSize: "18px",
+  fontWeight: "bold",
+});
+
+const Title = styled("h1")({
+  fontSize: "24px",
+});
+
 const ValidationRoadmap = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <Typography variant="h2">Market Validation</Typography>
-        <Container>
-          <Typography variant="body1">
-            Placeholder text for market validation step
-          </Typography>
-          <input type="checkbox" />
-        </Container>
+        <Title>Validation Roadmap</Title>
+        <Heading>Market Validation</Heading>
+        <Table>
+          <tbody>
+            <tr>
+              <TableCell>Task</TableCell>
+              <TableCell>Information</TableCell>
+              <TableCell>Urgency</TableCell>
+              <TableCell>Status</TableCell>
+            </tr>
+            <tr>
+              <TableCell>Market Validation</TableCell>
+              <TableCell>Placeholder text for market validation step</TableCell>
+              <TableCell>High</TableCell>
+              <TableCell>In Progress</TableCell>
+            </tr>
+          </tbody>
+        </Table>
         <hr />
-        <Typography variant="h2">Product Validation</Typography>
-        <Container>
-          <Typography variant="body1">
-            Placeholder text for product validation step
-          </Typography>
-          <input type="checkbox" />
-        </Container>
+        <Heading>Product Validation</Heading>
+        <Table>
+          <tbody>
+            <tr>
+              <TableCell>Task</TableCell>
+              <TableCell>Information</TableCell>
+              <TableCell>Urgency</TableCell>
+              <TableCell>Status</TableCell>
+            </tr>
+            <tr>
+              <TableCell>Product Validation</TableCell>
+              <TableCell>Placeholder text for product validation step</TableCell>
+              <TableCell>Medium</TableCell>
+              <TableCell>To Do</TableCell>
+            </tr>
+          </tbody>
+        </Table>
         <hr />
-        <Typography variant="h2">Scientific Validation</Typography>
-        <Container>
-          <Typography variant="body1">
-            Placeholder text for scientific validation step
-          </Typography>
-          <input type="checkbox" />
-        </Container>
+        <Heading>Scientific Validation</Heading>
+        <Table>
+          <tbody>
+            <tr>
+              <TableCell>Task</TableCell>
+              <TableCell>Information</TableCell>
+              <TableCell>Urgency</TableCell>
+              <TableCell>Status</TableCell>
+            </tr>
+            <tr>
+              <TableCell>Scientific Validation</TableCell>
+              <TableCell>Placeholder text for scientific validation step</TableCell>
+              <TableCell>Low</TableCell>
+              <TableCell>To Do</TableCell>
+            </tr>
+          </tbody>
+        </Table>
         <hr />
-        <Typography variant="h2">Customer Validation</Typography>
-        <Container>
-          <Typography variant="body1">
-            Placeholder text for customer validation step
-          </Typography>
-          <input type="checkbox" />
-        </Container>
+        <Heading>Customer Validation</Heading>
+        <Table>
+          <tbody>
+            <tr>
+              <TableCell>Task</TableCell>
+              <TableCell>Information</TableCell>
+              <TableCell>Urgency</TableCell>
+              <TableCell>Status</TableCell>
+            </tr>
+            <tr>
+              <TableCell>Customer Validation</TableCell>
+              <TableCell>Placeholder text for customer validation step</TableCell>
+              <TableCell>High</TableCell>
+              <TableCell>To Do</TableCell>
+            </tr>
+          </tbody>
+        </Table>
         <hr />
       </div>
     </ThemeProvider>

@@ -151,7 +151,7 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1),
-  fontFamily: "Sora, sans-serif",
+  fontFamily: "San Francisco",
   '&.Mui-error': { color: theme.palette.error.main },
 }));
 
