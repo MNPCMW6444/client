@@ -493,7 +493,6 @@ const IdeaValidationQuestionnaire = () => {
       (2 * (averageFailScore * averageLeanScore)) /
       (averageFailScore + averageLeanScore);
     console.log("Failean Score:", finalScore);
-    // ... handle the final score ...
   };
 
   return (
