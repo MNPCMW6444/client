@@ -30,7 +30,7 @@
     "update": "npm i",
     "clean": "rm -rf node_modules package-lock.json",
     "start": "react-scripts start",
-    "dev": "PORT=5999 react-scripts start",
+    "dev": "react-scripts start",
     "devwindows": "react-scripts start",
     "preudev": "npm run update",
     "udev": "npm run dev",
