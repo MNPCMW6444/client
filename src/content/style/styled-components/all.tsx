@@ -19,6 +19,7 @@ import { Avatar, Badge, Chip, Divider, List, Table, Typography } from '@mui/mate
 // Utils
 import { ClickAwayListener, NoSsr, Popper, Portal} from '@mui/material';
 
+import typographyTheme from '../Fonts';
 // Theme
 import theme from '../whiteTheme';
 
@@ -151,7 +152,8 @@ const StyledDivider = styled(Divider)(({ theme }) => ({
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1),
-  fontFamily: "San Francisco",
+  fontFamily: theme.typography.fontFamily,
+  fontSize: theme.typography.fontSize,
   '&.Mui-error': { color: theme.palette.error.main },
 }));
 

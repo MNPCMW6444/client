@@ -1,6 +1,5 @@
 import React from "react";
-import { StyledTypography as Typography } from "../../../../content/style/styled-components/all";
-import Box from "@mui/material/Box";
+import { StyledTypography } from "../../../../content/style/styled-components/all";
 import { styled } from "@mui/system";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../../../../content/style/whiteTheme"; // Replace with the path to your custom theme file
@@ -24,19 +23,15 @@ const TableCell = styled("td")({
 
 const Heading = styled("h2")({
   fontSize: "18px",
-  fontWeight: "bold",
-});
-
-const Title = styled("h1")({
-  fontSize: "24px",
-});
+  variant: "body1",
+}));
 
 const ValidationRoadmap = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <Title>Validation Roadmap</Title>
-        <Heading>Market Validation</Heading>
+        <StyledTypography variant="h5">Validation Roadmap</StyledTypography>
+        <StyledTypography variant="h2">Market Validation</StyledTypography>
         <Table>
           <tbody>
             <tr>
@@ -54,7 +49,7 @@ const ValidationRoadmap = () => {
           </tbody>
         </Table>
         <hr />
-        <Heading>Product Validation</Heading>
+        <StyledTypography variant="h2">Product Validation</StyledTypography>
         <Table>
           <tbody>
             <tr>
@@ -72,7 +67,7 @@ const ValidationRoadmap = () => {
           </tbody>
         </Table>
         <hr />
-        <Heading>Scientific Validation</Heading>
+        <StyledTypography variant="h2">Scientific Validation</StyledTypography>
         <Table>
           <tbody>
             <tr>
@@ -90,7 +85,7 @@ const ValidationRoadmap = () => {
           </tbody>
         </Table>
         <hr />
-        <Heading>Customer Validation</Heading>
+        <StyledTypography variant="h2">Customer Validation</StyledTypography>
         <Table>
           <tbody>
             <tr>
