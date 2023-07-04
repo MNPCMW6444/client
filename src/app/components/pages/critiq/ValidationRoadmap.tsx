@@ -15,7 +15,6 @@ const Table = styled("table")({
   borderCollapse: "collapse",
   borderRadius: "1rem",
 });
-
 const TableCell = styled("td")({
   padding: "1rem",
   borderBottom: "1px solid #ccc",
@@ -24,13 +23,13 @@ const TableCell = styled("td")({
 const Heading = styled("h2")({
   fontSize: "18px",
   variant: "body1",
-}));
+});
 
 const ValidationRoadmap = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <StyledTypography variant="h5">Validation Roadmap</StyledTypography>
+        <StyledTypography variant="h1">Validation Roadmap</StyledTypography>
         <StyledTypography variant="h2">Market Validation</StyledTypography>
         <Table>
           <tbody>
