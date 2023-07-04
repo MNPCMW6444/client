@@ -296,7 +296,6 @@ const AIdeator = () => {
             idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
             promptName={openPrompt}
             setOpenDialog={setOpenDialog}
-            price={price}
           />
         ) : (
           /*   <SaveDialog

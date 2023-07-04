@@ -19,14 +19,12 @@ interface FeedbackDialogProps {
   idea: WhiteIdea | "NO IDEAS";
   promptName: PromptName | PromptName[];
   setOpenDialog: TypeOfSetOpenDialog;
-  price: number;
 }
 
 const FeedbackDialog = ({
   idea,
   promptName,
   setOpenDialog,
-  price,
 }: FeedbackDialogProps) => {
   const { theme, isMobile } = useResponsive();
 
@@ -34,8 +32,33 @@ const FeedbackDialog = ({
   const axiosInstance = mainserverContext?.axiosInstance;
 
   const [feedback, setFeedback] = useState<string>("");
+  const [label, setLabel] = useState<string>("Prepare Feedback");
+  const [fbPrice, setFbPrice] = useState<number>(999999);
+  const [fin, setFin] = useState<boolean>(false);
 
   const { setPolled } = useContext(AIdeatorContext);
+
+  const prepare = async () => {
+    setLabel("Estimating cost...");
+    let price = 99999;
+    if (axiosInstance) {
+      try {
+        price = (
+          await axiosInstance.post("data/prompts/preRunPrompt", {
+            ideaId: idea !== "NO IDEAS" && idea?._id,
+            promptNames: [promptName],
+          })
+        ).data.price;
+        setFbPrice(price);
+        setLabel("Prepare Feedback");
+        setFin(true);
+      } catch (e) {
+        setFbPrice(price);
+        setLabel("Prepare Feedback");
+        setFin(true);
+      }
+    }
+  };
 
   const run = async () => {
     axiosInstance &&
@@ -81,12 +104,6 @@ const FeedbackDialog = ({
           alignItems="center"
         >
           <Grid item>
-            <TextField
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-            ></TextField>
-          </Grid>
-          <Grid item>
             <Button
               onClick={handleClose}
               variant="outlined"
@@ -115,16 +132,39 @@ const FeedbackDialog = ({
               )}
             </Typography>
           </Grid>
-          <Grid item>
-            <Typography variant="h6" textAlign="center">
-              Estimated cost: {price} tokens
-            </Typography>
-          </Grid>
-
           <Grid
             item
             container
-            direction={isMobile ? "column" : "row"}
+            justifyContent="center"
+            alignItems="center"
+            columnSpacing={2}
+          >
+            <Grid item>
+              <Typography variant="h6">Feedback:</Typography>
+            </Grid>
+            <Grid item>
+              <TextField
+                fullWidth
+                multiline
+                value={feedback}
+                onChange={(e) => {
+                  setFin(false);
+                  setFeedback(e.target.value);
+                }}
+              ></TextField>
+            </Grid>
+          </Grid>
+          {fbPrice !== 999999 && (
+            <Grid item>
+              <Typography variant="h6" textAlign="center">
+                Estimated cost: {fbPrice} tokens
+              </Typography>
+            </Grid>
+          )}
+          <Grid
+            item
+            container
+            direction={"column"}
             justifyContent="center"
             alignItems="center"
             columnSpacing={2}
@@ -134,7 +174,27 @@ const FeedbackDialog = ({
               <Button
                 variant="outlined"
                 disabled={
-                  idea === "NO IDEAS" || !promptName || promptName === "idea"
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  !feedback
+                }
+                onClick={() =>
+                  !(!promptName || promptName === "idea") && prepare()
+                }
+              >
+                <PlayArrow sx={{ mr: 1 }} />
+                {label}
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                disabled={
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  !fin
                 }
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
