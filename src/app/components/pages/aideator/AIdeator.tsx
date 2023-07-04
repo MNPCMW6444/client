@@ -292,10 +292,12 @@ const AIdeator = () => {
             price={price}
           />
         ) : openDialog === "feedback" ? (
-          /*   <FeedbackDialog
+          <FeedbackDialog
             idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
+            promptName={openPrompt}
             setOpenDialog={setOpenDialog}
-          /> */ <> </>
+            price={price}
+          />
         ) : (
           /*   <SaveDialog
             idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}

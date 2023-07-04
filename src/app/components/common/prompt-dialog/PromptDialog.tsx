@@ -255,7 +255,10 @@ const PromptDialog = ({
                 disabled={
                   idea === "NO IDEAS" || !promptName || promptName === "idea"
                 }
-                onClick={() => !(!promptName || promptName === "idea") && run()}
+                onClick={() =>
+                  !(!promptName || promptName === "idea") &&
+                  setOpenDialog("feedback")
+                }
               >
                 <Feedback sx={{ mr: 1 }} /> Provide feedback and run prompt
               </Button>
