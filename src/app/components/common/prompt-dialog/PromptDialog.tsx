@@ -18,6 +18,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 import useResponsive from "../../../hooks/useRespnsive";
 import capitalize from "../../../util/capitalize";
+import { TypeOfSetOpenDialog } from "../../pages/aideator/AIdeator";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -25,12 +26,16 @@ interface PromptDialogProps {
   promptName: PromptName;
   idea: WhiteIdea | "NO IDEAS";
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
+  setOpenDialog: TypeOfSetOpenDialog;
+  setPrice: Dispatch<SetStateAction<number>>;
 }
 
 const PromptDialog = ({
   idea,
   promptName,
   setOpenPrompt,
+  setOpenDialog,
+  setPrice,
 }: PromptDialogProps) => {
   const { theme, isMobile } = useResponsive();
 
@@ -40,6 +45,7 @@ const PromptDialog = ({
   const [promptResultValue, setPromptResultValue] = useState<string>("");
 
   const [maxHeight, setMaxHeight] = useState("60vh");
+  const [label, setLabel] = useState<string>("Run Prompt");
 
   const fetchPromptResult = useCallback(async () => {
     if (axiosInstance && idea !== "NO IDEAS" && promptName !== "idea") {
@@ -61,12 +67,25 @@ const PromptDialog = ({
     fetchPromptResult();
   }, [fetchPromptResult]);
 
-  const run = async () =>
-    axiosInstance &&
-    axiosInstance.post("data/prompts/runAndGetPromptResult", {
-      ideaId: idea !== "NO IDEAS" && idea?._id,
-      promptName,
-    });
+  const run = async () => {
+    setLabel("Estimating cost...");
+    let price = 9999;
+    if (axiosInstance) {
+      try {
+        price = (
+          await axiosInstance.post("data/prompts/preRunPrompt", {
+            ideaId: idea !== "NO IDEAS" && idea?._id,
+            promptNames: [promptName],
+          })
+        ).data.price;
+        setPrice(price);
+        setOpenDialog("run");
+        setLabel("Run Prompt");
+      } catch (e) {
+        setLabel("Run Prompt");
+      }
+    }
+  };
 
   const save = async () => {
     if (axiosInstance)
@@ -128,6 +147,7 @@ const PromptDialog = ({
   return (
     <Dialog
       open
+      style={{ zIndex: 10 }}
       maxWidth="xl"
       PaperProps={{
         sx: { width: isMobile ? "90vw" : "70vw" },
@@ -218,12 +238,15 @@ const PromptDialog = ({
               <Button
                 variant="outlined"
                 disabled={
-                  idea === "NO IDEAS" || !promptName || promptName === "idea"
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  label !== "Run Prompt"
                 }
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
                 <Refresh sx={{ mr: 1 }} />
-                Run Prompt
+                {label}
               </Button>
             </Grid>
             <Grid item>
@@ -232,7 +255,10 @@ const PromptDialog = ({
                 disabled={
                   idea === "NO IDEAS" || !promptName || promptName === "idea"
                 }
-                onClick={() => !(!promptName || promptName === "idea") && run()}
+                onClick={() =>
+                  !(!promptName || promptName === "idea") &&
+                  setOpenDialog("feedback")
+                }
               >
                 <Feedback sx={{ mr: 1 }} /> Provide feedback and run prompt
               </Button>

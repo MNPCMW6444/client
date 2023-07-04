@@ -298,6 +298,108 @@ const steps: StepType[] = [
     ],
   },
 ];
+type AnswerScoresType = {
+  [key: string]: { fail: number; lean: number };
+};
+
+const answerScores: AnswerScoresType = {
+  "Experienced it first-hand": { fail: 1, lean: 5 },
+  "Found it in a report": { fail: 2, lean: 4 },
+  "Someone told me about it": { fail: 3, lean: 3 },
+  "Chat GPT told me about it": { fail: 4, lean: 2 },
+  "Had heart-to-heart with customers": { fail: 1, lean: 5 },
+  "Conducted non-biased user interviews": { fail: 2, lean: 4 },
+  "Conducted user questionnaires": { fail: 3, lean: 3 },
+  "Conducted focus groups": { fail: 4, lean: 2 },
+  "I am my own customer": { fail: 5, lean: 1 },
+  "Playing guessing games": { fail: 4, lean: 2 },
+  "More than one of the above": { fail: 3, lean: 3 },
+  "Asked my Facebook friends": { fail: 3, lean: 3 },
+  "Beyond my social circle": { fail: 2, lean: 4 },
+  "With investors/entrepreneurs/domain experts": { fail: 1, lean: 5 },
+  "Google is my validation": { fail: 4, lean: 2 },
+  "I know my competitors better than them": { fail: 5, lean: 1 },
+  "Did some snooping": { fail: 4, lean: 2 },
+  "Competitors? Who are they?": { fail: 3, lean: 3 },
+  "No, but someone on my team is": { fail: 4, lean: 2 },
+  "We are a team of insiders": { fail: 5, lean: 1 },
+  "No, but I have connections": { fail: 3, lean: 3 },
+  "Well, no": { fail: 2, lean: 4 },
+  "Big fish in a big pond": { fail: 1, lean: 5 },
+  "Small fish in a big pond": { fail: 2, lean: 4 },
+  "What's a market?": { fail: 3, lean: 3 },
+  "I'm the next big thing": { fail: 5, lean: 1 },
+  "We're pretty similar, but...": { fail: 4, lean: 2 },
+  "We're still figuring it out": { fail: 3, lean: 3 },
+  "Feasibility study? Check!": { fail: 1, lean: 5 },
+  "In the process of studying feasibility": { fail: 2, lean: 4 },
+  "We plan to do it soon": { fail: 3, lean: 3 },
+  "Feasibility... what now?": { fail: 4, lean: 2 },
+  "We've got a successful PoC": { fail: 1, lean: 5 },
+  "We're in the middle of creating a PoC": { fail: 2, lean: 4 },
+  "PoC is on the to-do list": { fail: 3, lean: 3 },
+  "'Trust me, it'll work'": { fail: 4, lean: 2 },
+  "MVP up and running": { fail: 1, lean: 5 },
+  "Got a neat prototype": { fail: 2, lean: 4 },
+  "Still in the dev dungeon": { fail: 3, lean: 3 },
+  "We have a napkin": { fail: 4, lean: 2 },
+  "Got a tech team and a CTO": { fail: 1, lean: 5 },
+  "Got a tech team, no CTO yet": { fail: 2, lean: 4 },
+  "Outsourcing our battles": { fail: 3, lean: 3 },
+  "Building our tech dream team": { fail: 4, lean: 2 },
+  "Tech stack, checked": { fail: 1, lean: 5 },
+  "Still perusing the tech aisle": { fail: 2, lean: 4 },
+  "Our dev team will handle it": { fail: 3, lean: 3 },
+  "Tech stack? Sounds delicious": { fail: 4, lean: 2 },
+  "Scaling like a seasoned mountaineer": { fail: 1, lean: 5 },
+  "Eyeing that mountain": { fail: 2, lean: 4 },
+  "Will cross that bridge when we come to it": { fail: 3, lean: 3 },
+  "Scalability sounds like a brand of fish food": { fail: 4, lean: 2 },
+  "Our cyber castle is a fortress": { fail: 1, lean: 5 },
+  "Building the cyber walls": { fail: 2, lean: 4 },
+  "Defenses are on the agenda": { fail: 3, lean: 3 },
+  "Cyber...security? Is that a new game?": { fail: 4, lean: 2 },
+  "Business plan in hand": { fail: 1, lean: 5 },
+  "Fate's at the wheel": { fail: 2, lean: 4 },
+  "It's a work in progress": { fail: 3, lean: 3 },
+  "We have cash flow forecasts": { fail: 1, lean: 5 },
+  "Hoping for the best": { fail: 2, lean: 4 },
+  "Cash what now?": { fail: 3, lean: 3 },
+  "Costs broken down": { fail: 1, lean: 5 },
+  "Still counting": { fail: 2, lean: 4 },
+  "I prefer not to think about it": { fail: 3, lean: 3 },
+  "Secured for now": { fail: 1, lean: 5 },
+  "Still in discussions": { fail: 2, lean: 4 },
+  "We take care of us": { fail: 3, lean: 3 },
+  "What is this 'funding' you speak of?": { fail: 4, lean: 2 },
+  "We're the Avengers": { fail: 1, lean: 5 },
+  "The Goonies": { fail: 2, lean: 4 },
+  "We got a mix": { fail: 3, lean: 3 },
+  "I don't have a team yet": { fail: 4, lean: 2 },
+  "Roles are crystal clear": { fail: 1, lean: 5 },
+  "Winging the organization": { fail: 2, lean: 4 },
+  "Still figuring it out": { fail: 3, lean: 3 },
+  "Hiring plan is in place": { fail: 1, lean: 5 },
+  "Expecting clones to appear": { fail: 2, lean: 4 },
+  "Making it up as we go": { fail: 3, lean: 3 },
+  "Got our financial GPS": { fail: 1, lean: 5 },
+  "Will ask users nicely": { fail: 2, lean: 4 },
+  "Looking for the money tree": { fail: 3, lean: 3 },
+  "CAC calculated": { fail: 1, lean: 5 },
+  "Hoping for viral spread": { fail: 2, lean: 4 },
+  "Maybe we'll get lucky": { fail: 3, lean: 3 },
+  "We've lawyered up": { fail: 1, lean: 5 },
+  "What is law?": { fail: 2, lean: 4 },
+  "Taking it step by step": { fail: 3, lean: 3 },
+  "We have a company": { fail: 1, lean: 5 },
+  "Working on it": { fail: 2, lean: 4 },
+  "Waiting for it to be necessary": { fail: 3, lean: 3 },
+  "Got the legal stuff sorted": { fail: 1, lean: 5 },
+  "Don't need it": { fail: 2, lean: 4 },
+  "Still on the to-do list": { fail: 3, lean: 3 },
+  "We've assessed the risks": { fail: 1, lean: 5 },
+  "What happens in Vegas...": { fail: 2, lean: 4 },
+};
 
 const IdeaValidationQuestionnaire = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -309,14 +411,28 @@ const IdeaValidationQuestionnaire = () => {
     [key: string]: boolean;
   }>({});
   const [freeText, setFreeText] = useState<{ [key: string]: string | "" }>({});
+  const [failScores, setFailScores] = useState<{ [key: string]: number }>({});
+  const [leanScores, setLeanScores] = useState<{ [key: string]: number }>({});
+  const [numQuestionsAnswered, setNumQuestionsAnswered] = useState(0);
 
   const handleChange =
     (stepIndex: number, questionIndex: number) =>
     (event: SelectChangeEvent<string>) => {
+      const answer = event.target.value as string;
+      const scores = answerScores[answer] || { fail: 0, lean: 0 };
+      setFailScores((prev) => ({
+        ...prev,
+        [`${stepIndex}-${questionIndex}`]: scores.fail,
+      }));
+      setLeanScores((prev) => ({
+        ...prev,
+        [`${stepIndex}-${questionIndex}`]: scores.lean,
+      }));
       setSelectedValue((prev) => ({
         ...prev,
-        [`${stepIndex}-${questionIndex}`]: event.target.value as string,
+        [`${stepIndex}-${questionIndex}`]: answer,
       }));
+      setNumQuestionsAnswered((prev) => prev + 1);
     };
 
   const handleRadioChange =
@@ -363,17 +479,20 @@ const IdeaValidationQuestionnaire = () => {
   };
 
   const handleFinish = () => {
-    const isFormCompleted = steps.every((step, stepIndex) =>
-      step.questions.every((_, questionIndex) =>
-        Boolean(selectedValue[`${stepIndex}-${questionIndex}`])
-      )
+    const totalFailScore = Object.values(failScores).reduce(
+      (sum, score) => sum + score,
+      0
     );
-
-    if (isFormCompleted) {
-      handleClose();
-    } else {
-      alert("Please complete all questions in the questionnaire.");
-    }
+    const totalLeanScore = Object.values(leanScores).reduce(
+      (sum, score) => sum + score,
+      0
+    );
+    const averageFailScore = totalFailScore / numQuestionsAnswered;
+    const averageLeanScore = totalLeanScore / numQuestionsAnswered;
+    const finalScore =
+      (2 * (averageFailScore * averageLeanScore)) /
+      (averageFailScore + averageLeanScore);
+    console.log("Failean Score:", finalScore);
   };
 
   return (
