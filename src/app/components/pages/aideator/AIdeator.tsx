@@ -172,7 +172,7 @@ const AIdeator = () => {
           <Grid item>
             <Button
               variant="outlined"
-              disabled={missingLabel !== "Run Missing"}
+              disabled={missingLabel !== "Run Missing" || missing.length === 0}
               onClick={async () => {
                 setMissingLabel("Estimating cost...");
                 let price = 9999;
