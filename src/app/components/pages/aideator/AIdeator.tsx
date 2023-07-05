@@ -8,7 +8,7 @@ import {
 import { Grid, Typography, Paper, Tooltip, Button, Box } from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
-import { PromptGraph, PromptName, WhiteModels } from "@failean/shared-types";
+import { PromptGraph, PromptName } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 import { Lock, LockOpen, Warning } from "@mui/icons-material";
 import AIdeatorContext from "../../../context/AIdeatorContext";
@@ -17,9 +17,8 @@ import capitalize from "../../../util/capitalize";
 import { MainserverContext } from "@failean/mainserver-provider";
 import RunDialog from "../../common/prompt-dialog/RunDialog";
 import FeedbackDialog from "../../common/prompt-dialog/FeedbackDialog";
-import SaveDialog from "../../common/prompt-dialog/SaveDialog";
 
-type TypeOfOpenDialog = "closed" | "run" | "feedback" | "save";
+type TypeOfOpenDialog = "closed" | "run" | "feedback";
 export type TypeOfSetOpenDialog = Dispatch<SetStateAction<TypeOfOpenDialog>>;
 
 const removePrefix = (str: string): string => {
@@ -291,17 +290,12 @@ const AIdeator = () => {
             setOpenDialog={setOpenDialog}
             price={price}
           />
-        ) : openDialog === "feedback" ? (
+        ) : (
           <FeedbackDialog
             idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
             promptName={openPrompt}
             setOpenDialog={setOpenDialog}
           />
-        ) : (
-          /*   <SaveDialog
-            idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
-            setOpenDialog={setOpenDialog}
-          /> */ <> </>
         ))}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
         {setCurrentIdeaId && (
