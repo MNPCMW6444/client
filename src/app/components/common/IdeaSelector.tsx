@@ -35,19 +35,22 @@ const IdeaSelector = ({
       }
       style={{ minWidth: "200px", maxWidth: "70vw" }}
     >
-      {ideas.map((idea, index) => (
-        <MenuItem
-          key={index}
-          value={idea._id}
-          style={{
-            whiteSpace: "nowrap",
-            overflowX: "auto",
-            maxWidth: "70vw",
-          }}
-        >
-          {idea?.idea}
-        </MenuItem>
-      ))}
+      {ideas.map(
+        (idea, index) =>
+          idea && (
+            <MenuItem
+              key={index}
+              value={idea._id}
+              style={{
+                whiteSpace: "nowrap",
+                overflowX: "auto",
+                maxWidth: "70vw",
+              }}
+            >
+              {idea?.idea}
+            </MenuItem>
+          )
+      )}
     </Select>
   );
 
