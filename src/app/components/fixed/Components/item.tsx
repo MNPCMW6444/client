@@ -10,8 +10,7 @@ interface ItemProps {
 
 const Item: React.FC<ItemProps> = ({ icon, name }) => {
   return (
-    <motion.div 
-    >
+    <motion.div>
     <motion.div
       className='item'
       whileHover={{

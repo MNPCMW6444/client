@@ -1,5 +1,6 @@
 .item{
     display: flex;
+    font-family: 'JetBrains Mono Variable', sans-serif;
     padding: 6px 10px 6px 10px;
     align-items: center;
     justify-content: flex-start;

@@ -2,6 +2,7 @@ import "./AnimatedSideBar.css";
 import WhiteThemeProvider from "../../providers/style/WhiteThemeProvider";
 import WhiteTheme from "../../../content/style/whiteTheme";
 import { motion } from "framer-motion";
+
 import {
   AccountCircleRounded,
   AssignmentTurnedInRounded,
@@ -12,7 +13,7 @@ import {
   SettingsRemoteRounded,
   TocRounded,
 } from "@mui/icons-material";
-import Item from "./Components/item";
+import Item from "./Components/Item";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 

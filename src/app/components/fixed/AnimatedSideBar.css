@@ -1,8 +1,7 @@
 .AnimatedSideBar {
   display: flex;
-  font-family: "Arial", sans-serif;
-  color: white;
-  background: linear-gradient(179deg, #176eb5, #d545d7);
+  font-family: "Nexa";
+  color: black;
   text-shadow: 1px 0px 2px #8dc4f0;
 }
 .body_container {

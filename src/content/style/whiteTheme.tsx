@@ -1,4 +1,6 @@
 import { createTheme } from "@mui/material/styles";
+// Supports weights 100-800
+import '@fontsource-variable/jetbrains-mono';
 
 const theme = createTheme({
   palette: {
@@ -83,7 +85,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      '"Segoe UI"',
+      'JetBrains Mono Variable',
     ].join(','),
     h1: {
       fontSize: '2.5rem',
