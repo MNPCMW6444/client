@@ -33,12 +33,13 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <Box paddingTop="20px" overflow="hidden">
+        <Box paddingTop="75px" overflow="hidden">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <AnimatedSideBar />
           <Box
             component="main"
             sx={{
+              marginTop: 5, 
               flexGrow: 1,
               p: 3,
               pt: isMobile
@@ -115,7 +116,7 @@ const WhiteRouter = () => {
                 }
               />
               <Route path="/critiq/CritiChat" element={<Suspense fallback={loading()}><CritiChat /></Suspense>} />
-  <Route path="/critiq/ValidationRoadMap" element={<Suspense fallback={loading()}><ValidationRoadmap /></Suspense>} />
+  <Route path="/critiq/ValidationRoadmap" element={<Suspense fallback={loading()}><ValidationRoadmap /></Suspense>} />
             </Routes>
           </Box>
         </Box>

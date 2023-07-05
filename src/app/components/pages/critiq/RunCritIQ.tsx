@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Paper, Box, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
 import { ViewSidebar } from "@mui/icons-material";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
@@ -13,7 +19,6 @@ import UserContext from "../../../context/UserContext";
 export default function RunCritiq() {
   const { ideas } = useContext(UserContext);
   const [currentIdeaId, setCurrentIdeaId] = useState<string>("");
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
 
   useEffect(() => {
     if (ideas.length > 0) {
@@ -23,10 +28,6 @@ export default function RunCritiq() {
 
   const handleIdeaClick = (ideaId: string) => {
     setCurrentIdeaId(ideaId);
-  };
-
-  const handleSidebarToggle = () => {
-    setSidebarOpen(!sidebarOpen);
   };
 
   const [value, setValue] = useState("");
@@ -47,63 +48,6 @@ export default function RunCritiq() {
         overflow: "hidden",
       }}
     >
-      {sidebarOpen && (
-        <Box
-          sx={{
-            width: ["100%", "100%", "25%"],
-            overflowY: "auto",
-            height: "100%",
-            position: "relative",
-          }}
-        >
-          <Paper
-            sx={{
-              height: "60vh",
-              padding: "1em",
-              position: "relative",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-              }}
-            >
-              <IconButton
-                style={{ position: "absolute", top: 10, right: 10 }}
-                onClick={handleSidebarToggle}
-                aria-label="Close Sidebar"
-              >
-                <ViewSidebar />
-              </IconButton>
-            </div>
-            <List style={{ marginTop: 48 }}>
-              {ideas.map((idea, index) => (
-                <ListItem
-                  button
-                  key={index}
-                  onClick={() => handleIdeaClick(idea._id)}
-                  selected={idea._id === currentIdeaId}
-                >
-                  <ListItemText
-                    primary={idea?.idea.split(" ").slice(0, 8).join(" ")}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Paper>
-        </Box>
-      )}
-      {!sidebarOpen && (
-        <IconButton
-          onClick={handleSidebarToggle}
-          style={{ color: "#333", margin: "10px", padding: "10px" }}
-          aria-label="Open Sidebar"
-        >
-          <ViewSidebar />
-        </IconButton>
-      )}
       <Box
         sx={{
           flexGrow: 1,
@@ -149,10 +93,12 @@ export default function RunCritiq() {
                 control={
                   <Checkbox
                     checked={checkedState.angel}
-                    onChange={(event) => setCheckedState({
-                      ...checkedState,
-                      [event.target.name]: event.target.checked,
-                    })}
+                    onChange={(event) =>
+                      setCheckedState({
+                        ...checkedState,
+                        [event.target.name]: event.target.checked,
+                      })
+                    }
                     name="angel"
                   />
                 }
@@ -162,10 +108,12 @@ export default function RunCritiq() {
                 control={
                   <Checkbox
                     checked={checkedState.vc}
-                    onChange={(event) => setCheckedState({
-                      ...checkedState,
-                      [event.target.name]: event.target.checked,
-                    })}
+                    onChange={(event) =>
+                      setCheckedState({
+                        ...checkedState,
+                        [event.target.name]: event.target.checked,
+                      })
+                    }
                     name="vc"
                   />
                 }
@@ -175,10 +123,12 @@ export default function RunCritiq() {
                 control={
                   <Checkbox
                     checked={checkedState.customer}
-                    onChange={(event) => setCheckedState({
-                      ...checkedState,
-                      [event.target.name]: event.target.checked,
-                    })}
+                    onChange={(event) =>
+                      setCheckedState({
+                        ...checkedState,
+                        [event.target.name]: event.target.checked,
+                      })
+                    }
                     name="TechWhiz"
                   />
                 }

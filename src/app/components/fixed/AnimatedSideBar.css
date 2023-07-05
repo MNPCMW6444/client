@@ -1,13 +1,14 @@
 .AnimatedSideBar {
   display: flex;
   font-family: "JetBrains Mono Variable";
-  font-weight:900
+  margin-top: 10px;
+  z-index: 500;
 }
 .body_container {
   flex: 1;
 }
 .sidebar_container {
-  height: 100vh;
+  height: auto;
   position:sticky;
   top: 0;
   left:0;
@@ -24,8 +25,8 @@
   flex-direction: column;
   padding: 15px;
   margin: 10px;
-  background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  background: rgb(255, 255, 255);
+  box-shadow: 0 8px 20px 0 rgba(59, 107, 178, 0.37);
   backdrop-filter: blur(5.5px);
   border-radius:10px;
   border: 1px solid rgba( 255, 255, 255, 0.18 );

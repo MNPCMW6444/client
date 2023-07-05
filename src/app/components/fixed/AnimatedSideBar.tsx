@@ -2,6 +2,7 @@ import "./AnimatedSideBar.css";
 import WhiteThemeProvider from "../../providers/style/WhiteThemeProvider";
 import WhiteTheme from "../../../content/style/whiteTheme";
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 import {
   AccountCircleRounded,
@@ -13,22 +14,37 @@ import {
   SettingsRemoteRounded,
   TocRounded,
 } from "@mui/icons-material";
-import Item from "./Components/Item";
-import { useState } from "react";
+import Item, { SubItem } from "./Components/Item";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function AnimatedSideBar(): JSX.Element {
   const [open, setOpen] = useState<boolean>(true);
+  const [lastSubmenuOpen, setLastSubmenuOpen] = useState<string | null>(null);
+  const location = useLocation();
+  const [currentPath, setCurrentPath] = useState<string>(location.pathname);
+
+  useEffect(() => {
+    setLastSubmenuOpen(null);
+  }, [location.pathname]);
 
   // for collapsing sidebar
   const handleToggle = (): void => {
     setOpen(!open);
   };
 
+const handleSubmenuClick = (route: string): void => {
+  if (route === "/critiq/RunCritiQ") {
+    setLastSubmenuOpen(lastSubmenuOpen === route ? null : route);
+  } else {
+    setLastSubmenuOpen(null);
+  }
+};
+  
+
   const sideContainerVariants = {
     true: {
       width: "15rem",
-      marginTop: "50px",
     },
     false: {
       transition: {
@@ -59,8 +75,15 @@ function AnimatedSideBar(): JSX.Element {
     },
   };
 
+  // Subitems for "Run CritiQ" item
+  const runCritiQSubItems: SubItem[] = [
+    { label: "Idea Score", route: "/critiq/IdeaScore" },
+    { label: "CritiChat", route: "/critiq/CritiChat" },
+    { label: "Validation Roadmap", route: "/critiq/ValidationRoadmap" },
+  ];
+
   return (
-    <div className="AnimatedSideBar">
+    <div className="AnimatedSideBar" style={{ position: "fixed" }}>
       <motion.div
         data-Open={open}
         variants={sideContainerVariants}
@@ -81,18 +104,18 @@ function AnimatedSideBar(): JSX.Element {
               scale: 1.2,
               rotate: 180,
               backgroundColor: "rgba(59, 107, 178)",
+              color: "white",
               backdropFilter: "blur(3.5px)",
               WebkitBackdropFilter: "blur(3.5px)",
               border: "1px solid rgba( 255, 255, 255, 0.18 )",
               transition: {
-                delay: 0.2,
-                duration: 0.4,
+                duration: 0.25,
               },
             }}
             onClick={handleToggle}
             className="lines_icon"
           >
-            <TocRounded />
+            <TocRounded style={{color: "rgba(59, 107, 178)"}} />
           </motion.div>
           {/* profile */}
           <motion.div
@@ -105,8 +128,6 @@ function AnimatedSideBar(): JSX.Element {
             whileHover={{
               backgroundColor: "rgba(59, 107, 178)",
               boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
-              backdropFilter: "blur(5.5px)",
-              WebkitBackdropFilter: "blur(5.5px)",
               border: "1px solid rgba( 255, 255, 255, 0.18 )",
               cursor: "pointer",
             }}
@@ -125,16 +146,36 @@ function AnimatedSideBar(): JSX.Element {
               >
                 Ideation
               </motion.h3>
-              <Link to="/Notebook" style={{ textDecoration: 'none',
-            color: 'black'
-            }}>
-                <Item icon={<DashboardRounded />} name="Idea Notebook" />
-              </Link>
-              <Link to="/aideator" style={{ textDecoration: 'none',
-            color: 'black'
-            }}>
-                <Item icon={<BarChartRounded />} name="AIdeator" />
-              </Link>
+              {open && (
+                <Link
+                  to="/Notebook"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
+                  <Item
+                    icon={<DashboardRounded />}
+                    name="Idea Notebook"
+                    onClick={() => setLastSubmenuOpen(null)}
+                    isOpen={lastSubmenuOpen === "/Notebook"}
+                  />
+                </Link>
+              )}
+              {open && (
+                <Link
+                  to="/aideator"
+                  style={{
+                    textDecoration: "none",
+                  }}
+                >
+                  <Item
+                    icon={<BarChartRounded />}
+                    name="AIdeator"
+                    onClick={() => setLastSubmenuOpen(null)}
+                    isOpen={lastSubmenuOpen === "/aideator"}
+                  />
+                </Link>
+              )}
             </div>
           </div>
           {/* group 2 */}
@@ -144,16 +185,36 @@ function AnimatedSideBar(): JSX.Element {
             >
               Validation
             </motion.h3>
-            <Link to="/deck" style={{ textDecoration: 'none',
-            color: 'black'
-            }}>
-              <Item icon={<AttachMoneyRounded />} name="Deck" />
-            </Link>
-            <Link to="/backlog" style={{ textDecoration: 'none',
-            color: 'black'
-            }}>
-              <Item icon={<AssignmentTurnedInRounded />} name="Idea Backlog" />
-            </Link>
+            {open && (
+              <Link
+                to="/deck"
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <Item
+                  icon={<AttachMoneyRounded />}
+                  name="Deck"
+                  onClick={() => setLastSubmenuOpen(null)}
+                  isOpen={lastSubmenuOpen === "/deck"}
+                />
+              </Link>
+            )}
+            {open && (
+              <Link
+                to="/backlog"
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <Item
+                  icon={<AssignmentTurnedInRounded />}
+                  name="Idea Backlog"
+                  onClick={() => setLastSubmenuOpen(null)}
+                  isOpen={lastSubmenuOpen === "/backlog"}
+                />
+              </Link>
+            )}
           </div>
           {/* group 3 */}
           <div className="group">
@@ -162,36 +223,27 @@ function AnimatedSideBar(): JSX.Element {
             >
               Acceleration
             </motion.h3>
-            <Link to="/critiq/RunCritiQ" style={{ textDecoration: 'none',
-            color: 'black'
-            }}>
-               <Item icon={<SettingsRemoteRounded />} name="Run CritIQ" />
-            </Link>
+            {open && (
+              <Link
+                to="/critiq/RunCritiQ"
+                style={{
+                  textDecoration: "none",
+                }}
+              >
+                <Item
+                  icon={<SettingsRemoteRounded />}
+                  name="Run CritIQ"
+                  subItems={runCritiQSubItems}
+                  onClick={() => handleSubmenuClick("/critiq")}
+                  isOpen={lastSubmenuOpen === "/critiq/RunCritiQ"}
+                />
+              </Link>
+            )}
           </div>
         </motion.div>
       </motion.div>
 
-      <div className="body_container">
-        {/* <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr />i am body
-        <hr /> */}
-      </div>
+      <div className="body_container">{/* Your body content */}</div>
     </div>
   );
 }
