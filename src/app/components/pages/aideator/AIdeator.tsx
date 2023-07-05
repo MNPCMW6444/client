@@ -233,7 +233,6 @@ const AIdeator = () => {
                         let price = 9999;
                         if (axiosInstance) {
                           try {
-                            debugger;
                             price = (
                               await axiosInstance.post(
                                 "data/prompts/preRunPrompt",
