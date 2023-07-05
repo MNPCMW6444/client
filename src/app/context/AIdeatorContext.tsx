@@ -120,7 +120,8 @@ export const AIdeatorContextProvider = ({
                 ideaID: currentIdeaID,
                 promptName: name,
               })
-            ).data.promptResult.data || "empty";
+            ).data?.promptResult?.data || "empty";
+
           if (res.length > 2 && res !== "empty")
             setPolled((pp) => pp.filter((x) => x !== name));
 
