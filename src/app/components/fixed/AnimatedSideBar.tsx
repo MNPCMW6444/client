@@ -125,10 +125,14 @@ function AnimatedSideBar(): JSX.Element {
               >
                 Ideation
               </motion.h3>
-              <Link to="/Notebook">
+              <Link to="/Notebook" style={{ textDecoration: 'none',
+            color: 'black'
+            }}>
                 <Item icon={<DashboardRounded />} name="Idea Notebook" />
               </Link>
-              <Link to="/aideator">
+              <Link to="/aideator" style={{ textDecoration: 'none',
+            color: 'black'
+            }}>
                 <Item icon={<BarChartRounded />} name="AIdeator" />
               </Link>
             </div>
@@ -140,10 +144,14 @@ function AnimatedSideBar(): JSX.Element {
             >
               Validation
             </motion.h3>
-            <Link to="/deck">
+            <Link to="/deck" style={{ textDecoration: 'none',
+            color: 'black'
+            }}>
               <Item icon={<AttachMoneyRounded />} name="Deck" />
             </Link>
-            <Link to="/backlog">
+            <Link to="/backlog" style={{ textDecoration: 'none',
+            color: 'black'
+            }}>
               <Item icon={<AssignmentTurnedInRounded />} name="Idea Backlog" />
             </Link>
           </div>
@@ -154,10 +162,11 @@ function AnimatedSideBar(): JSX.Element {
             >
               Acceleration
             </motion.h3>
-            <Link to="/critiq/RunCritiQ">
-              <Item icon={<SettingsRemoteRounded />} name="Run CritIQ" />
+            <Link to="/critiq/RunCritiQ" style={{ textDecoration: 'none',
+            color: 'black'
+            }}>
+               <Item icon={<SettingsRemoteRounded />} name="Run CritIQ" />
             </Link>
-            <Item icon={<ColorLensRounded />} name="Themes" />
           </div>
         </motion.div>
       </motion.div>

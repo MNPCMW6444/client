@@ -1,15 +1,10 @@
 .item{
     display: flex;
-    font-family: 'JetBrains Mono Variable', sans-serif;
     padding: 6px 10px 6px 10px;
     align-items: center;
     justify-content: flex-start;
     border-radius: 10px;
 }
-.item span {
-    text-decoration: none;
-  }
-  
 .icon{
     margin-right: 0.5rem;
     margin-top: 6px;

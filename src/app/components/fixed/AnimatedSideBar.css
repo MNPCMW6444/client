@@ -1,8 +1,7 @@
 .AnimatedSideBar {
   display: flex;
-  font-family: "Nexa";
-  color: black;
-  text-shadow: 1px 0px 2px #8dc4f0;
+  font-family: "JetBrains Mono Variable";
+  font-weight:900
 }
 .body_container {
   flex: 1;
