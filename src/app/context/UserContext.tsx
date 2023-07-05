@@ -58,14 +58,24 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
                 setIdeas(
                   (
                     await Promise.all(
-                      res.data.ideas.map(({ _id: id }: WhiteIdea) =>
-                        axiosInstance.post("data/prompts/getPromptResult", {
-                          ideaID: id,
-                          promptName: "ideaName",
+                      res.data.ideas.map(
+                        async ({ _id: id, idea }: WhiteIdea) => ({
+                          data: (
+                            await axiosInstance.post(
+                              "data/prompts/getPromptResult",
+                              {
+                                ideaID: id,
+                                promptName: "ideaName",
+                              }
+                            )
+                          ).data,
+                          original: idea,
                         })
                       )
                     )
-                  ).map((res) => res.data.promptResult?.data)
+                  ).map(({ data, original }) =>
+                    data.promptResult ? data.promptResult.data : original
+                  )
                 );
                 setLoading(false);
               })
