@@ -11,6 +11,7 @@ import { Select, MenuItem } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 import UserContext from "../../context/UserContext";
 import Divider from "@mui/material/Divider";
+
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
   onMobileDrawerToggle: () => void;
