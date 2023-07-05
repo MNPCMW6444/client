@@ -45,7 +45,7 @@ const FeedbackDialog = ({
       try {
         price = (
           await axiosInstance.post("data/prompts/preRunPrompt", {
-            ideaId: idea !== "NO IDEAS" && idea?._id,
+            ideaID: idea !== "NO IDEAS" && idea?._id,
             promptNames: [promptName],
           })
         ).data.price;
@@ -63,7 +63,7 @@ const FeedbackDialog = ({
   const run = async () => {
     axiosInstance &&
       axiosInstance.post("data/prompts/runAndGetPromptResult", {
-        ideaId: idea !== "NO IDEAS" && idea?._id,
+        ideaID: idea !== "NO IDEAS" && idea?._id,
         feedback,
         promptNames:
           promptName[0].length && promptName[0].length > 2

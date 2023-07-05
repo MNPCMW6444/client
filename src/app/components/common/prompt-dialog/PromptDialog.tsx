@@ -56,7 +56,7 @@ const PromptDialog = ({
       const { data } = await axiosInstance.post(
         "data/prompts/getPromptResult",
         {
-          ideaId: idea?._id,
+          ideaID: idea?._id,
           promptName,
         }
       );
@@ -78,7 +78,7 @@ const PromptDialog = ({
       try {
         price = (
           await axiosInstance.post("data/prompts/preRunPrompt", {
-            ideaId: idea !== "NO IDEAS" && idea?._id,
+            ideaID: idea !== "NO IDEAS" && idea?._id,
             promptNames: [promptName],
           })
         ).data.price;
@@ -96,7 +96,7 @@ const PromptDialog = ({
     try {
       if (axiosInstance) {
         await axiosInstance.post("data/prompts/savePromptResult", {
-          ideaId: idea !== "NO IDEAS" && idea._id,
+          ideaID: idea !== "NO IDEAS" && idea._id,
           promptName,
           data: promptResultValue,
           reason: "save",

@@ -28,13 +28,13 @@ const CritiChat = () => {
     Customer: false,
   });
 
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>("");
+  const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
 
   // set init§ial idea after ideas have loaded
   useEffect(() => {
     if (ideas.length > 0) {
-      setCurrentIdeaId(ideas[0]._id);
+      setCurrentIdeaID(ideas[0]._id);
     }
   }, [ideas]);
 
@@ -58,8 +58,8 @@ const CritiChat = () => {
     setInputText("");
   };
 
-  const handleIdeaClick = (ideaId: string) => {
-    setCurrentIdeaId(ideaId);
+  const handleIdeaClick = (ideaID: string) => {
+    setCurrentIdeaID(ideaID);
   };
 
   return (

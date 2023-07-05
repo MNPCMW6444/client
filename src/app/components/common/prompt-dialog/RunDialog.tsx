@@ -38,7 +38,7 @@ const RunDialog = ({
   const run = async () => {
     axiosInstance &&
       axiosInstance.post("data/prompts/runAndGetPromptResult", {
-        ideaId: idea !== "NO IDEAS" && idea?._id,
+        ideaID: idea !== "NO IDEAS" && idea?._id,
         promptNames:
           promptName[0].length && promptName[0].length > 2
             ? promptName

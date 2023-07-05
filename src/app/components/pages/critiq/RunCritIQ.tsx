@@ -15,7 +15,7 @@ import Questionire from "./CritIQuest";
 export default function RunCritiq() {
   const [value, setValue] = useState("");
   const [Category, setCategory] = useState("");
-  const [ideaId, setIdeaId] = useState<string>("");
+  const [ideaID, setIdeaID] = useState<string>("");
   const [checkedState, setCheckedState] = useState({
     angel: false,
     vc: false,
@@ -28,8 +28,8 @@ export default function RunCritiq() {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    setDisabled(!ideaId);
-  }, [ideaId]);
+    setDisabled(!ideaID);
+  }, [ideaID]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedState({

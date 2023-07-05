@@ -60,7 +60,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
                     await Promise.all(
                       res.data.ideas.map(({ _id: id }: WhiteIdea) =>
                         axiosInstance.post("data/prompts/getPromptResult", {
-                          ideaId: id,
+                          ideaID: id,
                           promptName: "ideaName",
                         })
                       )

@@ -27,13 +27,13 @@
 //     Customer: false,
 //   });
 
-//   const [currentIdeaId, setCurrentIdeaId] = useState<string>("");
+//   const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
 //   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
 
 //   // set initial idea after ideas have loaded
 //   useEffect(() => {
 //     if (ideas.length > 0) {
-//       setCurrentIdeaId(ideas[0]._id);
+//       setCurrentIdeaID(ideas[0]._id);
 //     }
 //   }, [ideas]);
 
@@ -57,8 +57,8 @@
 //     setInputText("");
 //   };
 
-//   const handleIdeaClick = (ideaId: string) => {
-//     setCurrentIdeaId(ideaId);
+//   const handleIdeaClick = (ideaID: string) => {
+//     setCurrentIdeaID(ideaID);
 //   };
 
 //   const handleSidebarToggle = () => {
@@ -101,7 +101,7 @@
 //                   button
 //                   key={index}
 //                   onClick={() => handleIdeaClick(idea._id)}
-//                   selected={idea._id === currentIdeaId} // Add selected prop
+//                   selected={idea._id === currentIdeaID} // Add selected prop
 //                 >
 //                   <ListItemText
 //                     primary={idea?.idea.split(" ").slice(0, 8).join(" ")}

@@ -12,21 +12,21 @@ import { MainserverContext } from "@failean/mainserver-provider";
 import UserContext from "./UserContext";
 
 interface Answer {
-  ideaId: string;
+  ideaID: string;
   questionId: string;
   answer: string;
   score: number;
 }
 
 const CritIQuestContext = createContext<{
-  currentIdeaId: string;
-  setCurrentIdeaId: Dispatch<SetStateAction<string>> | undefined;
+  currentIdeaID: string;
+  setCurrentIdeaID: Dispatch<SetStateAction<string>> | undefined;
   answerHistory: Answer[];
   fetchAnswerHistory: () => Promise<void>;
   updateAnswer: (answer: Answer) => Promise<void>;
 }>({
-  currentIdeaId: "",
-  setCurrentIdeaId: undefined,
+  currentIdeaID: "",
+  setCurrentIdeaID: undefined,
   answerHistory: [],
   fetchAnswerHistory: async () => {},
   updateAnswer: async () => {},
@@ -42,20 +42,20 @@ export const CritIQuestContextProvider = ({
 
   const axiosInstance = mainserverContext?.axiosInstance;
   const [answerHistory, setAnswerHistory] = useState<Answer[]>([]);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>("");
+  const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
 
   useEffect(() => {
-    setCurrentIdeaId(ideas[0]?._id || "");
+    setCurrentIdeaID(ideas[0]?._id || "");
   }, [ideas]);
 
   const fetchAnswerHistory = useCallback(async () => {
-    if (axiosInstance && currentIdeaId) {
+    if (axiosInstance && currentIdeaID) {
       const { data } = await axiosInstance.get(
-        `/data/critiqQuestionire/${currentIdeaId}`
+        `/data/critiqQuestionire/${currentIdeaID}`
       );
       setAnswerHistory(data || []);
     }
-  }, [axiosInstance, currentIdeaId]);
+  }, [axiosInstance, currentIdeaID]);
 
   const updateAnswer = useCallback(
     async (answer: Answer) => {
@@ -77,8 +77,8 @@ export const CritIQuestContextProvider = ({
   return (
     <CritIQuestContext.Provider
       value={{
-        currentIdeaId,
-        setCurrentIdeaId,
+        currentIdeaID,
+        setCurrentIdeaID,
         answerHistory,
         fetchAnswerHistory,
         updateAnswer,

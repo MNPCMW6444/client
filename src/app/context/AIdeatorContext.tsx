@@ -14,8 +14,8 @@ import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
 
 const AIdeatorContext = createContext<{
-  currentIdeaId: string;
-  setCurrentIdeaId: Dispatch<SetStateAction<string>> | undefined;
+  currentIdeaID: string;
+  setCurrentIdeaID: Dispatch<SetStateAction<string>> | undefined;
   graph: PromptGraph;
   loaded: string;
   fetchGraph: () => Promise<void>;
@@ -23,8 +23,8 @@ const AIdeatorContext = createContext<{
   setPolled: Dispatch<SetStateAction<PromptName[]>> | undefined;
   polled: PromptName[];
 }>({
-  currentIdeaId: "",
-  setCurrentIdeaId: undefined,
+  currentIdeaID: "",
+  setCurrentIdeaID: undefined,
   graph: [],
   loaded: "",
   fetchGraph: async () => {},
@@ -42,7 +42,7 @@ export const AIdeatorContextProvider = ({
   const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
   const [graph, setGraph] = useState<PromptGraph>([]);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>(
+  const [currentIdeaID, setCurrentIdeaID] = useState<string>(
     ideas[0]?._id || ""
   );
   const [loaded, setLoaded] = useState<string>("");
@@ -74,7 +74,7 @@ export const AIdeatorContextProvider = ({
         setGraph([]);
         let results = (
           await axiosInstance.post("data/prompts/getPromptResult", {
-            ideaId: currentIdeaId,
+            ideaID: currentIdeaID,
             promptName: "all",
           })
         ).data.promptResult;
@@ -106,7 +106,7 @@ export const AIdeatorContextProvider = ({
         setLoaded("");
       }
     } catch (e) {}
-  }, [axiosInstance, currentIdeaId]);
+  }, [axiosInstance, currentIdeaID]);
 
   const fetchOneResult = useCallback(
     async (name: PromptName) => {
@@ -117,7 +117,7 @@ export const AIdeatorContextProvider = ({
           const res =
             (
               await axiosInstance.post("data/prompts/getPromptResult", {
-                ideaId: currentIdeaId,
+                ideaID: currentIdeaID,
                 promptName: name,
               })
             ).data.promptResult.data || "empty";
@@ -136,7 +136,7 @@ export const AIdeatorContextProvider = ({
         console.log(e);
       }
     },
-    [axiosInstance, currentIdeaId]
+    [axiosInstance, currentIdeaID]
   );
 
   useEffect(() => {
@@ -151,8 +151,8 @@ export const AIdeatorContextProvider = ({
   return (
     <AIdeatorContext.Provider
       value={{
-        currentIdeaId,
-        setCurrentIdeaId,
+        currentIdeaID,
+        setCurrentIdeaID,
         graph,
         loaded,
         fetchGraph,

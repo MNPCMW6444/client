@@ -35,7 +35,7 @@ const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
-  const { currentIdeaId, setCurrentIdeaId, graph, loaded, polled } =
+  const { currentIdeaID, setCurrentIdeaID, graph, loaded, polled } =
     useContext(AIdeatorContext);
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
   const [openDialog, setOpenDialog] = useState<TypeOfOpenDialog>("closed");
@@ -151,7 +151,7 @@ const AIdeator = () => {
                   try {
                     price = (
                       await axiosInstance.post("data/prompts/preRunPrompt", {
-                        ideaId: currentIdeaId,
+                        ideaID: currentIdeaID,
                         promptNames: graph.map(({ name }: any) => name),
                       })
                     ).data.price;
@@ -179,7 +179,7 @@ const AIdeator = () => {
                   try {
                     price = (
                       await axiosInstance.post("data/prompts/preRunPrompt", {
-                        ideaId: currentIdeaId,
+                        ideaID: currentIdeaID,
                         promptNames: missing,
                       })
                     ).data.price;
@@ -237,7 +237,7 @@ const AIdeator = () => {
                               await axiosInstance.post(
                                 "data/prompts/preRunPrompt",
                                 {
-                                  ideaId: currentIdeaId,
+                                  ideaID: currentIdeaID,
                                   promptNames: level.map(({ name }) => name),
                                 }
                               )
@@ -274,7 +274,7 @@ const AIdeator = () => {
       {openPrompt !== "closed" &&
         !(openPrompt[0].length && openPrompt[0].length > 2) && (
           <PromptDialog
-            idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
+            idea={ideas.find(({ _id }) => _id === currentIdeaID) || "NO IDEAS"}
             promptName={openPrompt}
             setOpenPrompt={setOpenPrompt}
             setOpenDialog={setOpenDialog}
@@ -284,24 +284,24 @@ const AIdeator = () => {
       {openDialog !== "closed" &&
         (openDialog === "run" ? (
           <RunDialog
-            idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
+            idea={ideas.find(({ _id }) => _id === currentIdeaID) || "NO IDEAS"}
             promptName={openPrompt}
             setOpenDialog={setOpenDialog}
             price={price}
           />
         ) : (
           <FeedbackDialog
-            idea={ideas.find(({ _id }) => _id === currentIdeaId) || "NO IDEAS"}
+            idea={ideas.find(({ _id }) => _id === currentIdeaID) || "NO IDEAS"}
             promptName={openPrompt}
             setOpenDialog={setOpenDialog}
           />
         ))}
       <Grid container direction="column" rowSpacing={4} alignItems="center">
-        {setCurrentIdeaId && (
+        {setCurrentIdeaID && (
           <Grid item>
             <IdeaSelector
-              selectedIdeaId={currentIdeaId}
-              setSelectedIdeaId={setCurrentIdeaId}
+              selectedIdeaID={currentIdeaID}
+              setSelectedIdeaID={setCurrentIdeaID}
             />
           </Grid>
         )}

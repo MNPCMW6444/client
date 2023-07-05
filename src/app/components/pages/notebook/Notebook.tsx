@@ -96,7 +96,7 @@ const Notebook = () => {
                     axiosInstance
                       .post("data/ideas/saveIdea", {
                         idea: inputText,
-                        ideaId: ideas[activeIdeaIndex]._id,
+                        ideaID: ideas[activeIdeaIndex]._id,
                       })
                       .then(() => {
                         refreshUserData();
@@ -118,7 +118,7 @@ const Notebook = () => {
                   if (axiosInstance)
                     axiosInstance
                       .post("data/ideas/archiveIdea", {
-                        ideaId: ideas[activeIdeaIndex]._id,
+                        ideaID: ideas[activeIdeaIndex]._id,
                       })
                       .then(() => {
                         refreshUserData();
