@@ -7,7 +7,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@failean/mainserver-provider": "^2.6.108",
     "@failean/shared-types": "^2.9.157",
-    "@fontsource-variable/jetbrains-mono": "^5.0.5",
     "@mui/icons-material": "^5.13.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

@@ -85,7 +85,7 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      'JetBrains Mono Variable',
+      'Arial',
     ].join(','),
     h1: {
       fontSize: '2.5rem',
