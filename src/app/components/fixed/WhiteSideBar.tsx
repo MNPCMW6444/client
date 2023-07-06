@@ -97,7 +97,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const renderMenuItems = () => (
     <List>
       {menuItems.map((item, index) => (
-        <div key={index}>
+        <Box key={index}>
           <ListItem
             onClick={() => handleMenuItemClick(item.route)}
             onMouseEnter={() => handleMouseEnter(item.route)}
@@ -279,7 +279,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               </List>
             </Collapse>
           )}
-        </div>
+        </Box>
       ))}
     </List>
   );
