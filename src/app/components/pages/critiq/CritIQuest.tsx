@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   Button,
   Step,
@@ -14,8 +15,6 @@ import {
   TextField,
   Typography,
   Grid,
-  Box,
-  Link,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 
@@ -405,53 +404,43 @@ const IdeaValidationQuestionnaire = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<{
-    [key: string]: string | "";
+    [key: string]: string | "" | undefined;
   }>({});
-  const [showTextField, setShowTextField] = useState<{
-    [key: string]: boolean;
-  }>({});
-  const [freeText, setFreeText] = useState<{ [key: string]: string | "" }>({});
+  const [resultsOpen, setResultsOpen] = useState(false);
+  const [averageFailScore, setAverageFailScore] = useState(0);
+  const [averageLeanScore, setAverageLeanScore] = useState(0);
+
   const [failScores, setFailScores] = useState<{ [key: string]: number }>({});
   const [leanScores, setLeanScores] = useState<{ [key: string]: number }>({});
   const [numQuestionsAnswered, setNumQuestionsAnswered] = useState(0);
 
-  const handleChange =
-    (stepIndex: number, questionIndex: number) =>
-    (event: SelectChangeEvent<string>) => {
-      const answer = event.target.value as string;
-      const scores = answerScores[answer] || { fail: 0, lean: 0 };
-      setFailScores((prev) => ({
-        ...prev,
-        [`${stepIndex}-${questionIndex}`]: scores.fail,
-      }));
-      setLeanScores((prev) => ({
-        ...prev,
-        [`${stepIndex}-${questionIndex}`]: scores.lean,
-      }));
-      setSelectedValue((prev) => ({
-        ...prev,
-        [`${stepIndex}-${questionIndex}`]: answer,
-      }));
-      setNumQuestionsAnswered((prev) => prev + 1);
-    };
+  const handleAnswerChange = (event: SelectChangeEvent<{ value: unknown }>) => {
+    const { name, value } = event.target;
+    setSelectedValue((prevSelectedValue) => ({
+      ...prevSelectedValue,
+      [name as string]: value as string | "" | undefined,
+    }));
 
-  const handleRadioChange =
-    (stepIndex: number, questionIndex: number) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedValue((prev) => ({
-        ...prev,
-        [`${stepIndex}-${questionIndex}`]: event.target.value,
-      }));
-    };
+    const [stepIndex, questionIndex] = name.split("-");
+    const answer = value as string;
 
-  const handleFreeTextChange =
-    (stepIndex: number, questionIndex: number) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setFreeText((prev) => ({
-        ...prev,
-        [`${stepIndex}-${questionIndex}`]: event.target.value,
+    // Update failScores and leanScores based on the selected answer
+    if (answerScores[answer]) {
+      const { fail, lean } = answerScores[answer];
+      setFailScores((prevFailScores) => ({
+        ...prevFailScores,
+        [`${stepIndex}-${questionIndex}`]: fail,
       }));
-    };
+      setLeanScores((prevLeanScores) => ({
+        ...prevLeanScores,
+        [`${stepIndex}-${questionIndex}`]: lean,
+      }));
+    }
+
+    setNumQuestionsAnswered(
+      (prevNumQuestionsAnswered) => prevNumQuestionsAnswered + 1
+    );
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -460,6 +449,7 @@ const IdeaValidationQuestionnaire = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  const [loading, setLoading] = useState(false);
 
   const handleNext = () => {
     const currentStepQuestions = steps[activeStep].questions;
@@ -468,8 +458,19 @@ const IdeaValidationQuestionnaire = () => {
     );
 
     if (isStepCompleted) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      // If it's not the last step, move to the next step
+      if (activeStep !== steps.length - 1) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } else {
+        // If it's the last step, start loading progress and after 10 seconds, open the results dialog
+        setLoading(true);
+        setTimeout(() => {
+          setOpen(true);
+          setLoading(false);
+        }, 10000); // 10 seconds delay
+      }
     } else {
+      // Show alert if not all questions in the current step have been answered
       alert("Please answer all questions before proceeding.");
     }
   };
@@ -489,10 +490,18 @@ const IdeaValidationQuestionnaire = () => {
     );
     const averageFailScore = totalFailScore / numQuestionsAnswered;
     const averageLeanScore = totalLeanScore / numQuestionsAnswered;
+    setAverageFailScore(averageFailScore);
+    setAverageLeanScore(averageLeanScore);
     const finalScore =
       (2 * (averageFailScore * averageLeanScore)) /
       (averageFailScore + averageLeanScore);
     console.log("Failean Score:", finalScore);
+
+    // Open the results dialog
+    setResultsOpen(true);
+  };
+  const handleResultsClose = () => {
+    setResultsOpen(false);
   };
 
   return (
@@ -510,57 +519,40 @@ const IdeaValidationQuestionnaire = () => {
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
           <DialogTitle>Validation Questionnaire</DialogTitle>
           <DialogContent>
-            <Stepper activeStep={activeStep} style={{ maxWidth: "100%" }}>
-              {steps.map((step, index) => (
-                <Step key={step.title}>
-                  <StepLabel>{step.title}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-            {steps[activeStep].questions.map((question, index) => (
-              <Box my={2} key={`${activeStep}-${index}`}>
-                <Typography variant="h6" gutterBottom>
-                  {question.text}
-                </Typography>
-                <FormControl sx={{ m: 1, minWidth: 120, width: "100%" }}>
-                  <Select
-                    value={selectedValue[`${activeStep}-${index}`] || ""}
-                    onChange={handleChange(activeStep, index)}
-                    required
-                  >
-                    <MenuItem value="">None</MenuItem>
-                    {question.answers.map(
-                      (answer: string, answerIndex: number) => (
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <>
+                <Stepper activeStep={activeStep} style={{ maxWidth: "100%" }}>
+                  {steps.map((step, index) => (
+                    <Step key={step.title}>
+                      <StepLabel>{step.title}</StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+                {steps[activeStep].questions.map((question, index) => (
+                  <FormControl key={index} fullWidth>
+                    <Typography variant="subtitle1" gutterBottom>
+                      {question.text}
+                    </Typography>
+                    <Select
+                      name={`${activeStep}-${index}`}
+                      value={selectedValue[`${activeStep}-${index}`] || ""}
+                      onChange={handleAnswerChange}
+                      fullWidth
+                      variant="outlined"
+                    >
+                      <MenuItem value="">Select an answer</MenuItem>
+                      {question.answers.map((answer, answerIndex) => (
                         <MenuItem key={answerIndex} value={answer}>
                           {answer}
                         </MenuItem>
-                      )
-                    )}
-                  </Select>
-                </FormControl>
-                <Link
-                  component="button"
-                  variant="body2"
-                  onClick={() =>
-                    setShowTextField((prev) => ({
-                      ...prev,
-                      [`${activeStep}-${index}`]: true,
-                    }))
-                  }
-                >
-                  Add more details
-                </Link>
-                {showTextField[`${activeStep}-${index}`] && (
-                  <TextField
-                    label="Please provide details"
-                    value={freeText[`${activeStep}-${index}`] || ""}
-                    onChange={handleFreeTextChange(activeStep, index)}
-                    fullWidth
-                    margin="normal"
-                  />
-                )}
-              </Box>
-            ))}
+                      ))}
+                    </Select>
+                  </FormControl>
+                ))}
+              </>
+            )}
           </DialogContent>
           <DialogActions>
             <Button disabled={activeStep === 0} onClick={handleBack}>
@@ -574,6 +566,38 @@ const IdeaValidationQuestionnaire = () => {
             >
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={resultsOpen} onClose={handleResultsClose}>
+          <DialogTitle>Results</DialogTitle>
+          <DialogContent>
+            <Typography variant="h6">
+              Your Fail score is:
+              <CircularProgress
+                variant="determinate"
+                value={averageFailScore}
+                style={{ color: "#f00" }}
+              />
+            </Typography>
+            <Typography variant="h6">
+              Your Lean score is:
+              <CircularProgress
+                variant="determinate"
+                value={averageLeanScore}
+                style={{ color: "#0f0" }}
+              />
+            </Typography>
+            <Typography variant="h6">
+              Your Failean score is:
+              <CircularProgress
+                variant="determinate"
+                value={(averageFailScore + averageLeanScore) / 2}
+                style={{ color: "#00f" }}
+              />
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleResultsClose}>Close</Button>
           </DialogActions>
         </Dialog>
       </Grid>
