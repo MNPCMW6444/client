@@ -137,7 +137,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               },
             }}
           >
-            {item.route === "/Notebook" && (
+            {item.route === "/notebook" && (
               <ListIcon
               sx={{
                 color:
@@ -181,7 +181,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               }}
               />
             )}
-            {item.route === "/critiq/RunCritiQ" && (
+            {item.route === "/critiq/runcritiq" && (
               <PlayCircleOutlineIcon
               sx={{
                 color:
@@ -239,7 +239,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                       },
                     }}
                   >
-                    {subItem.route === "/critiq/IdeaScore" && (
+                    {subItem.route === "/critiq/ideascore" && (
                       <ListIcon
                       sx={{
                         color:
@@ -250,7 +250,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                       }}
                       />
                     )}
-                    {subItem.route === "/critiq/CritiChat" && (
+                    {subItem.route === "/critiq/critichat" && (
                       <EmojiObjectsIcon
                       sx={{
                         color:
@@ -261,7 +261,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                       }}
                       />
                     )}
-                    {subItem.route === "/critiq/ValidationRoadMap" && (
+                    {subItem.route === "/critiq/validationroadmap" && (
                       <DashboardIcon
                       sx={{
                         color:
