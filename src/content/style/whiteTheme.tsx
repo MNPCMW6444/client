@@ -120,6 +120,22 @@ const theme = createTheme({
   //   appBar: 1200,
   //   drawer: 1100,
   // },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#f4f6f8',
+        },
+      },
+    },
+  },
   transitions: {
     easing: {
       easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -135,22 +151,6 @@ const theme = createTheme({
       complex: 375,
       enteringScreen: 225,
       leavingScreen: 195,
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-        },
-      },
-    },
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundColor: '#f4f6f8',
-        },
-      },
     },
   },
 });

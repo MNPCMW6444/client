@@ -33,13 +33,16 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <Box paddingTop="75px" overflow="hidden">
+        <Box overflow="hidden">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
-          <AnimatedSideBar />
+          <WhiteSideBar
+            mobileDrawerOpen={mobileDrawerOpen}
+            onMobileDrawerToggle={handleMobileDrawerToggle}
+          />
           <Box
             component="main"
             sx={{
-              marginTop: 5, 
+              marginTop: 2, 
               flexGrow: 1,
               p: 3,
               pt: isMobile

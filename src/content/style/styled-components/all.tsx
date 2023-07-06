@@ -19,9 +19,6 @@ import { Avatar, Badge, Chip, Divider, List, Table, Typography } from '@mui/mate
 // Utils
 import { ClickAwayListener, NoSsr, Popper, Portal} from '@mui/material';
 
-// Theme
-import theme from '../whiteTheme';
-
 // Styles
 import { styled, ThemeProvider } from '@mui/material/styles';
 

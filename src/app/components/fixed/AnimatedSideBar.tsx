@@ -4,6 +4,7 @@ import WhiteTheme from "../../../content/style/whiteTheme";
 import { motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
+
 import {
   AccountCircleRounded,
   AssignmentTurnedInRounded,
@@ -14,7 +15,7 @@ import {
   SettingsRemoteRounded,
   TocRounded,
 } from "@mui/icons-material";
-import Item, { SubItem } from "./Components/Item";
+import Item, { SubItem } from "./Components/item";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
