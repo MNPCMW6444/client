@@ -19,6 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import useResponsive from "../../../hooks/useRespnsive";
 import capitalize from "../../../util/capitalize";
 import { TypeOfSetOpenDialog } from "../../pages/aideator/AIdeator";
+import { toast } from "react-toastify";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -46,13 +47,16 @@ const PromptDialog = ({
 
   const [maxHeight, setMaxHeight] = useState("60vh");
   const [label, setLabel] = useState<string>("Run Prompt");
+  const [saveLabel, setSaveLabel] = useState<string>(
+    "Save Current Text as Prompt Result"
+  );
 
   const fetchPromptResult = useCallback(async () => {
     if (axiosInstance && idea !== "NO IDEAS" && promptName !== "idea") {
       const { data } = await axiosInstance.post(
         "data/prompts/getPromptResult",
         {
-          ideaId: idea?._id,
+          ideaID: idea?._id,
           promptName,
         }
       );
@@ -74,7 +78,7 @@ const PromptDialog = ({
       try {
         price = (
           await axiosInstance.post("data/prompts/preRunPrompt", {
-            ideaId: idea !== "NO IDEAS" && idea?._id,
+            ideaID: idea !== "NO IDEAS" && idea?._id,
             promptNames: [promptName],
           })
         ).data.price;
@@ -88,14 +92,22 @@ const PromptDialog = ({
   };
 
   const save = async () => {
-    if (axiosInstance)
-      axiosInstance
-        .post("data/prompts/savePromptResult", {
-          ideaId: idea !== "NO IDEAS" && idea._id,
+    setSaveLabel("Trying to save...");
+    try {
+      if (axiosInstance) {
+        await axiosInstance.post("data/prompts/savePromptResult", {
+          ideaID: idea !== "NO IDEAS" && idea._id,
           promptName,
           data: promptResultValue,
-        })
-        .then(({ data }) => {});
+          reason: "save",
+        });
+        setSaveLabel("Save Current Text as Prompt Result");
+        fetchPromptResult();
+      }
+    } catch (e) {
+      toast("Error while saving!!!");
+      setSaveLabel("Save Current Text as Prompt Result");
+    }
   };
 
   const handleClose = () => setOpenPrompt("closed");
@@ -150,7 +162,9 @@ const PromptDialog = ({
       style={{ zIndex: 10 }}
       maxWidth="xl"
       PaperProps={{
-        sx: { width: isMobile ? "90vw" : "70vw" },
+        sx: isMobile
+          ? { width: "90vw" }
+          : { width: "calc(92vw - 240px)", marginLeft: "calc(2vw + 240px)" },
         ref: dialogeRef,
       }}
       onClose={handleClose}
@@ -267,13 +281,16 @@ const PromptDialog = ({
               <Button
                 variant="outlined"
                 disabled={
-                  idea === "NO IDEAS" || !promptName || promptName === "idea"
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  saveLabel !== "Save Current Text as Prompt Result"
                 }
                 onClick={() =>
                   !(!promptName || promptName === "idea") && save()
                 }
               >
-                <Save sx={{ mr: 1 }} /> Save Current Text as Prompt Result
+                <Save sx={{ mr: 1 }} /> {saveLabel}
               </Button>
             </Grid>
           </Grid>

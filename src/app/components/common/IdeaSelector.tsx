@@ -9,15 +9,15 @@ import { useContext, useState, Dispatch, SetStateAction } from "react";
 import UserContext from "../../context/UserContext";
 
 interface IdeaSelectorProps {
-  selectedIdeaId: string;
-  setSelectedIdeaId: Dispatch<SetStateAction<string>>;
+  selectedIdeaID: string;
+  setSelectedIdeaID: Dispatch<SetStateAction<string>>;
   label?: string | null;
   fontSizeFactor?: number;
 }
 
 const IdeaSelector = ({
-  selectedIdeaId,
-  setSelectedIdeaId,
+  selectedIdeaID,
+  setSelectedIdeaID,
   label,
   fontSizeFactor,
 }: IdeaSelectorProps) => {
@@ -29,9 +29,9 @@ const IdeaSelector = ({
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      value={selectedIdeaId}
+      value={selectedIdeaID}
       onChange={(event: SelectChangeEvent) =>
-        setSelectedIdeaId(event.target.value)
+        setSelectedIdeaID(event.target.value)
       }
       style={{ minWidth: "200px", maxWidth: "70vw" }}
     >

@@ -11,7 +11,7 @@ const Deck = () => {
   const axiosInstance = mainserverContext?.axiosInstance;
   const { ideas } = useContext(UserContext);
   const [graph, setGraph] = useState([]);
-  const [currentIdeaId, setCurrentIdeaId] = useState<string>(
+  const [currentIdeaID, setCurrentIdeaID] = useState<string>(
     ideas[0]?._id || ""
   );
   const [loaded, setLoaded] = useState<string>("");
@@ -23,7 +23,7 @@ const Deck = () => {
       );
       setGraph(data.graph);
     }
-  }, [axiosInstance, currentIdeaId]);
+  }, [axiosInstance, currentIdeaID]);
 
   useEffect(() => {
     fetchGraph();
@@ -31,11 +31,11 @@ const Deck = () => {
 
   return (
     <Grid container direction="column" rowSpacing={10} alignItems="center">
-      {setCurrentIdeaId && (
+      {setCurrentIdeaID && (
         <Grid item>
           <IdeaSelector
-            selectedIdeaId={currentIdeaId}
-            setSelectedIdeaId={setCurrentIdeaId}
+            selectedIdeaID={currentIdeaID}
+            setSelectedIdeaID={setCurrentIdeaID}
           />
         </Grid>
       )}
