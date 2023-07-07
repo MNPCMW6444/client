@@ -18,8 +18,6 @@ import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Avatar from "@mui/material/Avatar";
 import whiteTheme from "../../../content/style/whiteTheme";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 
@@ -57,10 +55,6 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
     { label: "CritIQ Chat", route: "/critiq/critichat" },
     { label: "Validation Roadmap", route: "/critiq/validationroadmap" },
   ];
-
-  const handleFabClick = () => {
-  navigate("/notebook");
-};
 
   useEffect(() => {
     const isCritiqRoute = [
@@ -463,18 +457,6 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
         </Drawer>
       )}
       <Box sx={{ flex: 1 }} />
-      <Fab
-        color="primary"
-        aria-label="Add"
-        sx={{
-          position: "fixed",
-          bottom: whiteTheme.spacing(2),
-          right: whiteTheme.spacing(2),
-        }}
-        onClick={handleFabClick}
-      >
-        <AddIcon />
-      </Fab>
       <IconButton
         sx={{
           position: 'fixed',
