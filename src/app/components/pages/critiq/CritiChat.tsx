@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Grid,
   Typography,
@@ -10,7 +10,6 @@ import {
   ListItem,
   ListItemText,
   IconButton,
-  Divider,
 } from "@mui/material";
 import { AutoFixHigh, Send, ViewSidebar } from "@mui/icons-material";
 import UserContext from "../../../context/UserContext";
@@ -31,10 +30,8 @@ const CritiChat = () => {
 
   const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
-  const [chatHistory, setChatHistory] = useState<string[]>([]);
-  const chatHistoryRef = useRef<HTMLDivElement>(null);
 
-  // set initial idea after ideas have loaded
+  // set init§ial idea after ideas have loaded
   useEffect(() => {
     if (ideas.length > 0) {
       setCurrentIdeaID(ideas[0]._id);
@@ -43,13 +40,6 @@ const CritiChat = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(event.target.value);
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleChatSubmission();
-    }
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,8 +52,8 @@ const CritiChat = () => {
 
   const handleChatSubmission = async () => {
     if (inputText.trim() !== "") {
-      const newMessage = `User: ${inputText.trim()}`;
-      setChatHistory((prevChatHistory) => [...prevChatHistory, newMessage]);
+      // Logic to send the inputText to the chat bot and get the response
+      // Update the chat history with the user's question and the bot's response
     }
     setInputText("");
   };
@@ -71,12 +61,6 @@ const CritiChat = () => {
   const handleIdeaClick = (ideaID: string) => {
     setCurrentIdeaID(ideaID);
   };
-
-  useEffect(() => {
-    if (chatHistoryRef.current) {
-      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
-    }
-  }, [chatHistory]);
 
   return (
     <Box
@@ -109,23 +93,9 @@ const CritiChat = () => {
               padding: "1em",
             }}
           >
-            <Box
-              sx={{
-                flexGrow: 1,
-                overflow: "auto",
-                mb: "1em",
-                p: "1em",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-              }}
-              ref={chatHistoryRef}
-            >
-              {chatHistory.map((message, index) => (
-                <React.Fragment key={index}>
-                  <Typography>{message}</Typography>
-                  <Divider />
-                </React.Fragment>
-              ))}
+            <Box>
+              <Typography>Chat history here</Typography>
+              {/* Map over the chat history and display each chat message */}
             </Box>
             <Box
               sx={{
@@ -150,7 +120,6 @@ const CritiChat = () => {
               <TextField
                 value={inputText}
                 onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
                 placeholder="Ask a question..."
                 sx={{
                   flexGrow: 1,

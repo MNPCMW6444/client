@@ -8,8 +8,6 @@ import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
 import { loading } from "../../content/style/styled-components/all";
 
-
-const RunCritiQ = lazy(() => import("./pages/critiq/RunCritiQ"));
 const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
 const About = lazy(() => import("./pages/about/About"));
@@ -17,9 +15,6 @@ const Notebook = lazy(() => import("./pages/notebook/Notebook"));
 const Deck = lazy(() => import("./pages/deck/Deck"));
 const Backlog = lazy(() => import("./pages/backlog/Backlog"));
 const CritiQ = lazy(() => import("./pages/critiq/CritIQ"));
-const CritiChat = lazy(() => import("./pages/critiq/CritiChat"));
-const IdeaScore = lazy(() => import("./pages/critiq/IdeaScore"));
-const ValidationRoadmap = lazy(() => import("./pages/critiq/ValidationRoadmap"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
@@ -33,7 +28,7 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <Box overflow="hidden">
+        <Box paddingTop="20px" overflow="hidden">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <WhiteSideBar
             mobileDrawerOpen={mobileDrawerOpen}
@@ -42,7 +37,6 @@ const WhiteRouter = () => {
           <Box
             component="main"
             sx={{
-              marginTop: 2, 
               flexGrow: 1,
               p: 3,
               pt: isMobile
@@ -103,32 +97,13 @@ const WhiteRouter = () => {
                 }
               />
               <Route
-                path="/critiq/runcritiq"
+                path="/critiq"
                 element={
                   <Suspense fallback={loading()}>
-                    <RunCritiQ />
+                    <CritiQ />
                   </Suspense>
                 }
               />
-              <Route
-                path="/critiq/ideascore"
-                element={
-                  <Suspense fallback={loading()}>
-                    <IdeaScore />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/critiq/critichat"
-                element={
-                <Suspense fallback={loading()}>
-                  <CritiChat />
-                </Suspense>} />
-              <Route 
-                path="/critiq/ValidationRoadmap"
-                element={<Suspense fallback={loading()}>
-                  <ValidationRoadmap />
-                </Suspense>} />
             </Routes>
           </Box>
         </Box>

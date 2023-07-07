@@ -30,6 +30,7 @@ const removePrefix = (str: string): string => {
     return str;
   }
 };
+
 const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
@@ -305,15 +306,13 @@ const AIdeator = () => {
           </Grid>
         )}
         <Grid item>
-          {/* <Paper> */}
+          <Paper sx={{ overflow: "scroll" }}>
             {graph.length > 0 ? (
               renderGraph(graph)
             ) : (
-                <Typography variant="h6" align="center">
-                  Loading {loaded}, please wait...
-                </Typography>
+              <Typography>Loading {loaded}...</Typography>
             )}
-          {/* </Paper> */}
+          </Paper>
         </Grid>
       </Grid>
     </>
