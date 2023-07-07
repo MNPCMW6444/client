@@ -1,5 +1,5 @@
 import { useContext, useState, lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
 import WhiteAppBar from "./fixed/WhiteAppBar";
@@ -7,6 +7,7 @@ import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
 import { loading } from "../../content/style/styled-components/all";
+import WhiteRoute from "./WhiteRoute";
 
 const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
@@ -47,7 +48,7 @@ const WhiteRouter = () => {
             }}
           >
             <Routes>
-              <Route
+              <WhiteRoute
                 path="/my-account"
                 element={
                   <Suspense fallback={loading()}>
@@ -55,7 +56,7 @@ const WhiteRouter = () => {
                   </Suspense>
                 }
               />
-              <Route
+              <WhiteRoute
                 path="/about"
                 element={
                   <Suspense fallback={loading()}>
@@ -63,7 +64,7 @@ const WhiteRouter = () => {
                   </Suspense>
                 }
               />
-              <Route
+              <WhiteRoute
                 path="/*"
                 element={
                   <Suspense fallback={loading()}>
@@ -71,7 +72,7 @@ const WhiteRouter = () => {
                   </Suspense>
                 }
               />
-              <Route
+              <WhiteRoute
                 path="/aideator"
                 element={
                   <Suspense fallback={loading()}>
@@ -79,15 +80,14 @@ const WhiteRouter = () => {
                   </Suspense>
                 }
               />
-              {/*    <Route
-                path="/deck"
+              {/*    <WhiteRoute                path="/deck"
                 element={
                   <Suspense fallback={loading()}>
                     <Deck />
                   </Suspense>
                 }
               /> */}
-              <Route
+              <WhiteRoute
                 path="/backlog"
                 element={
                   <Suspense fallback={loading()}>
