@@ -1,23 +1,24 @@
-import { useContext, useState } from "react";
+import { useContext, useState, lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
-import Notebook from "./pages/notebook/Notebook";
-import MyAccount from "./pages/my-account/MyAccount";
-import About from "./pages/about/About";
 import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import AIDeator from "./pages/aideator/AIDeator";
-//import CritiQ from "./pages/criticq/CritiQ";
+import useResponsive from "../hooks/useRespnsive";
+import { loading } from "../../content/style/styled-components/all";
+
+const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
+const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
+const About = lazy(() => import("./pages/about/About"));
+const Notebook = lazy(() => import("./pages/notebook/Notebook"));
+//const Deck = lazy(() => import("./pages/deck/Deck.future"));
+const Backlog = lazy(() => import("./pages/backlog/Backlog"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { isMobile } = useResponsive();
 
   const handleMobileDrawerToggle = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
@@ -26,7 +27,7 @@ const WhiteRouter = () => {
   return (
     <BrowserRouter>
       {user ? (
-        <Box paddingTop="20px">
+        <Box paddingTop="20px" overflow="hidden">
           <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <WhiteSideBar
             mobileDrawerOpen={mobileDrawerOpen}
@@ -46,11 +47,54 @@ const WhiteRouter = () => {
             }}
           >
             <Routes>
-              <Route path="/*" element={<Notebook />} />
-              <Route path="/aideator" element={<AIDeator />} />
-              <Route path="/my-account" element={<MyAccount />} />
-              <Route path="/about" element={<About />} />
-              {/* <Route path="/critiq" element={<CritiQ />} /> */}
+              <Route
+                path="/my-account"
+                element={
+                  <Suspense fallback={loading()}>
+                    <MyAccount />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <Suspense fallback={loading()}>
+                    <About />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/*"
+                element={
+                  <Suspense fallback={loading()}>
+                    <Notebook />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/aideator"
+                element={
+                  <Suspense fallback={loading()}>
+                    <AIdeatorWrapper />
+                  </Suspense>
+                }
+              />
+              {/*    <Route
+                path="/deck"
+                element={
+                  <Suspense fallback={loading()}>
+                    <Deck />
+                  </Suspense>
+                }
+              /> */}
+              <Route
+                path="/backlog"
+                element={
+                  <Suspense fallback={loading()}>
+                    <Backlog />
+                  </Suspense>
+                }
+              />
             </Routes>
           </Box>
         </Box>

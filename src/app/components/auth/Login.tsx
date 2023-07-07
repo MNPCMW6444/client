@@ -7,8 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import UserContext from "../../context/UserContext";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { MainserverContext } from "@failean/mainserver-provider";
 
@@ -78,7 +77,6 @@ const Login = () => {
 
   return (
     <Box width="100%" height="100%" bgcolor="black">
-      <ToastContainer />
       <Dialog open={true} onClose={() => {}}>
         <DialogTitle>Login</DialogTitle>
         <DialogContent>

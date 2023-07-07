@@ -1,11 +1,4 @@
-import {
-  Grid,
-  TextField,
-  Button,
-  Typography,
-  useTheme,
-  Box,
-} from "@mui/material";
+import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import {
   useContext,
   useState,
@@ -13,6 +6,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useRef,
 } from "react";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { PromptName, WhiteModels } from "@failean/shared-types";
@@ -22,6 +16,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
+import useResponsive from "../../../hooks/useRespnsive";
+import capitalize from "../../../util/capitalize";
+import { TypeOfSetOpenDialog } from "../../pages/aideator/AIdeator";
+import { toast } from "react-toastify";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -29,30 +27,36 @@ interface PromptDialogProps {
   promptName: PromptName;
   idea: WhiteIdea | "NO IDEAS";
   setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>;
+  setOpenDialog: TypeOfSetOpenDialog;
+  setPrice: Dispatch<SetStateAction<number>>;
 }
-
-export const capitalize = (s: string) =>
-  s
-    .replace(/([A-Z])/g, " $1")
-    .charAt(0)
-    .toUpperCase() + s.replace(/([A-Z])/g, " $1").slice(1);
 
 const PromptDialog = ({
   idea,
   promptName,
   setOpenPrompt,
+  setOpenDialog,
+  setPrice,
 }: PromptDialogProps) => {
+  const { theme, isMobile } = useResponsive();
+
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
   const [dbpromptResultValue, setdbPromptResultValue] = useState<string>("");
   const [promptResultValue, setPromptResultValue] = useState<string>("");
+
+  const [maxHeight, setMaxHeight] = useState("60vh");
+  const [label, setLabel] = useState<string>("Run Prompt");
+  const [saveLabel, setSaveLabel] = useState<string>(
+    "Save Current Text as Prompt Result"
+  );
 
   const fetchPromptResult = useCallback(async () => {
     if (axiosInstance && idea !== "NO IDEAS" && promptName !== "idea") {
       const { data } = await axiosInstance.post(
         "data/prompts/getPromptResult",
         {
-          ideaId: idea?._id,
+          ideaID: idea?._id,
           promptName,
         }
       );
@@ -68,39 +72,112 @@ const PromptDialog = ({
   }, [fetchPromptResult]);
 
   const run = async () => {
-    if (axiosInstance)
-      axiosInstance
-        .post("data/prompts/runAndGetPromptResult", {
-          ideaId: idea !== "NO IDEAS" && idea?._id,
-          promptName,
-        })
-        .then(({ data }) => {});
+    setLabel("Estimating cost...");
+    let price = 9999;
+    if (axiosInstance) {
+      try {
+        price = (
+          await axiosInstance.post("data/prompts/preRunPrompt", {
+            ideaID: idea !== "NO IDEAS" && idea?._id,
+            promptNames: [promptName],
+          })
+        ).data.price;
+        setPrice(price);
+        setOpenDialog("run");
+        setLabel("Run Prompt");
+      } catch (e) {
+        setLabel("Run Prompt");
+      }
+    }
   };
 
   const save = async () => {
-    if (axiosInstance)
-      axiosInstance
-        .post("data/prompts/savePromptResult", {
-          ideaId: idea !== "NO IDEAS" && idea._id,
+    setSaveLabel("Trying to save...");
+    try {
+      if (axiosInstance) {
+        await axiosInstance.post("data/prompts/savePromptResult", {
+          ideaID: idea !== "NO IDEAS" && idea._id,
           promptName,
           data: promptResultValue,
-        })
-        .then(({ data }) => {});
+          reason: "save",
+        });
+        setSaveLabel("Save Current Text as Prompt Result");
+        fetchPromptResult();
+      }
+    } catch (e) {
+      toast.error("Error while saving!!!");
+      setSaveLabel("Save Current Text as Prompt Result");
+    }
   };
 
   const handleClose = () => setOpenPrompt("closed");
 
-  const theme = useTheme();
+  const dialogeRef = useRef<HTMLDivElement>(null);
+  const textFieldRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (
+        dialogeRef.current?.clientHeight &&
+        textFieldRef.current?.clientHeight
+      ) {
+        const tempDiv = document.createElement("div");
+        tempDiv.style.position = "absolute";
+        tempDiv.style.visibility = "hidden";
+        tempDiv.style.height = "auto";
+        tempDiv.style.width = textFieldRef.current.clientWidth + "px";
+        tempDiv.style.padding = textFieldRef.current.style.padding;
+        tempDiv.style.fontSize = textFieldRef.current.style.fontSize;
+        tempDiv.style.lineHeight = textFieldRef.current.style.lineHeight;
+        tempDiv.style.fontFamily = textFieldRef.current.style.fontFamily;
+        tempDiv.style.fontWeight = textFieldRef.current.style.fontWeight;
+        tempDiv.style.fontStyle = textFieldRef.current.style.fontStyle;
+        tempDiv.style.whiteSpace = textFieldRef.current.style.whiteSpace;
+        tempDiv.innerText = textFieldRef.current.value;
+        document.body.appendChild(tempDiv);
+
+        const visibleHeight = tempDiv.clientHeight;
+
+        let spaceTakenByOtherElements =
+          dialogeRef.current.clientHeight - visibleHeight;
+        document.body.removeChild(tempDiv);
+
+        let availableHeight = window.innerHeight - spaceTakenByOtherElements;
+        setMaxHeight(`${availableHeight}px`);
+      } else setMaxHeight("10vh");
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [promptResultValue]);
 
   return (
     <Dialog
       open
+      style={{ zIndex: 10 }}
       maxWidth="xl"
-      PaperProps={{ sx: { width: "70vw" } }}
+      PaperProps={{
+        sx: isMobile
+          ? { width: "90vw" }
+          : { width: "calc(92vw - 240px)", marginLeft: "calc(2vw + 240px)" },
+        ref: dialogeRef,
+      }}
       onClose={handleClose}
     >
       <DialogTitle>
-        <Grid container width="100%" justifyContent="space-between">
+        <Grid
+          container
+          width="§0%"
+          direction={isMobile ? "column-reverse" : "row"}
+          rowSpacing={2}
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Grid item>
             <Button variant="outlined" onClick={fetchPromptResult}>
               <Refresh sx={{ mr: 1 }} />
@@ -134,10 +211,15 @@ const PromptDialog = ({
           </Grid>
           <Grid item paddingBottom="1%">
             <TextField
+              ref={textFieldRef}
               multiline
-              rows={18}
+              maxRows={1000}
               variant="filled"
-              sx={{ width: "50vw" }}
+              sx={{
+                width: isMobile ? "80vw" : "60vw",
+                height: { maxHeight },
+                overflow: "auto",
+              }}
               onChange={(e) => setPromptResultValue(e.target.value)}
               value={
                 idea === "NO IDEAS"
@@ -157,28 +239,28 @@ const PromptDialog = ({
               </Box>
             </Grid>
           )}
-          <Grid item container justifyContent="center" columnSpacing={2}>
+          <Grid
+            item
+            container
+            direction={isMobile ? "column" : "row"}
+            justifyContent="center"
+            alignItems="center"
+            columnSpacing={2}
+            rowSpacing={2}
+          >
             <Grid item>
               <Button
                 variant="outlined"
                 disabled={
-                  idea === "NO IDEAS" || !promptName || promptName === "idea"
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  label !== "Run Prompt"
                 }
                 onClick={() => !(!promptName || promptName === "idea") && run()}
               >
                 <Refresh sx={{ mr: 1 }} />
-                Run Prompt
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="outlined"
-                disabled={
-                  idea === "NO IDEAS" || !promptName || promptName === "idea"
-                }
-                onClick={() => !(!promptName || promptName === "idea") && run()}
-              >
-                <Feedback sx={{ mr: 1 }} /> Provide feedback and run prompt
+                {label}
               </Button>
             </Grid>
             <Grid item>
@@ -188,10 +270,27 @@ const PromptDialog = ({
                   idea === "NO IDEAS" || !promptName || promptName === "idea"
                 }
                 onClick={() =>
+                  !(!promptName || promptName === "idea") &&
+                  setOpenDialog("feedback")
+                }
+              >
+                <Feedback sx={{ mr: 1 }} /> Provide feedback and run prompt
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                disabled={
+                  idea === "NO IDEAS" ||
+                  !promptName ||
+                  promptName === "idea" ||
+                  saveLabel !== "Save Current Text as Prompt Result"
+                }
+                onClick={() =>
                   !(!promptName || promptName === "idea") && save()
                 }
               >
-                <Save sx={{ mr: 1 }} /> Save Current Text as Prompt Result
+                <Save sx={{ mr: 1 }} /> {saveLabel}
               </Button>
             </Grid>
           </Grid>
