@@ -12,6 +12,7 @@ import useResponsive from "../../../hooks/useRespnsive";
 import capitalize from "../../../util/capitalize";
 import { TypeOfSetOpenDialog } from "../../pages/aideator/AIdeator";
 import AIdeatorContext from "../../../context/AIdeatorContext";
+import { toast } from "react-toastify";
 
 type WhiteIdea = WhiteModels.Data.Ideas.WhiteIdea;
 
@@ -36,24 +37,29 @@ const RunDialog = ({
   const { setPolled } = useContext(AIdeatorContext);
 
   const run = async () => {
-    axiosInstance &&
-      axiosInstance.post("data/prompts/runAndGetPromptResult", {
-        ideaID: idea !== "NO IDEAS" && idea?._id,
-        promptNames:
-          promptName[0].length && promptName[0].length > 2
-            ? promptName
-            : [promptName],
-      });
-    setPolled &&
-      setPolled((pp) => {
-        const arr =
-          promptName[0].length && promptName[0].length > 2
-            ? promptName
-            : [promptName];
-        (arr as PromptName[]).forEach((p) => p !== "idea" && pp.push(p));
-        return pp;
-      });
-    setOpenDialog("closed");
+    try {
+      if (axiosInstance) {
+        await axiosInstance.post("data/prompts/runAndGetPromptResult", {
+          ideaID: idea !== "NO IDEAS" && idea?._id,
+          promptNames:
+            promptName[0].length && promptName[0].length > 2
+              ? promptName
+              : [promptName],
+        });
+        setPolled &&
+          setPolled((pp) => {
+            const arr =
+              promptName[0].length && promptName[0].length > 2
+                ? promptName
+                : [promptName];
+            (arr as PromptName[]).forEach((p) => p !== "idea" && pp.push(p));
+            return pp;
+          });
+        setOpenDialog("closed");
+      } else throw new Error("No axios instance");
+    } catch (err: any) {
+      toast.error(err.response.data.clientMessage);
+    }
   };
 
   const handleClose = () => setOpenDialog("closed");

@@ -62,7 +62,7 @@ const MyAccount: FC = () => {
       }
     };
     fetchTokens();
-  }, [refreshUserData]);
+  }, [refreshUserData, axiosInstance]);
 
   useEffect(() => {
     user && setName(user.name);
@@ -78,7 +78,7 @@ const MyAccount: FC = () => {
         );
         setIsEditingName(false);
 
-        toast("Name updated successfully!");
+        toast.error("Name updated successfully!");
         refreshUserData();
       }
     } catch (err) {
@@ -95,7 +95,7 @@ const MyAccount: FC = () => {
           { withCredentials: true }
         );
         setIsEditingPassword(false);
-        toast("Password updated successfully!");
+        toast.error("Password updated successfully!");
         refreshUserData();
       }
     } catch (err) {

@@ -105,7 +105,7 @@ const PromptDialog = ({
         fetchPromptResult();
       }
     } catch (e) {
-      toast("Error while saving!!!");
+      toast.error("Error while saving!!!");
       setSaveLabel("Save Current Text as Prompt Result");
     }
   };

@@ -68,7 +68,7 @@ const Notebook = () => {
                     })
                     .catch(() => {
                       refreshUserData();
-                      toast("Error saving data to server");
+                      toast.error("Error saving data to server");
                     });
               }}
               style={{ marginLeft: "16px" }}
@@ -103,7 +103,7 @@ const Notebook = () => {
                       })
                       .catch(() => {
                         refreshUserData();
-                        toast("Error saving data to server");
+                        toast.error("Error saving data to server");
                       });
                 }}
               >
@@ -125,7 +125,7 @@ const Notebook = () => {
                       })
                       .catch(() => {
                         refreshUserData();
-                        toast("Error saving data to server");
+                        toast.error("Error saving data to server");
                       });
                 }}
               >
