@@ -8,6 +8,8 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import Typography from "@mui/material/Typography";
 import useResponsive from "../../hooks/useRespnsive";
+import { MainserverContext } from "@failean/mainserver-provider";
+import { useContext } from "react";
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
@@ -24,6 +26,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
 
   const location = useLocation();
 
+  const mainserver = useContext(MainserverContext);
+  const axiosInstance = mainserver?.axiosInstance;
+
   const menuItems = [
     { label: "Idea Notebook", route: "/" },
     { label: "AIdeator", route: "/aideator" },
@@ -38,6 +43,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   ];
 
   const handleMenuItemClick = (route: string) => {
+    axiosInstance && axiosInstance.post("analytics/sidebar", { route });
     navigate(route);
     if (isMobile) {
       onMobileDrawerToggle();
