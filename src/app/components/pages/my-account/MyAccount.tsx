@@ -36,7 +36,11 @@ export const StyledTextField: any = styled(TextField)`
 `;
 
 const MyAccount: FC = () => {
-  const { user, refreshUserData } = useContext(UserContext);
+  const {
+    user,
+    refreshUserData,
+    tokens: tokenBalance,
+  } = useContext(UserContext);
   const [name, setName] = useState(user?.name || "");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -44,24 +48,11 @@ const MyAccount: FC = () => {
   const setIsEditingName = setIsEditingNamex[1];
   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
-  const [tokenBalance, setTokenBalance] = useState<number>(0);
-
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
 
   useEffect(() => {
     refreshUserData();
-    const fetchTokens = async () => {
-      try {
-        if (axiosInstance) {
-          const res = await axiosInstance.get("accounts/countTokens");
-          setTokenBalance(res.data.tokens);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchTokens();
   }, [refreshUserData, axiosInstance]);
 
   useEffect(() => {
