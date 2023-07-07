@@ -1,6 +1,8 @@
 import { createTheme } from "@mui/material/styles";
 // Supports weights 100-800
+import '@fontsource-variable/montserrat';
 import '@fontsource-variable/jetbrains-mono';
+import '@fontsource/roboto'
 
 const theme = createTheme({
   palette: {
@@ -85,7 +87,9 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Arial',
+      'Montserrat Variable',
+      'Roboto',
+      'JetBrains Mono Variable',
     ].join(','),
     h1: {
       fontSize: '2.5rem',

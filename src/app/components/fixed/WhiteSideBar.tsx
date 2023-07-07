@@ -1,6 +1,6 @@
 import { useState, useEffect, FC, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Collapse, useTheme } from "@mui/material";
+import { Collapse } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -20,6 +20,8 @@ import Avatar from "@mui/material/Avatar";
 import whiteTheme from "../../../content/style/whiteTheme";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import MenuIcon from "@mui/icons-material/Menu";
+import { IconButton } from "@mui/material";
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
@@ -37,28 +39,32 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const { ideas } = useContext(UserContext);
   const [selectedIdeaId, setSelectedIdeaId] = useState("");
   const [hoveredItem, setHoveredItem] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prevState) => !prevState);
+  };
 
   const menuItems = [
-    { label: "Idea Notebook", route: "/Notebook" },
+    { label: "Idea Notebook", route: "/notebook" },
     { label: "AIdeator", route: "/aideator" },
     { label: "Deck", route: "/deck" },
     { label: "Idea Backlog", route: "/backlog" },
-    { label: "Run CritIQ", route: "/critiq/RunCritiQ" },
+    { label: "Run CritIQ", route: "/critiq/runcritiq" },
   ];
 
   const critiqSubItems = [
-    { label: "Idea Score", route: "/critiq/IdeaScore" },
-    { label: "CritIQ Chat", route: "/critiq/CritiChat" },
-    { label: "Validation Roadmap", route: "/critiq/ValidationRoadMap" },
+    { label: "Idea Score", route: "/critiq/ideascore" },
+    { label: "CritIQ Chat", route: "/critiq/critichat" },
+    { label: "Validation Roadmap", route: "/critiq/validationroadmap" },
   ];
+
   const handleFabClick = () => {
-    // Handle FAB click event
-    console.log("FAB clicked");
-  };
+  navigate("/notebook");
+};
 
   useEffect(() => {
     const isCritiqRoute = [
-      "/critiq/RunCritiQ",
+      "/critiq/runcritiq",
       ...critiqSubItems.map((item) => item.route),
     ].includes(location.pathname);
     setOpenSubMenu(isCritiqRoute);
@@ -103,93 +109,74 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             onMouseEnter={() => handleMouseEnter(item.route)}
             onMouseLeave={handleMouseLeave}
             sx={{
-              bgcolor:
-                hoveredItem === item.route && !location.pathname.startsWith(item.route)
-                  ? "#4a8dd7"
-                  : location.pathname.startsWith(item.route)
-                  ? whiteTheme.palette.primary.main
-                  : "inherit",
-              color:
-                hoveredItem === item.route || location.pathname.startsWith(item.route)
-                  ? "white"
-                  : "inherit",
-              borderRadius: "1rem",
+              position: "relative",
               display: "flex",
               alignItems: "center",
               marginBottom: "15px",
-              transition: `${theme.transitions.create("background-color", {
-                duration: theme.transitions.duration.shorter,
-                easing: theme.transitions.easing.easeInOut,
-              })}, ${theme.transitions.create("transform", {
-                duration: theme.transitions.duration.shortest,
-                easing: theme.transitions.easing.easeInOut,
-              })}, ${theme.transitions.create("box-shadow", {
-                duration: theme.transitions.duration.shortest,
-                easing: theme.transitions.easing.easeInOut,
-              })}`,
+              borderRadius: "1rem",
+              transition: "transform 0.3s ease-in-out",
               transform: hoveredItem === item.route ? "scale(1.1)" : "scale(1)",
-              boxShadow:
-                hoveredItem === item.route
-                  ? "0 0 10px rgba(31, 38, 135, 0.37)"
-                  : "none",
-              "&:active": {
-                bgcolor: "#2f4d92", // Set your desired click color
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: "2px",
+                bgcolor: whiteTheme.palette.primary.main,
+                transform:
+                  hoveredItem === item.route ? "scaleX(1)" : "scaleX(0)",
+                transformOrigin: "left",
+                transition: "transform 0.2s ease-in-out",
               },
+              "&:hover::before": {
+                transform: "scaleX(1)",
+              },
+              // bgcolor:
+              //   location.pathname.startsWith(item.route) ? whiteTheme.palette.primary.main
+              //   : location.pathname.startsWith(item.route)
+              //   ? whiteTheme.palette.primary.main
+              //   : "inherit",
             }}
           >
             {item.route === "/notebook" && (
               <ListIcon
-              sx={{
-                color:
-                  hoveredItem === item.route || location.pathname.startsWith(item.route)
-                    ? "white"
-                    : whiteTheme.palette.primary.main,
-                mr: "0.5rem",
-              }}
+                sx={{
+                  color: whiteTheme.palette.primary.main,
+                  mr: "0.5rem",
+                }}
               />
             )}
             {item.route === "/aideator" && (
               <EmojiObjectsIcon
-              sx={{
-                color:
-                  hoveredItem === item.route || location.pathname.startsWith(item.route)
-                    ? "white"
-                    : whiteTheme.palette.primary.main,
-                mr: "0.5rem",
-              }}
+                sx={{
+                  color: whiteTheme.palette.primary.main,
+                  mr: "0.5rem",
+                }}
               />
             )}
             {item.route === "/deck" && (
               <DashboardIcon
-              sx={{
-                color:
-                  hoveredItem === item.route || location.pathname.startsWith(item.route)
-                    ? "white"
-                    : whiteTheme.palette.primary.main,
-                mr: "0.5rem",
-              }}
+                sx={{
+                  color: whiteTheme.palette.primary.main,
+                  mr: "0.5rem",
+                }}
               />
             )}
             {item.route === "/backlog" && (
               <PlaylistAddCheckIcon
-              sx={{
-                color:
-                  hoveredItem === item.route || location.pathname.startsWith(item.route)
-                    ? "white"
-                    : whiteTheme.palette.primary.main,
-                mr: "0.5rem",
-              }}
+                sx={{
+                  color: whiteTheme.palette.primary.main,
+                  mr: "0.5rem",
+                }}
               />
             )}
             {item.route === "/critiq/runcritiq" && (
               <PlayCircleOutlineIcon
-              sx={{
-                color:
-                  hoveredItem === item.route || location.pathname.startsWith(item.route)
-                    ? "white"
-                    : whiteTheme.palette.primary.main,
-                mr: "0.5rem",
-              }}
+                sx={{
+                  color: whiteTheme.palette.primary.main,
+                  mr: "0.5rem",
+                }}
               />
             )}
             <ListItemText primary={item.label} />
@@ -206,30 +193,38 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                     onMouseLeave={handleMouseLeave}
                     sx={{
                       bgcolor:
-                        hoveredItem === subItem.route && !location.pathname.startsWith(subItem.route)
+                        hoveredItem === subItem.route &&
+                        !location.pathname.startsWith(subItem.route)
                           ? "#4a8dd7"
                           : location.pathname.startsWith(subItem.route)
                           ? whiteTheme.palette.primary.main
                           : "inherit",
                       color:
-                        hoveredItem === subItem.route || location.pathname.startsWith(subItem.route)
+                        hoveredItem === subItem.route ||
+                        location.pathname.startsWith(subItem.route)
                           ? "white"
                           : "inherit",
                       borderRadius: "1rem",
                       display: "flex",
                       alignItems: "center",
                       marginBottom: "15px",
-                      transition: `${theme.transitions.create("background-color", {
-                        duration: theme.transitions.duration.shorter,
-                        easing: theme.transitions.easing.easeInOut,
-                      })}, ${theme.transitions.create("transform", {
-                        duration: theme.transitions.duration.shortest,
-                        easing: theme.transitions.easing.easeInOut,
-                      })}, ${theme.transitions.create("box-shadow", {
-                        duration: theme.transitions.duration.shortest,
-                        easing: theme.transitions.easing.easeInOut,
+                      transition: `${whiteTheme.transitions.create(
+                        "background-color",
+                        {
+                          duration: whiteTheme.transitions.duration.shorter,
+                          easing: whiteTheme.transitions.easing.easeInOut,
+                        }
+                      )}, ${whiteTheme.transitions.create("transform", {
+                        duration: whiteTheme.transitions.duration.shortest,
+                        easing: whiteTheme.transitions.easing.easeInOut,
+                      })}, ${whiteTheme.transitions.create("box-shadow", {
+                        duration: whiteTheme.transitions.duration.shortest,
+                        easing: whiteTheme.transitions.easing.easeInOut,
                       })}`,
-                      transform: hoveredItem === subItem.route ? "scale(1.1)" : "scale(1)",
+                      transform:
+                        hoveredItem === subItem.route
+                          ? "scale(1.1)"
+                          : "scale(1)",
                       boxShadow:
                         hoveredItem === subItem.route
                           ? "0 0 10px rgba(31, 38, 135, 0.37)"
@@ -241,35 +236,38 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                   >
                     {subItem.route === "/critiq/ideascore" && (
                       <ListIcon
-                      sx={{
-                        color:
-                          hoveredItem === subItem.route || location.pathname.startsWith(subItem.route)
-                            ? "white"
-                            : whiteTheme.palette.primary.main,
-                        mr: "0.5rem",
-                      }}
+                        sx={{
+                          color:
+                            hoveredItem === subItem.route ||
+                            location.pathname.startsWith(subItem.route)
+                              ? "white"
+                              : whiteTheme.palette.primary.main,
+                          mr: "0.5rem",
+                        }}
                       />
                     )}
                     {subItem.route === "/critiq/critichat" && (
                       <EmojiObjectsIcon
-                      sx={{
-                        color:
-                          hoveredItem === subItem.route || location.pathname.startsWith(subItem.route)
-                            ? "white"
-                            : whiteTheme.palette.primary.main,
-                        mr: "0.5rem",
-                      }}
+                        sx={{
+                          color:
+                            hoveredItem === subItem.route ||
+                            location.pathname.startsWith(subItem.route)
+                              ? "white"
+                              : whiteTheme.palette.primary.main,
+                          mr: "0.5rem",
+                        }}
                       />
                     )}
                     {subItem.route === "/critiq/validationroadmap" && (
                       <DashboardIcon
-                      sx={{
-                        color:
-                          hoveredItem === subItem.route || location.pathname.startsWith(subItem.route)
-                            ? "white"
-                            : whiteTheme.palette.primary.main,
-                        mr: "0.5rem",
-                      }}
+                        sx={{
+                          color:
+                            hoveredItem === subItem.route ||
+                            location.pathname.startsWith(subItem.route)
+                              ? "white"
+                              : whiteTheme.palette.primary.main,
+                          mr: "0.5rem",
+                        }}
                       />
                     )}
 
@@ -284,20 +282,20 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
     </List>
   );
 
-  const theme = useTheme();
-
   return (
     <Box
       sx={{
         display: "flex",
-        mt: isMobile ? 0 : (theme) => theme.spacing(8),
+        mt: isMobile ? 0 : (whiteTheme) => whiteTheme.spacing(8),
       }}
     >
       {isMobile ? (
         <Drawer
+          open={isSidebarOpen}
+          onClose={toggleSidebar}
+          variant={isMobile ? "temporary" : "persistent"}
           anchor="left"
-          open={mobileDrawerOpen}
-          onClose={onMobileDrawerToggle}
+          sx={{ boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}` }}
         >
           <Avatar
             alt="User Avatar"
@@ -306,12 +304,14 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               width: 40,
               height: 40,
               margin: "0 auto",
-              marginBottom: theme.spacing(2),
-              transition: theme.transitions.create("box-shadow", {
-                duration: theme.transitions.duration.short,
+              border: "2px",
+              borderColor: whiteTheme.palette.primary.main,
+              marginBottom: whiteTheme.spacing(2),
+              transition: whiteTheme.transitions.create("box-shadow", {
+                duration: whiteTheme.transitions.duration.short,
               }),
               "&:hover": {
-                boxShadow: theme.shadows[6],
+                boxShadow: whiteTheme.shadows[6],
               },
             }}
           />
@@ -345,8 +345,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
         </Drawer>
       ) : (
         <Drawer
+          open={isSidebarOpen}
+          onClose={toggleSidebar}
           variant="persistent"
-          open
           sx={{
             width: "drawerWidth",
             maxWidth: "260px",
@@ -354,26 +355,64 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             [`& .MuiDrawer-paper`]: {
               width: "240px",
               boxSizing: "border-box",
+              boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}`,
             },
           }}
         >
-          <Avatar
-            alt="User Avatar"
-            src="/path/to/avatar-image.jpg"
+          <Box
             sx={{
-              width: 40,
-              height: 40,
-              margin: "0 auto",
-              marginTop: theme.spacing(2),
-              marginBottom: theme.spacing(2),
-              transition: theme.transitions.create("box-shadow", {
-                duration: theme.transitions.duration.short,
-              }),
-              "&:hover": {
-                boxShadow: theme.shadows[6],
-              },
+              position: "relative",
+              alignSelf: "center",
+              width: "calc(100% - 20px)",
+              height: "auto",
             }}
-          />
+          >
+            <Avatar
+              alt="User Avatar"
+              src="/path/to/avatar-image.jpg"
+              sx={{
+                border: 1.5,
+                borderColor: whiteTheme.palette.primary.main,
+                width: 50,
+                height: 50,
+                margin: "0 auto",
+                marginTop: whiteTheme.spacing(2),
+                marginBottom: whiteTheme.spacing(2),
+                transition: whiteTheme.transitions.create("box-shadow", {
+                  duration: whiteTheme.transitions.duration.short,
+                }),
+                "&:hover": {
+                  boxShadow: whiteTheme.shadows[6],
+                },
+              }}
+            />
+            <IconButton
+              onClick={toggleSidebar}
+              sx={{
+                position: "absolute",
+                top: "50%",
+                right: 0,
+                transform: "translateY(-50%)",
+                marginTop: whiteTheme.spacing(2),
+                marginBottom: whiteTheme.spacing(2),
+                width: 30,
+                height: 29,
+                borderRadius: 1.1,
+                padding: 0,
+                boxShadow: 0,
+                bgcolor: whiteTheme.palette.primary.main,
+                transition: "transform 0.3s, scale 0.3s, rotate 0.2s",
+                "&:hover": {
+                  transform: "translateY(-50%) scale(1.1) rotate(180deg)",
+                  bgcolor: whiteTheme.palette.primary.main,
+                },
+              }}
+            >
+              <MenuIcon sx={{
+                  color: "white" }} />
+            </IconButton>
+          </Box>
+
           <>
             <Select
               value={selectedIdeaId}
@@ -429,13 +468,37 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
         aria-label="Add"
         sx={{
           position: "fixed",
-          bottom: theme.spacing(2),
-          right: theme.spacing(2),
+          bottom: whiteTheme.spacing(2),
+          right: whiteTheme.spacing(2),
         }}
         onClick={handleFabClick}
       >
         <AddIcon />
       </Fab>
+      <IconButton
+        sx={{
+          position: 'fixed',
+          visibility: isSidebarOpen ? 'hidden' : 'visible',
+          opacity: isSidebarOpen ? 0 : 1,
+          boxShadow: "0 0 10px rgba(31, 38, 135, 0.37)",
+          transform: "translateY(-50%)",
+                marginTop: whiteTheme.spacing(3),
+                marginBottom: whiteTheme.spacing(2),
+                width: 30,
+                height: 29,
+                borderRadius: 1.1,
+                transition: "transform 0.3s, scale 0.3s",
+                "&:hover": {
+                  transform: "translateY(-50%) scale(1.1)",
+                  bgcolor: whiteTheme.palette.primary.main,
+                },
+                bgcolor: whiteTheme.palette.primary.main,
+        }}
+        onClick={toggleSidebar}
+        
+      >
+        <MenuIcon sx={{color: "white"}}/>
+      </IconButton>
     </Box>
   );
 };
