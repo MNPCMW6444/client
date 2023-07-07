@@ -5,7 +5,7 @@ import WhiteThemeProvider from "./providers/style/WhiteThemeProvider";
 
 const App = () => (
   <WhiteThemeProvider>
-    <MainserverProvider>
+    <MainserverProvider env="tst">
       <UserContextProvider>
         <WhiteRouter />
       </UserContextProvider>
