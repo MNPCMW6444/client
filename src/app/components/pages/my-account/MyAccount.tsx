@@ -44,11 +44,24 @@ const MyAccount: FC = () => {
   const setIsEditingName = setIsEditingNamex[1];
   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
+  const [tokenBalance, setTokenBalance] = useState<number>(0);
+
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
 
   useEffect(() => {
     refreshUserData();
+    const fetchTokens = async () => {
+      try {
+        if (axiosInstance) {
+          const res = await axiosInstance.get("accounts/countTokens");
+          setTokenBalance(res.data.tokens);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchTokens();
   }, [refreshUserData]);
 
   useEffect(() => {
@@ -124,6 +137,7 @@ const MyAccount: FC = () => {
                 startAdornment: <EmailIcon />,
               }}
               fullWidth
+              dsiabled
             />
           </Grid>
           <Grid item>
@@ -144,6 +158,11 @@ const MyAccount: FC = () => {
               setter={setPassword}
               setter2={setRepeatPassword}
             />
+          </Grid>
+          <Grid item alignSelf="center">
+            <Typography variant="h6" gutterBottom>
+              Token Balance: {tokenBalance}
+            </Typography>
           </Grid>
         </Grid>
       </StyledPaper>
