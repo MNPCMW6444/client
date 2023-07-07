@@ -1,16 +1,9 @@
 import { useState, useContext, useEffect } from "react";
-import {
-  Paper,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-} from "@mui/material";
+import { Paper, Box, List, ListItem, ListItemText, IconButton } from "@mui/material";
 import { ViewSidebar } from "@mui/icons-material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import RunCritIQ from "./RunCritIQ";
+import RunCritiQ from "./RunCritiQ";
 import IdeaScore from "./IdeaScore";
 import CritIQChat from "./CritiChat";
 import ValidationRoadmap from "./ValidationRoadmap";
@@ -43,7 +36,7 @@ export default function Critiq() {
   const renderTabContent = () => {
     switch (value) {
       case "Run CritIQ":
-        return <RunCritIQ />;
+        return <RunCritiQ />;
       case "Idea Score":
         return <IdeaScore />;
       case "CritIQ Chat":
