@@ -4,7 +4,7 @@ import '@fontsource-variable/montserrat';
 import '@fontsource-variable/jetbrains-mono';
 import '@fontsource/roboto'
 
-const theme = createTheme({
+const whiteTheme = createTheme({
   palette: {
     primary: {
       main: "#3b6bb2",
@@ -159,4 +159,4 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+export default whiteTheme;
