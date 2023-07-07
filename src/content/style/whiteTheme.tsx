@@ -1,8 +1,8 @@
 import { createTheme } from "@mui/material/styles";
 // Supports weights 100-800
 import '@fontsource-variable/montserrat';
-import '@fontsource-variable/jetbrains-mono';
-import '@fontsource/roboto'
+// import '@fontsource-variable/jetbrains-mono';
+// import '@fontsource/roboto'
 
 const whiteTheme = createTheme({
   palette: {
