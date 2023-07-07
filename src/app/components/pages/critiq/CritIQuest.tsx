@@ -462,6 +462,7 @@ const IdeaValidationQuestionnaire = () => {
       if (activeStep !== steps.length - 1) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       } else {
+        // If it's the last step, start loading progress and after 10 seconds, open the results dialog
         setLoading(true);
         setTimeout(() => {
           setOpen(true);
@@ -569,14 +570,14 @@ const IdeaValidationQuestionnaire = () => {
         </Dialog>
         <Dialog open={resultsOpen} onClose={handleResultsClose}>
           <DialogTitle>Results</DialogTitle>
-            <Typography variant="h6" style={{ marginBottom: 16 }}>
-    Your Fail score is:
-  </Typography>
-  <CircularProgress
-    variant="determinate"
-    value={averageFailScore}
-    style={{ color: "#f00", marginBottom: 16 }}
-  />
+          <DialogContent>
+            <Typography variant="h6">
+              Your Fail score is:
+              <CircularProgress
+                variant="determinate"
+                value={averageFailScore}
+                style={{ color: "#f00" }}
+              />
             </Typography>
             <Typography variant="h6">
               Your Lean score is:
