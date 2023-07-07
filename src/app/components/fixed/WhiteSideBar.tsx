@@ -27,9 +27,14 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   const menuItems = [
     { label: "Idea Notebook", route: "/" },
     { label: "AIdeator", route: "/aideator" },
-    { label: "Deck", route: "/deck" },
-    { label: "Idea Backlog", route: "/backlog" },
-    { label: "CritiQ", route: "/critiq", disabled: false, comingSoon: true },
+    { label: "Deck", route: "/deck", disabled: true, comingSoon: true },
+    {
+      label: "Idea Backlog",
+      route: "/backlog",
+      disabled: true,
+      comingSoon: true,
+    },
+    { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
   ];
 
   const handleMenuItemClick = (route: string) => {
@@ -41,36 +46,60 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
 
   const renderMenuItems = () => (
     <List>
-      {menuItems.map((item, index) => (
-        <ListItem
-          key={index}
-          onClick={() => !item.disabled && handleMenuItemClick(item.route)}
-          sx={{
-            bgcolor:
-              location.pathname === item.route ? "action.selected" : "inherit",
-          }}
-          disabled={item.disabled}
-        >
-          <ListItemText primary={item.label} />
-          {item.comingSoon && (
-            <ListItemSecondaryAction>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  display: "block",
-                  fontSize: {
-                    xs: "0.6rem",
-                    sm: "1rem",
-                  },
-                }}
-              >
-                Coming Soon!
-              </Typography>
-            </ListItemSecondaryAction>
-          )}
-        </ListItem>
-      ))}
+      {menuItems.map((item, index) =>
+        isMobile ? (
+          <>
+            <ListItem
+              key={index}
+              onClick={() => !item.disabled && handleMenuItemClick(item.route)}
+              sx={{
+                bgcolor:
+                  location.pathname === item.route
+                    ? "action.selected"
+                    : "inherit",
+              }}
+              disabled={item.disabled}
+            >
+              <ListItemText
+                primary={
+                  item.label + (item.comingSoon ? " - Comming Soon!" : "")
+                }
+              />
+            </ListItem>
+          </>
+        ) : (
+          <ListItem
+            key={index}
+            onClick={() => !item.disabled && handleMenuItemClick(item.route)}
+            sx={{
+              bgcolor:
+                location.pathname === item.route
+                  ? "action.selected"
+                  : "inherit",
+            }}
+            disabled={item.disabled}
+          >
+            <ListItemText primary={item.label} />
+            {item.comingSoon && (
+              <ListItemSecondaryAction>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    display: "block",
+                    fontSize: {
+                      xs: "0.6rem",
+                      sm: "1rem",
+                    },
+                  }}
+                >
+                  Coming Soon!
+                </Typography>
+              </ListItemSecondaryAction>
+            )}
+          </ListItem>
+        )
+      )}
     </List>
   );
 

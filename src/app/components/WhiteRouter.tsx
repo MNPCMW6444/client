@@ -12,9 +12,8 @@ const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
 const About = lazy(() => import("./pages/about/About"));
 const Notebook = lazy(() => import("./pages/notebook/Notebook"));
-const Deck = lazy(() => import("./pages/deck/Deck"));
+//const Deck = lazy(() => import("./pages/deck/Deck.future"));
 const Backlog = lazy(() => import("./pages/backlog/Backlog"));
-const CritiQ = lazy(() => import("./pages/critiq/CritIQ"));
 
 const WhiteRouter = () => {
   const { user } = useContext(UserContext);
@@ -80,27 +79,19 @@ const WhiteRouter = () => {
                   </Suspense>
                 }
               />
-              <Route
+              {/*    <Route
                 path="/deck"
                 element={
                   <Suspense fallback={loading()}>
                     <Deck />
                   </Suspense>
                 }
-              />
+              /> */}
               <Route
                 path="/backlog"
                 element={
                   <Suspense fallback={loading()}>
                     <Backlog />
-                  </Suspense>
-                }
-              />
-              <Route
-                path="/critiq"
-                element={
-                  <Suspense fallback={loading()}>
-                    <CritiQ />
                   </Suspense>
                 }
               />

@@ -10,7 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import IdeaSelector from "../../common/IdeaSelector";
-import Questionire from "./CritIQuest";
+import Questionire from "./CritIQuest.future";
 
 export default function RunCritiq() {
   const [value, setValue] = useState("");
