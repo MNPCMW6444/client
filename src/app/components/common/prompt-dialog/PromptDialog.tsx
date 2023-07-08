@@ -117,44 +117,25 @@ const PromptDialog = ({
 
   useEffect(() => {
     const handleResize = () => {
-      if (
-        dialogeRef.current?.clientHeight &&
-        textFieldRef.current?.clientHeight
-      ) {
-        const tempDiv = document.createElement("div");
-        tempDiv.style.position = "absolute";
-        tempDiv.style.visibility = "hidden";
-        tempDiv.style.height = "auto";
-        tempDiv.style.width = textFieldRef.current.clientWidth + "px";
-        tempDiv.style.padding = textFieldRef.current.style.padding;
-        tempDiv.style.fontSize = textFieldRef.current.style.fontSize;
-        tempDiv.style.lineHeight = textFieldRef.current.style.lineHeight;
-        tempDiv.style.fontFamily = textFieldRef.current.style.fontFamily;
-        tempDiv.style.fontWeight = textFieldRef.current.style.fontWeight;
-        tempDiv.style.fontStyle = textFieldRef.current.style.fontStyle;
-        tempDiv.style.whiteSpace = textFieldRef.current.style.whiteSpace;
-        tempDiv.innerText = textFieldRef.current.value;
-        document.body.appendChild(tempDiv);
+      const dialogHeight = dialogeRef.current?.clientHeight;
+      const headerHeight = 64;
 
-        const visibleHeight = tempDiv.clientHeight;
-
-        let spaceTakenByOtherElements =
-          dialogeRef.current.clientHeight - visibleHeight;
-        document.body.removeChild(tempDiv);
-
-        let availableHeight = window.innerHeight - spaceTakenByOtherElements;
+      if (dialogHeight) {
+        let availableHeight = window.innerHeight - headerHeight - 100;
         setMaxHeight(`${availableHeight}px`);
-      } else setMaxHeight("10vh");
+      }
     };
 
+    // Call it once to take effect when component is mounted
     handleResize();
 
     window.addEventListener("resize", handleResize);
 
+    // Cleanup function to remove the event listener when the component is unmounted
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [promptResultValue]);
+  }, [promptResultValue]); // The empty dependency array makes sure the effect runs once on mount and cleanup on unmount
 
   return (
     <Dialog
@@ -162,14 +143,16 @@ const PromptDialog = ({
       style={{ zIndex: 10 }}
       maxWidth="xl"
       PaperProps={{
-        sx: isMobile
-          ? { width: "90vw" }
-          : {
-              width: "calc(92vw - 240px)",
-              marginLeft: "calc(2vw + 240px)",
-              height: "calc(90vh - 64px)",
-              marginTop: "calc(5vh + 64px)",
-            },
+        sx: {
+          height: "calc(88vh - 64px)",
+          marginTop: "calc(4vh + 64px)",
+          ...(isMobile
+            ? { width: "90vw" }
+            : {
+                width: "calc(92vw - 240px)",
+                marginLeft: "calc(2vw + 240px)",
+              }),
+        },
         ref: dialogeRef,
       }}
       onClose={handleClose}
@@ -221,7 +204,7 @@ const PromptDialog = ({
               variant="filled"
               sx={{
                 width: isMobile ? "80vw" : "60vw",
-                height: { maxHeight },
+                height: `calc(${maxHeight} - ${isMobile ? 450 : 220}px)`,
                 overflow: "auto",
               }}
               onChange={(e) => setPromptResultValue(e.target.value)}
