@@ -204,7 +204,7 @@ const PromptDialog = ({
               variant="filled"
               sx={{
                 width: isMobile ? "80vw" : "60vw",
-                height: `calc(${maxHeight} - ${isMobile ? 450 : 220}px)`,
+                height: `calc(${maxHeight} - ${isMobile ? 490 : 260}px)`,
                 overflow: "auto",
               }}
               onChange={(e) => setPromptResultValue(e.target.value)}
