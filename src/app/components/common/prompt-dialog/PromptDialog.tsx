@@ -164,7 +164,12 @@ const PromptDialog = ({
       PaperProps={{
         sx: isMobile
           ? { width: "90vw" }
-          : { width: "calc(92vw - 240px)", marginLeft: "calc(2vw + 240px)" },
+          : {
+              width: "calc(92vw - 240px)",
+              marginLeft: "calc(2vw + 240px)",
+              height: "calc(90vh - 64px)",
+              marginTop: "calc(5vh + 64px)",
+            },
         ref: dialogeRef,
       }}
       onClose={handleClose}
@@ -172,7 +177,6 @@ const PromptDialog = ({
       <DialogTitle>
         <Grid
           container
-          width="§0%"
           direction={isMobile ? "column-reverse" : "row"}
           rowSpacing={2}
           justifyContent="space-between"
