@@ -93,10 +93,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                   color="text.secondary"
                   sx={{
                     display: "block",
-                    fontSize: {
-                      xs: "0.6rem",
-                      sm: "1rem",
-                    },
+                    fontSize: "60%",
                   }}
                 >
                   Coming Soon!
