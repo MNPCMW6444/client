@@ -8,7 +8,7 @@ import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
 import { loading } from "../../content/style/styled-components/all";
 import WhitePage from "./WhitePage";
-import QuickMenu from "./fixed/QuickMenu";
+
 const Router = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -27,7 +27,6 @@ const Router = () => {
             mobileDrawerOpen={mobileDrawerOpen}
             onMobileDrawerToggle={handleMobileDrawerToggle}
           />
-          <QuickMenu />
           <Box
             component="main"
             sx={{
