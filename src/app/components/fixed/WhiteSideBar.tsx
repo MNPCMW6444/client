@@ -85,7 +85,10 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             }}
             disabled={item.disabled}
           >
-            <ListItemText primary={item.label} />
+            <ListItemText
+              primary={item.label}
+              sx={{ cursor: item.disabled ? "not-allowed" : "pointer" }}
+            />
             {item.comingSoon && (
               <ListItemSecondaryAction>
                 <Typography
