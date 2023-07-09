@@ -1,5 +1,8 @@
-import { useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useContext, useState } from "react";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { MainserverContext } from "@failean/mainserver-provider";
+import { LinearProgress, Box } from "@mui/material";
 import {
   Button,
   Step,
@@ -101,76 +104,6 @@ const steps: StepType[] = [
     ],
   },
   {
-    title: "Technological Validation",
-    questions: [
-      {
-        text: "Have you conducted a feasibility study, or are you navigating in the dark?",
-        answers: [
-          "Feasibility study? Check!",
-          "In the process of studying feasibility",
-          "We plan to do it soon",
-          "Feasibility... what now?",
-        ],
-      },
-      {
-        text: "Do you have a Proof of Concept (PoC) that shows your idea works, or are you still in the 'trust me, it'll work' stage?",
-        answers: [
-          "We've got a successful PoC",
-          "We're in the middle of creating a PoC",
-          "PoC is on the to-do list",
-          "'Trust me, it'll work'",
-        ],
-      },
-
-      {
-        text: "Do you have a minimum viable product, or is your idea still just a cool doodle on a napkin?",
-        answers: [
-          "MVP up and running",
-          "Got a neat prototype",
-          "Still in the dev dungeon",
-          "We have a napkin",
-        ],
-      },
-      {
-        text: "Got a tech whiz steering your ship, or outsourcing to the highest bidder?",
-        answers: [
-          "Got a tech team and a CTO",
-          "Got a tech team, no CTO yet",
-          "Outsourcing our battles",
-          "Building our tech dream team",
-        ],
-      },
-      {
-        text: "Did you lock in your tech stack, or are you lost in the tech supermarket?",
-        answers: [
-          "Tech stack, checked",
-          "Still perusing the tech aisle",
-          "Our dev team will handle it",
-          "Tech stack? Sounds delicious",
-        ],
-      },
-      {
-        text: "Thought about scalability, or hoping your server won't crash at the first sign of success?",
-        answers: [
-          "Scaling like a seasoned mountaineer",
-          "Eyeing that mountain",
-          "Will cross that bridge when we come to it",
-          "Scalability sounds like a brand of fish food",
-        ],
-      },
-      {
-        text: "Have you fortified your cyber castle, or inviting hackers for a free-for-all?",
-        answers: [
-          "Our cyber castle is a fortress",
-          "Building the cyber walls",
-          "Defenses are on the agenda",
-          "Cyber...security? Is that a new game?",
-        ],
-      },
-    ],
-  },
-
-  {
     title: "Business Validation",
     questions: [
       {
@@ -260,6 +193,76 @@ const steps: StepType[] = [
     ],
   },
   {
+    title: "Technological Validation",
+    questions: [
+      {
+        text: "Have you conducted a feasibility study, or are you navigating in the dark?",
+        answers: [
+          "Feasibility study? Check!",
+          "In the process of studying feasibility",
+          "We plan to do it soon",
+          "Feasibility... what now?",
+        ],
+      },
+      {
+        text: "Do you have a Proof of Concept (PoC) that shows your idea works, or are you still in the 'trust me, it'll work' stage?",
+        answers: [
+          "We've got a successful PoC",
+          "We're in the middle of creating a PoC",
+          "PoC is on the to-do list",
+          "'Trust me, it'll work'",
+        ],
+      },
+
+      {
+        text: "Do you have a minimum viable product, or is your idea still just a cool doodle on a napkin?",
+        answers: [
+          "MVP up and running",
+          "Got a neat prototype",
+          "Still in the dev dungeon",
+          "We have a napkin",
+        ],
+      },
+      {
+        text: "Got a tech whiz steering your ship, or outsourcing to the highest bidder?",
+        answers: [
+          "Got a tech team and a CTO",
+          "Got a tech team, no CTO yet",
+          "Outsourcing our battles",
+          "Building our tech dream team",
+        ],
+      },
+      {
+        text: "Did you lock in your tech stack, or are you lost in the tech supermarket?",
+        answers: [
+          "Tech stack, checked",
+          "Still perusing the tech aisle",
+          "Our dev team will handle it",
+          "Tech stack? Sounds delicious",
+        ],
+      },
+      {
+        text: "Thought about scalability, or hoping your server won't crash at the first sign of success?",
+        answers: [
+          "Scaling like a seasoned mountaineer",
+          "Eyeing that mountain",
+          "Will cross that bridge when we come to it",
+          "Scalability sounds like a brand of fish food",
+        ],
+      },
+      {
+        text: "Have you fortified your cyber castle, or inviting hackers for a free-for-all?",
+        answers: [
+          "Our cyber castle is a fortress",
+          "Building the cyber walls",
+          "Defenses are on the agenda",
+          "Cyber...security? Is that a new game?",
+        ],
+      },
+    ],
+  },
+
+  {
     title: "Compliance & Legal Validation",
     questions: [
       {
@@ -297,11 +300,8 @@ const steps: StepType[] = [
     ],
   },
 ];
-type AnswerScoresType = {
-  [key: string]: { fail: number; lean: number };
-};
 
-const answerScores: AnswerScoresType = {
+const answerScores: any = {
   "Experienced it first-hand": { fail: 1, lean: 5 },
   "Found it in a report": { fail: 2, lean: 4 },
   "Someone told me about it": { fail: 3, lean: 3 },
@@ -400,38 +400,39 @@ const answerScores: AnswerScoresType = {
   "What happens in Vegas...": { fail: 2, lean: 4 },
 };
 
-const IdeaValidationQuestionnaire = () => {
+const CritIQuest = () => {
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<{
-    [key: string]: string | "" | undefined;
-  }>({});
+  const [selectedValue, setSelectedValue] = useState<string>("");
   const [resultsOpen, setResultsOpen] = useState(false);
   const [averageFailScore, setAverageFailScore] = useState(0);
   const [averageLeanScore, setAverageLeanScore] = useState(0);
 
-  const [failScores, setFailScores] = useState<{ [key: string]: number }>({});
-  const [leanScores, setLeanScores] = useState<{ [key: string]: number }>({});
+  const [failScores, setFailScores] = useState(0);
+  const [leanScores, setLeanScores] = useState(0);
   const [numQuestionsAnswered, setNumQuestionsAnswered] = useState(0);
 
-  const handleAnswerChange = (event: SelectChangeEvent<{ value: unknown }>) => {
+  const handleAnswerChange = (
+    event: SelectChangeEvent<{ name?: string; value: unknown }>
+  ) => {
     const { name, value } = event.target;
-    setSelectedValue((prevSelectedValue) => ({
+    setSelectedValue((prevSelectedValue: any) => ({
       ...prevSelectedValue,
-      [name as string]: value as string | "" | undefined,
+      [name!]: value,
     }));
 
     const [stepIndex, questionIndex] = name.split("-");
     const answer = value as string;
 
-    // Update failScores and leanScores based on the selected answer
     if (answerScores[answer]) {
       const { fail, lean } = answerScores[answer];
-      setFailScores((prevFailScores) => ({
+      setFailScores((prevFailScores: any) => ({
         ...prevFailScores,
         [`${stepIndex}-${questionIndex}`]: fail,
       }));
-      setLeanScores((prevLeanScores) => ({
+      setLeanScores((prevLeanScores: any) => ({
         ...prevLeanScores,
         [`${stepIndex}-${questionIndex}`]: lean,
       }));
@@ -453,16 +454,14 @@ const IdeaValidationQuestionnaire = () => {
 
   const handleNext = () => {
     const currentStepQuestions = steps[activeStep].questions;
-    const isStepCompleted = currentStepQuestions.every((_, index) =>
-      Boolean(selectedValue[`${activeStep}-${index}`])
+    const isStepCompleted = currentStepQuestions.every((question, index) =>
+      Boolean(selectedValue[activeStep]?.[index]?.answer)
     );
 
     if (isStepCompleted) {
-      // If it's not the last step, move to the next step
       if (activeStep !== steps.length - 1) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
       } else {
-        // If it's the last step, start loading progress and after 10 seconds, open the results dialog
         setLoading(true);
         setTimeout(() => {
           setOpen(true);
@@ -474,6 +473,9 @@ const IdeaValidationQuestionnaire = () => {
       alert("Please answer all questions before proceeding.");
     }
   };
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -490,40 +492,64 @@ const IdeaValidationQuestionnaire = () => {
     );
     const averageFailScore = totalFailScore / numQuestionsAnswered;
     const averageLeanScore = totalLeanScore / numQuestionsAnswered;
-    setAverageFailScore(averageFailScore);
-    setAverageLeanScore(averageLeanScore);
-    const finalScore =
+    setAverageFailScore(averageFailScore * 20);
+    setAverageLeanScore(averageLeanScore * 20);
+    const faileanScore =
       (2 * (averageFailScore * averageLeanScore)) /
       (averageFailScore + averageLeanScore);
-    console.log("Failean Score:", finalScore);
+    console.log("Failean Score:", faileanScore);
 
     // Open the results dialog
     setResultsOpen(true);
+    postDataToDatabase(averageFailScore, averageLeanScore, faileanScore);
   };
   const handleResultsClose = () => {
     setResultsOpen(false);
   };
+  const postDataToDatabase = async (
+    averageFailScore: number,
+    leanScore: number,
+    faileanScore: number
+  ) => {
+    try {
+      if (axiosInstance) {
+        const response = await axiosInstance.post(
+          "/data/critiqQuestionire/update",
+          {
+            averageFailScore: averageFailScore,
+            leanScore: leanScore,
+            faileanScore: faileanScore,
+          }
+        );
 
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Grid
       container
       direction="column"
       justifyContent="center"
       alignItems="center"
-      style={{ minHeight: "10vh", padding: "0 15px" }}
+      style={{ minHeight: "100vh", padding: "2em" }}
     >
-      <Grid item>
+      <Grid item xs={12} sm={8} md={6}>
         <Button variant="outlined" onClick={handleClickOpen}>
-          Start Validation questionnaire
+          Start Validation Questionnaire
         </Button>
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
           <DialogTitle>Validation Questionnaire</DialogTitle>
           <DialogContent>
             {loading ? (
-              <CircularProgress />
+              <Box sx={{ width: "100%" }}>
+                <LinearProgress />
+              </Box>
             ) : (
               <>
-                <Stepper activeStep={activeStep} style={{ maxWidth: "100%" }}>
+                <Stepper activeStep={activeStep} style={{ width: "100%" }}>
                   {steps.map((step, index) => (
                     <Step key={step.title}>
                       <StepLabel>{step.title}</StepLabel>
@@ -537,7 +563,7 @@ const IdeaValidationQuestionnaire = () => {
                     </Typography>
                     <Select
                       name={`${activeStep}-${index}`}
-                      value={selectedValue[`${activeStep}-${index}`] || ""}
+                      value={selectedValue[activeStep - index] as any}
                       onChange={handleAnswerChange}
                       fullWidth
                       variant="outlined"
@@ -569,40 +595,32 @@ const IdeaValidationQuestionnaire = () => {
           </DialogActions>
         </Dialog>
         <Dialog open={resultsOpen} onClose={handleResultsClose}>
-          <DialogTitle>Results</DialogTitle>
-          <DialogContent>
-            <Typography variant="h6">
-              Your Fail score is:
-              <CircularProgress
-                variant="determinate"
-                value={averageFailScore}
-                style={{ color: "#f00" }}
-              />
-            </Typography>
-            <Typography variant="h6">
-              Your Lean score is:
-              <CircularProgress
-                variant="determinate"
-                value={averageLeanScore}
-                style={{ color: "#0f0" }}
-              />
-            </Typography>
-            <Typography variant="h6">
-              Your Failean score is:
-              <CircularProgress
-                variant="determinate"
-                value={(averageFailScore + averageLeanScore) / 2}
-                style={{ color: "#00f" }}
-              />
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleResultsClose}>Close</Button>
-          </DialogActions>
+          <Grid
+            container
+            direction="column"
+            sx={{ width: "50%", height: "70vh" }}
+          >
+            <DialogTitle>Results</DialogTitle>
+            <DialogContent>
+              <Typography variant="h6">
+                Your Fail score is: {Math.floor(averageFailScore)}
+              </Typography>
+              <Typography variant="h6">
+                Your Lean score is: {Math.floor(averageLeanScore)}
+              </Typography>
+              <Typography variant="h6">
+                Your Failean score is:{" "}
+                {(averageFailScore + averageLeanScore) / 2}
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleResultsClose}>Close</Button>
+            </DialogActions>
+          </Grid>
         </Dialog>
       </Grid>
     </Grid>
   );
 };
 
-export default IdeaValidationQuestionnaire;
+export default CritIQuest;
