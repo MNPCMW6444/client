@@ -504,7 +504,7 @@ const IdeaValidationQuestionnaire = () => {
       style={{ minHeight: "10vh", padding: "0 15px" }}
     >
       <Grid item>
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button color="secondary" variant="outlined" onClick={handleClickOpen}>
           Start Validation questionnaire
         </Button>
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
@@ -563,10 +563,10 @@ const IdeaValidationQuestionnaire = () => {
             ))}
           </DialogContent>
           <DialogActions>
-            <Button disabled={activeStep === 0} onClick={handleBack}>
+            <Button color="secondary" disabled={activeStep === 0} onClick={handleBack}>
               Back
             </Button>
-            <Button
+            <Button color="secondary"
               variant="contained"
               onClick={
                 activeStep === steps.length - 1 ? handleFinish : handleNext

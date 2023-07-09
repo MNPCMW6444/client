@@ -85,6 +85,7 @@ const RunDialog = ({
         >
           <Grid item>
             <Button
+              color="secondary"
               onClick={handleClose}
               variant="outlined"
               sx={{ borderColor: "red", color: "red" }}
@@ -129,6 +130,7 @@ const RunDialog = ({
           >
             <Grid item>
               <Button
+                color="secondary"
                 variant="outlined"
                 disabled={
                   idea === "NO IDEAS" || !promptName || promptName === "idea"

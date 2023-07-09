@@ -167,10 +167,10 @@ const Reset = () => {
             <>
               <Box mt={2}>
                 <Button
+                  color="secondary"
                   type="submit"
                   data-testid="login-button"
                   variant="contained"
-                  color="primary"
                   fullWidth
                   onClick={handleSubmit}
                 >
@@ -179,7 +179,7 @@ const Reset = () => {
               </Box>
               <Box mt={1}>
                 <Typography align="center">
-                  <Button color="primary" onClick={() => navigate("/login")}>
+                  <Button color="secondary" onClick={() => navigate("/login")}>
                     Go Back to Login Page
                   </Button>
                 </Typography>

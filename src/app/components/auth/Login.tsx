@@ -106,10 +106,10 @@ const Login = () => {
           />
           <Box mt={2}>
             <Button
+              color="secondary"
               type="submit"
               data-testid="login-button"
               variant="contained"
-              color="primary"
               fullWidth
               onClick={handleSubmit}
             >
@@ -119,13 +119,13 @@ const Login = () => {
           <Box mt={1}>
             <Typography align="center">
               Don't have an account?
-              <Button color="primary" onClick={() => navigate("/register")}>
+              <Button color="secondary" onClick={() => navigate("/register")}>
                 Register here
               </Button>
             </Typography>
             <Typography align="center">
               Forgot you password?
-              <Button color="primary" onClick={() => navigate("/reset")}>
+              <Button color="secondary" onClick={() => navigate("/reset")}>
                 Reset here
               </Button>
             </Typography>

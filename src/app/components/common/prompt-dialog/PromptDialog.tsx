@@ -166,13 +166,18 @@ const PromptDialog = ({
           alignItems="center"
         >
           <Grid item>
-            <Button variant="outlined" onClick={fetchPromptResult}>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={fetchPromptResult}
+            >
               <Refresh sx={{ mr: 1 }} />
               Reload Last Saved Result
             </Button>
           </Grid>
           <Grid item>
             <Button
+              color="secondary"
               onClick={handleClose}
               variant="outlined"
               sx={{ borderColor: "red", color: "red" }}
@@ -237,6 +242,7 @@ const PromptDialog = ({
           >
             <Grid item>
               <Button
+                color="secondary"
                 variant="outlined"
                 disabled={
                   idea === "NO IDEAS" ||
@@ -252,6 +258,7 @@ const PromptDialog = ({
             </Grid>
             <Grid item>
               <Button
+                color="secondary"
                 variant="outlined"
                 disabled={
                   idea === "NO IDEAS" || !promptName || promptName === "idea"
@@ -266,6 +273,7 @@ const PromptDialog = ({
             </Grid>
             <Grid item>
               <Button
+                color="secondary"
                 variant="outlined"
                 disabled={
                   idea === "NO IDEAS" ||

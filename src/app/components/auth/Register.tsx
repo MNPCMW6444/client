@@ -206,10 +206,10 @@ const Register = () => {
             <>
               <Box mt={2}>
                 <Button
+                  color="secondary"
                   type="submit"
                   data-testid="login-button"
                   variant="contained"
-                  color="primary"
                   fullWidth
                   onClick={handleSubmit}
                 >
@@ -220,7 +220,7 @@ const Register = () => {
               <Box mt={1}>
                 <Typography align="center">
                   Already have an account?
-                  <Button color="primary" onClick={() => navigate("/login")}>
+                  <Button color="secondary" onClick={() => navigate("/login")}>
                     Login here
                   </Button>
                 </Typography>

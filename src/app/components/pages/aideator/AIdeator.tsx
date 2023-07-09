@@ -142,6 +142,7 @@ const AIdeator = () => {
         >
           <Grid item>
             <Button
+              color="secondary"
               variant="outlined"
               disabled={allLabel !== "Run All"}
               onClick={async () => {
@@ -170,6 +171,7 @@ const AIdeator = () => {
           </Grid>
           <Grid item>
             <Button
+              color="secondary"
               variant="outlined"
               disabled={missingLabel !== "Run Missing" || missing.length === 0}
               onClick={async () => {
@@ -226,6 +228,7 @@ const AIdeator = () => {
                 ) : (
                   level.length !== 1 && (
                     <Button
+                      color="secondary"
                       variant="outlined"
                       disabled={groupLabel !== "Run Group"}
                       onClick={async () => {
