@@ -57,7 +57,7 @@ const QuickMenu = () => {
           right: 16,
           zIndex: theme.zIndex.speedDial,
         }}
-        icon={<SpeedDialIcon />}
+        icon={<SpeedDialIcon openIcon={<LightbulbIcon />} />}
       >
         {actions.map((action) => (
           <SpeedDialAction
@@ -87,7 +87,7 @@ const QuickMenu = () => {
             onChange={handleIdeaTextChange}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", mb: 1, }}>
+        <DialogActions sx={{ justifyContent: "center", mb: 1 }}>
           <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSaveIdea} variant="contained" color="primary">
             Save
