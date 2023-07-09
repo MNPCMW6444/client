@@ -1,6 +1,6 @@
 import { useState, useEffect, FC, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Collapse } from "@mui/material";
+import { Collapse, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -17,9 +17,10 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Avatar from "@mui/material/Avatar";
-import whiteTheme from "../../../content/style/whiteTheme";
+import { whiteTheme } from "../../../content/style/whiteTheme";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
+import Logo from '../../../content/assets/Failean logo.png';  
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
@@ -43,7 +44,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   };
 
   const menuItems = [
-    { label: "Idea Notebook", route: "/notebook" },
+    { label: <Typography variant="body1">Idea Notebook</Typography> , route: "/notebook" },
     { label: "AIdeator", route: "/aideator" },
     { label: "Deck", route: "/deck" },
     { label: "Idea Backlog", route: "/backlog" },
@@ -186,56 +187,83 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                     onMouseEnter={() => handleMouseEnter(subItem.route)}
                     onMouseLeave={handleMouseLeave}
                     sx={{
-                      bgcolor:
-                        hoveredItem === subItem.route &&
-                        !location.pathname.startsWith(subItem.route)
-                          ? "#4a8dd7"
-                          : location.pathname.startsWith(subItem.route)
-                          ? whiteTheme.palette.primary.main
-                          : "inherit",
-                      color:
-                        hoveredItem === subItem.route ||
-                        location.pathname.startsWith(subItem.route)
-                          ? "white"
-                          : "inherit",
-                      borderRadius: "1rem",
-                      display: "flex",
-                      alignItems: "center",
-                      marginBottom: "15px",
-                      transition: `${whiteTheme.transitions.create(
-                        "background-color",
-                        {
-                          duration: whiteTheme.transitions.duration.shorter,
-                          easing: whiteTheme.transitions.easing.easeInOut,
-                        }
-                      )}, ${whiteTheme.transitions.create("transform", {
-                        duration: whiteTheme.transitions.duration.shortest,
-                        easing: whiteTheme.transitions.easing.easeInOut,
-                      })}, ${whiteTheme.transitions.create("box-shadow", {
-                        duration: whiteTheme.transitions.duration.shortest,
-                        easing: whiteTheme.transitions.easing.easeInOut,
-                      })}`,
-                      transform:
-                        hoveredItem === subItem.route
-                          ? "scale(1.1)"
-                          : "scale(1)",
-                      boxShadow:
-                        hoveredItem === subItem.route
-                          ? "0 0 10px rgba(31, 38, 135, 0.37)"
-                          : "none",
-                      "&:active": {
-                        bgcolor: "#2f4d92", // Set your desired click color
-                      },
-                    }}
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "15px",
+              borderRadius: "1rem",
+              transition: "transform 0.3s ease-in-out",
+              transform: hoveredItem === subItem.route ? "scale(1.1)" : "scale(1)",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                height: "2px",
+                bgcolor: whiteTheme.palette.primary.main,
+                transform:
+                  hoveredItem === subItem.route ? "scaleX(1)" : "scaleX(0)",
+                transformOrigin: "left",
+                transition: "transform 0.2s ease-in-out",
+              },
+              "&:hover::before": {
+                transform: "scaleX(1)",
+              },
+              // bgcolor:
+              //   location.pathname.startsWith(item.route) ? whiteTheme.palette.primary.main
+              //   : location.pathname.startsWith(item.route)
+              //   ? whiteTheme.palette.primary.main
+              //   : "inherit",
+            }}
+            // This is another styling for the effect. keep tif need to change
+            // sx={{
+            //   bgcolor:
+            //     hoveredItem === subItem.route &&
+            //     !location.pathname.startsWith(subItem.route)
+            //       ? "#4a8dd7"
+            //       : location.pathname.startsWith(subItem.route)
+            //       ? whiteTheme.palette.primary.main
+            //       : "inherit",
+            //   color:
+            //     hoveredItem === subItem.route ||
+            //     location.pathname.startsWith(subItem.route)
+            //       ? "white"
+            //       : "inherit",
+            //   borderRadius: "1rem",
+            //   display: "flex",
+            //   alignItems: "center",
+            //   marginBottom: "15px",
+            //   transition: `${whiteTheme.transitions.create(
+            //     "background-color",
+            //     {
+            //       duration: whiteTheme.transitions.duration.shorter,
+            //       easing: whiteTheme.transitions.easing.easeInOut,
+            //     }
+            //   )}, ${whiteTheme.transitions.create("transform", {
+            //     duration: whiteTheme.transitions.duration.shortest,
+            //     easing: whiteTheme.transitions.easing.easeInOut,
+            //   })}, ${whiteTheme.transitions.create("box-shadow", {
+            //     duration: whiteTheme.transitions.duration.shortest,
+            //     easing: whiteTheme.transitions.easing.easeInOut,
+            //   })}`,
+            //   transform:
+            //     hoveredItem === subItem.route
+            //       ? "scale(1.1)"
+            //       : "scale(1)",
+            //   boxShadow:
+            //     hoveredItem === subItem.route
+            //       ? "0 0 10px rgba(31, 38, 135, 0.37)"
+            //       : "none",
+            //   "&:active": {
+            //     bgcolor: "#2f4d92", // Set your desired click color
+            //   },
+            // }}
                   >
                     {subItem.route === "/critiq/ideascore" && (
                       <ListIcon
                         sx={{
-                          color:
-                            hoveredItem === subItem.route ||
-                            location.pathname.startsWith(subItem.route)
-                              ? "white"
-                              : whiteTheme.palette.primary.main,
+                          color: whiteTheme.palette.primary.main,
                           mr: "0.5rem",
                         }}
                       />
@@ -243,11 +271,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                     {subItem.route === "/critiq/critichat" && (
                       <EmojiObjectsIcon
                         sx={{
-                          color:
-                            hoveredItem === subItem.route ||
-                            location.pathname.startsWith(subItem.route)
-                              ? "white"
-                              : whiteTheme.palette.primary.main,
+                          color: whiteTheme.palette.primary.main,
                           mr: "0.5rem",
                         }}
                       />
@@ -255,11 +279,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
                     {subItem.route === "/critiq/validationroadmap" && (
                       <DashboardIcon
                         sx={{
-                          color:
-                            hoveredItem === subItem.route ||
-                            location.pathname.startsWith(subItem.route)
-                              ? "white"
-                              : whiteTheme.palette.primary.main,
+                          color: whiteTheme.palette.primary.main,
                           mr: "0.5rem",
                         }}
                       />
@@ -289,7 +309,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           onClose={toggleSidebar}
           variant={isMobile ? "temporary" : "persistent"}
           anchor="left"
-          sx={{ boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}` }}
+          sx={{ height: "100%", boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}` }}
         >
           <Avatar
             alt="User Avatar"
@@ -336,6 +356,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             <Divider sx={{ mt: "10px", ml: "10px", mr: "10px" }} />
             <Box sx={{ padding: "10px" }}>{renderMenuItems()}</Box>
           </>
+          <Box sx={{ bottom: 0, left: 0, p: 2}}>
+          <Typography>Powered by <img style={{ marginLeft: 2, width: "40%"}} src={Logo} alt="Failean Logo" /> </Typography>
+          </Box>
         </Drawer>
       ) : (
         <Drawer
@@ -454,6 +477,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               {renderMenuItems()}
             </Box>
           </>
+          <Box sx={{ bgcolor: "white", position: "absolute", bottom: 0, left: 0, p: 2, display: 'flex', flexDirection: 'column', gap: 1}}>
+          <Typography>Powered by <img style={{ marginLeft: 2, width: "40%"}} src={Logo} alt="Failean Logo" /> </Typography>
+          </Box>
         </Drawer>
       )}
       <Box sx={{ flex: 1 }} />

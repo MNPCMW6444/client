@@ -1,10 +1,10 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 // Supports weights 100-800
 import '@fontsource-variable/montserrat';
 // import '@fontsource-variable/jetbrains-mono';
 // import '@fontsource/roboto'
 
-const whiteTheme = createTheme({
+export const whiteTheme = createTheme({
   palette: {
     primary: {
       main: "#8F00FF",
@@ -109,8 +109,11 @@ const whiteTheme = createTheme({
     h6: {
       fontSize: '1rem',
     },
+    body1: {
+      fontSize: '0.8rem',
+    },
   },
-  spacing: 8, // default spacing
+  spacing: 8,
   breakpoints: {
     values: {
       xs: 0,
@@ -159,4 +162,9 @@ const whiteTheme = createTheme({
   },
 });
 
-export default whiteTheme;
+export const responsiveTheme = responsiveFontSizes(whiteTheme, {
+  breakpoints: ['sm', 'md', 'lg'], // Array of breakpoints
+  disableAlign: false, // Whether font sizes change slightly to preserve line heights
+  factor: 2, // Strength of font size resizing
+  variants: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], // Typography variants to handle
+});

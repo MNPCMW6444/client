@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { MainserverContext } from '@failean/mainserver-provider'; 
+import UserContext from '../../context/UserContext';
+import { toast } from "react-toastify";
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
@@ -6,7 +9,6 @@ import LightbulbIcon from '@mui/icons-material/EmojiObjects';
 import SpeedIcon from '@mui/icons-material/Speed';
 import BacklogIcon from '@mui/icons-material/PlaylistAddCheck';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
@@ -21,10 +23,13 @@ const actions = [
 ];
 
 const QuickMenu = () => {
+  const { refreshUserData } = useContext(UserContext);
+  const mainserverContext = useContext(MainserverContext);
+  const axiosInstance = mainserverContext?.axiosInstance;
   const [open, setOpen] = useState(false);
   const [ideaText, setIdeaText] = useState('');
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md')); // Use useMediaQuery hook
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClick = (action: { name: string }) => {
     if (action.name === 'Enter idea') {
@@ -43,7 +48,18 @@ const QuickMenu = () => {
   };
 
   const handleSaveIdea = () => {
-    console.log('Idea:', ideaText);
+    if (axiosInstance) {
+      axiosInstance
+        .post("data/ideas/saveIdea", { idea: ideaText })
+        .then(() => {
+          refreshUserData();
+        })
+        .catch(() => {
+          refreshUserData();
+          toast.error("Error saving data to server");
+        });
+    }
+
     handleClose();
   };
 
@@ -73,7 +89,7 @@ const QuickMenu = () => {
       <Dialog
         open={open}
         onClose={handleClose}
-        fullScreen={fullScreen} // Use the fullScreen prop
+        fullScreen={fullScreen} 
         fullWidth
       >
         <DialogContent>
