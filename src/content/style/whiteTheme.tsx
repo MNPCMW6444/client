@@ -4,7 +4,7 @@ import '@fontsource-variable/montserrat';
 // import '@fontsource-variable/jetbrains-mono';
 // import '@fontsource/roboto'
 
-export const whiteTheme = createTheme({
+const whiteTheme = createTheme({
   palette: {
     primary: {
       main: '#8A307F',
@@ -102,9 +102,4 @@ export const whiteTheme = createTheme({
   },
 });
 
-export const responsiveTheme = responsiveFontSizes(whiteTheme, {
-  breakpoints: ['sm', 'md', 'lg'], // Array of breakpoints
-  disableAlign: false, // Whether font sizes change slightly to preserve line heights
-  factor: 2, // Strength of font size resizing
-  variants: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], // Typography variants to handle
-});
+export default whiteTheme

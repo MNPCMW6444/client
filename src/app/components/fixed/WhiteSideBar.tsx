@@ -17,7 +17,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Avatar from "@mui/material/Avatar";
-import { whiteTheme } from "../../../content/style/whiteTheme";
+import whiteTheme from "../../../content/style/whiteTheme";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import Logo from '../../../content/assets/Failean logo.png';  

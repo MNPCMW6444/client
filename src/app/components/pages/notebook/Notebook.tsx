@@ -143,4 +143,4 @@ const Notebook = () => {
   );
 };
 }
-export default Notebook;
+export default Notebook as React.ComponentType<any>;
