@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { PromptName } from "@failean/shared-types";
-import { PromptButton } from "../../../content/style/styled-components/all";
+import { StyledButton } from "../../../content/style/styled-components/all";
 import capitalize from "../../util/capitalize";
 import { Tooltip } from "@mui/material";
 
@@ -19,12 +19,12 @@ const Prompt = ({ level, setOpenPrompt }: PromptProps) => {
         " are empty"
       }
     >
-      <PromptButton disabled>{name}</PromptButton>
+      <StyledButton disabled>{name}</StyledButton>
     </Tooltip>
   ) : (
-    <PromptButton onClick={() => setOpenPrompt(level.name)}>
+    <StyledButton onClick={() => setOpenPrompt(level.name)}>
       {name}
-    </PromptButton>
+    </StyledButton>
   );
 };
 

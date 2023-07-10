@@ -1,4 +1,5 @@
 // Layout
+import { BorderColor } from '@mui/icons-material';
 import { Box, Container, Grid, Stack } from '@mui/material';
 
 // Inputs
@@ -26,7 +27,7 @@ import { styled } from '@mui/material/styles';
 export const loading = () => <Typography>Loading...</Typography>;
 
 // Inputs
-export const PromptButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
   padding: theme.spacing(1),
@@ -38,6 +39,11 @@ export const PromptButton = styled(Button)(({ theme }) => ({
     color: theme.palette.primary.main,
     border: `1px solid ${theme.palette.primary.main}`,
   },
+    "&.Mui-disabled": {
+      background: "White",
+      color: "#c0c0c0",
+      border: `1px solid ${theme.palette.primary.main}`
+    },
 }));
 
 const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
@@ -236,6 +242,7 @@ export {
   StyledStack,
   StyledAutocomplete,
   StyledCheckbox,
+  StyledButton,
   StyledRadio,
   StyledSlider,
   StyledSwitch,
