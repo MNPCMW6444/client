@@ -22,18 +22,11 @@ import { ClickAwayListener, NoSsr, Popper, Portal} from '@mui/material';
 // Styles
 import { styled } from '@mui/material/styles';
 
-export const PromptButton = styled(Button)(({ theme }) => ({
-  color: "black" || theme.palette.primary.main,
-}));
-
-export const LockedPromptButton = styled(Button)(({ theme }) => ({
-  color: "gray" || theme.palette.primary.main,
-}));
 
 export const loading = () => <Typography>Loading...</Typography>;
 
 // Inputs
-const StyledButton = styled(Button)(({ theme }) => ({
+export const PromptButton = styled(Button)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
   padding: theme.spacing(1),
@@ -45,17 +38,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     color: theme.palette.primary.main,
     border: `1px solid ${theme.palette.primary.main}`,
   },
-  '&.Mui-active': { 
-    backgroundColor: theme.palette.primary.dark, // becomes darker blue when active
-    color: theme.palette.common.white,
-  },
-  '&.Mui-disabled': { 
-    backgroundColor: '#CCCCCC', // gray
-    color: '#777777', // dark gray
-  },
 }));
-
-
 
 const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
   padding: theme.spacing(0.5),
@@ -252,7 +235,6 @@ export {
   StyledGrid,
   StyledStack,
   StyledAutocomplete,
-  StyledButton,
   StyledCheckbox,
   StyledRadio,
   StyledSlider,
