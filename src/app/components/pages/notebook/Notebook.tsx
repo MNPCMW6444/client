@@ -24,10 +24,7 @@ const Notebook = () => {
   useEffect(() => {
     setInputText(ideas[activeIdeaIndex]?.idea);
   }, [ideas, activeIdeaIndex]);
-  const QuickMenu = () => {
-    const { refreshUserData } = useContext(UserContext);
-    const mainserverContext = useContext(MainserverContext);
-    const axiosInstance = mainserverContext?.axiosInstance;
+  
   const handleInputChange = (event: any) => {
     const text = event.target.value;
     setInputText(text);
@@ -143,4 +140,4 @@ const Notebook = () => {
   );
 };
 }
-export default Notebook as React.ComponentType<any>;
+export default Notebook;
