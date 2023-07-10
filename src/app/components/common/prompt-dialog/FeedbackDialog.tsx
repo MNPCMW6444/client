@@ -105,6 +105,7 @@ const FeedbackDialog = ({
         >
           <Grid item>
             <Button
+              color="secondary"
               onClick={handleClose}
               variant="outlined"
               sx={{ borderColor: "red", color: "red" }}
@@ -172,6 +173,7 @@ const FeedbackDialog = ({
           >
             <Grid item>
               <Button
+                color="secondary"
                 variant="outlined"
                 disabled={
                   idea === "NO IDEAS" ||
@@ -189,6 +191,7 @@ const FeedbackDialog = ({
             </Grid>
             <Grid item>
               <Button
+                color="secondary"
                 variant="outlined"
                 disabled={
                   idea === "NO IDEAS" ||

@@ -1,4 +1,4 @@
-import { useState, useEffect, FC, useContext } from "react";
+import { FC } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Collapse, Typography } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
@@ -6,6 +6,8 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import Typography from "@mui/material/Typography";
 import useResponsive from "../../hooks/useRespnsive";
 import { Select, MenuItem } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
@@ -21,6 +23,8 @@ import whiteTheme from "../../../content/style/whiteTheme";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import Logo from '../../../content/assets/Failean logo.png';  
+import { MainserverContext } from "@failean/mainserver-provider";
+import { useContext } from "react";
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
@@ -32,149 +36,88 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
   onMobileDrawerToggle,
 }) => {
   const navigate = useNavigate();
+
   const { isMobile } = useResponsive();
+
   const location = useLocation();
-  const [openSubMenu, setOpenSubMenu] = useState(false);
-  const { ideas } = useContext(UserContext);
-  const [selectedIdeaId, setSelectedIdeaId] = useState("");
-  const [hoveredItem, setHoveredItem] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prevState) => !prevState);
-  };
+
+  const mainserver = useContext(MainserverContext);
+  const axiosInstance = mainserver?.axiosInstance;
 
   const menuItems = [
-    { label: <Typography variant="body1">Idea Notebook</Typography> , route: "/notebook" },
+    { label: "Idea Notebook", route: "/" },
     { label: "AIdeator", route: "/aideator" },
-    { label: "Deck", route: "/deck" },
-    { label: "Idea Backlog", route: "/backlog" },
-    { label: "Run CritIQ", route: "/critiq/runcritiq" },
+    { label: "Deck", route: "/deck", disabled: true, comingSoon: true },
+    {
+      label: "Idea Backlog",
+      route: "/backlog",
+      disabled: true,
+      comingSoon: true,
+    },
+    { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
   ];
-
-  const critiqSubItems = [
-    { label: "Idea Score", route: "/critiq/ideascore" },
-    { label: "CritIQ Chat", route: "/critiq/critichat" },
-    { label: "Validation Roadmap", route: "/critiq/validationroadmap" },
-  ];
-
-  useEffect(() => {
-    const isCritiqRoute = [
-      "/critiq/runcritiq",
-      ...critiqSubItems.map((item) => item.route),
-    ].includes(location.pathname);
-    setOpenSubMenu(isCritiqRoute);
-  }, [location, critiqSubItems]);
 
   const handleMenuItemClick = (route: string) => {
+    axiosInstance && axiosInstance.post("analytics/sidebar", { route });
     navigate(route);
     if (isMobile) {
       onMobileDrawerToggle();
     }
   };
 
-  const handleIdeaSelect = (event: SelectChangeEvent<string>) => {
-    setSelectedIdeaId(event.target.value);
-  };
-
-  const handleMouseEnter = (route: string) => {
-    const timer = setTimeout(() => {
-      setHoveredItem(route);
-    }, 5);
-    setTimers((prevTimers) => [...prevTimers, timer]);
-  };
-
-  const handleMouseLeave = () => {
-    clearTimeouts();
-    setHoveredItem("");
-  };
-
-  const clearTimeouts = () => {
-    timers.forEach((timer) => clearTimeout(timer));
-    setTimers([]);
-  };
-
-  const [timers, setTimers] = useState<NodeJS.Timeout[]>([]);
-
   const renderMenuItems = () => (
     <List>
-      {menuItems.map((item, index) => (
-        <Box key={index}>
+      {menuItems.map((item, index) =>
+        isMobile ? (
+          <>
+            <ListItem
+              key={index}
+              onClick={() => !item.disabled && handleMenuItemClick(item.route)}
+              sx={{
+                bgcolor:
+                  location.pathname === item.route
+                    ? "action.selected"
+                    : "inherit",
+              }}
+              disabled={item.disabled}
+            >
+              <ListItemText
+                primary={
+                  item.label + (item.comingSoon ? " - Comming Soon!" : "")
+                }
+              />
+            </ListItem>
+          </>
+        ) : (
           <ListItem
-            onClick={() => handleMenuItemClick(item.route)}
-            onMouseEnter={() => handleMouseEnter(item.route)}
-            onMouseLeave={handleMouseLeave}
+            key={index}
+            onClick={() => !item.disabled && handleMenuItemClick(item.route)}
             sx={{
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "15px",
-              borderRadius: "1rem",
-              transition: "transform 0.3s ease-in-out",
-              transform: hoveredItem === item.route ? "scale(1.1)" : "scale(1)",
-              "&::before": {
-                content: '""',
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                width: "100%",
-                height: "2px",
-                bgcolor: whiteTheme.palette.primary.main,
-                transform:
-                  hoveredItem === item.route ? "scaleX(1)" : "scaleX(0)",
-                transformOrigin: "left",
-                transition: "transform 0.2s ease-in-out",
-              },
-              "&:hover::before": {
-                transform: "scaleX(1)",
-              },
-              // bgcolor:
-              //   location.pathname.startsWith(item.route) ? whiteTheme.palette.primary.main
-              //   : location.pathname.startsWith(item.route)
-              //   ? whiteTheme.palette.primary.main
-              //   : "inherit",
+              bgcolor:
+                location.pathname === item.route
+                  ? "action.selected"
+                  : "inherit",
             }}
+            disabled={item.disabled}
           >
-            {item.route === "/notebook" && (
-              <ListIcon
-                sx={{
-                  color: whiteTheme.palette.primary.main,
-                  mr: "0.5rem",
-                }}
-              />
+            <ListItemText
+              primary={item.label}
+              sx={{ cursor: item.disabled ? "not-allowed" : "pointer" }}
+            />
+            {item.comingSoon && (
+              <ListItemSecondaryAction>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    display: "block",
+                    fontSize: "60%",
+                  }}
+                >
+                  Coming Soon!
+                </Typography>
+              </ListItemSecondaryAction>
             )}
-            {item.route === "/aideator" && (
-              <EmojiObjectsIcon
-                sx={{
-                  color: whiteTheme.palette.primary.main,
-                  mr: "0.5rem",
-                }}
-              />
-            )}
-            {item.route === "/deck" && (
-              <DashboardIcon
-                sx={{
-                  color: whiteTheme.palette.primary.main,
-                  mr: "0.5rem",
-                }}
-              />
-            )}
-            {item.route === "/backlog" && (
-              <PlaylistAddCheckIcon
-                sx={{
-                  color: whiteTheme.palette.primary.main,
-                  mr: "0.5rem",
-                }}
-              />
-            )}
-            {item.route === "/critiq/runcritiq" && (
-              <PlayCircleOutlineIcon
-                sx={{
-                  color: whiteTheme.palette.primary.main,
-                  mr: "0.5rem",
-                }}
-              />
-            )}
-            <ListItemText primary={item.label} />
           </ListItem>
 
           {item.label === "Run CritIQ" && (
@@ -293,6 +236,8 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           )}
         </Box>
       ))}
+        )
+      )}
     </List>
   );
 
@@ -300,14 +245,11 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
     <Box
       sx={{
         display: "flex",
-        mt: isMobile ? 0 : (whiteTheme) => whiteTheme.spacing(8),
+        mt: isMobile ? 0 : (theme) => theme.spacing(8),
       }}
     >
       {isMobile ? (
         <Drawer
-          open={isSidebarOpen}
-          onClose={toggleSidebar}
-          variant={isMobile ? "temporary" : "persistent"}
           anchor="left"
           sx={{ height: "100%", boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}` }}
         >
@@ -359,20 +301,21 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           <Box sx={{ bottom: 0, left: 0, p: 2}}>
           <Typography>Powered by <img style={{ marginLeft: 2, width: "40%"}} src={Logo} alt="Failean Logo" /> </Typography>
           </Box>
+          open={mobileDrawerOpen}
+          onClose={onMobileDrawerToggle}
+        >
+          {renderMenuItems()}
         </Drawer>
       ) : (
         <Drawer
-          open={isSidebarOpen}
-          onClose={toggleSidebar}
-          variant="persistent"
+          variant="permanent"
+          open
           sx={{
-            width: "drawerWidth",
-            maxWidth: "260px",
+            width: "240px",
             flexShrink: 0,
             [`& .MuiDrawer-paper`]: {
               width: "240px",
               boxSizing: "border-box",
-              boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}`,
             },
           }}
         >
@@ -480,33 +423,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           <Box sx={{ bgcolor: "white", position: "absolute", bottom: 0, left: 0, p: 2, display: 'flex', flexDirection: 'column', gap: 1}}>
           <Typography>Powered by <img style={{ marginLeft: 2, width: "40%"}} src={Logo} alt="Failean Logo" /> </Typography>
           </Box>
+          {renderMenuItems()}
         </Drawer>
       )}
-      <Box sx={{ flex: 1 }} />
-      <IconButton
-        sx={{
-          position: 'fixed',
-          visibility: isSidebarOpen ? 'hidden' : 'visible',
-          opacity: isSidebarOpen ? 0 : 1,
-          boxShadow: "0 0 10px rgba(31, 38, 135, 0.37)",
-          transform: "translateY(-50%)",
-                marginTop: whiteTheme.spacing(3),
-                marginBottom: whiteTheme.spacing(2),
-                width: 30,
-                height: 29,
-                borderRadius: 1.1,
-                transition: "transform 0.3s, scale 0.3s",
-                "&:hover": {
-                  transform: "translateY(-50%) scale(1.1)",
-                  bgcolor: whiteTheme.palette.primary.main,
-                },
-                bgcolor: whiteTheme.palette.primary.main,
-        }}
-        onClick={toggleSidebar}
-        
-      >
-        <MenuIcon sx={{color: "white"}}/>
-      </IconButton>
     </Box>
   );
 };
