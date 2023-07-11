@@ -405,7 +405,7 @@ const CritIQuest = () => {
   const axiosInstance = mainserverContext?.axiosInstance;
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [selectedValue, setSelectedValue] = useState<any>("");
   const [resultsOpen, setResultsOpen] = useState(false);
   const [averageFailScore, setAverageFailScore] = useState(0);
   const [averageLeanScore, setAverageLeanScore] = useState(0);
@@ -534,9 +534,8 @@ const CritIQuest = () => {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      style={{ minHeight: "100vh", padding: "2em" }}
     >
-      <Grid item xs={12} sm={8} md={6}>
+      <Grid item xs={12} sm={8} md={6} sx={{ gap: 2 }}>
         <Button variant="outlined" onClick={handleClickOpen}>
           Start Validation Questionnaire
         </Button>
