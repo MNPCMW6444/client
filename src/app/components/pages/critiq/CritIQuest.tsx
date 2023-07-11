@@ -3,6 +3,9 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { LinearProgress, Box } from "@mui/material";
+import UserContext from "../../../context/UserContext";
+import IdeaSelector from "../../common/IdeaSelector";
+
 import {
   Button,
   Step,
@@ -28,7 +31,6 @@ type StepType = {
     answers: string[];
   }[];
 };
-
 const steps: StepType[] = [
   {
     title: "Value validation",
@@ -405,13 +407,12 @@ const CritIQuest = () => {
   const axiosInstance = mainserverContext?.axiosInstance;
   const [activeStep, setActiveStep] = useState(0);
   const [open, setOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<any>("");
+  const [selectedValue, setSelectedValue] = useState<any>({});
   const [resultsOpen, setResultsOpen] = useState(false);
   const [averageFailScore, setAverageFailScore] = useState(0);
   const [averageLeanScore, setAverageLeanScore] = useState(0);
-
-  const [failScores, setFailScores] = useState(0);
-  const [leanScores, setLeanScores] = useState(0);
+  const [failScores, setFailScores] = useState<any>({});
+  const [leanScores, setLeanScores] = useState<any>({});
   const [numQuestionsAnswered, setNumQuestionsAnswered] = useState(0);
 
   const handleAnswerChange = (
@@ -425,7 +426,6 @@ const CritIQuest = () => {
 
     const [stepIndex, questionIndex] = name.split("-");
     const answer = value as string;
-
     if (answerScores[answer]) {
       const { fail, lean } = answerScores[answer];
       setFailScores((prevFailScores: any) => ({
@@ -450,13 +450,15 @@ const CritIQuest = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
   const [loading, setLoading] = useState(false);
 
   const handleNext = () => {
     const currentStepQuestions = steps[activeStep].questions;
-    const isStepCompleted = currentStepQuestions.every((question, index) =>
-      Boolean(selectedValue[activeStep]?.[index]?.answer)
-    );
+    const isStepCompleted = currentStepQuestions.every((question, index) => {
+      const questionKey = `${activeStep}-${index}`;
+      return Boolean(selectedValue[questionKey]);
+    });
 
     if (isStepCompleted) {
       if (activeStep !== steps.length - 1) {
@@ -481,48 +483,46 @@ const CritIQuest = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleFinish = () => {
-    const totalFailScore = Object.values(failScores).reduce(
-      (sum, score) => sum + score,
-      0
-    );
-    const totalLeanScore = Object.values(leanScores).reduce(
-      (sum, score) => sum + score,
-      0
-    );
-    const averageFailScore = totalFailScore / numQuestionsAnswered;
-    const averageLeanScore = totalLeanScore / numQuestionsAnswered;
-    setAverageFailScore(averageFailScore * 20);
-    setAverageLeanScore(averageLeanScore * 20);
-    const faileanScore =
-      (2 * (averageFailScore * averageLeanScore)) /
-      (averageFailScore + averageLeanScore);
-    console.log("Failean Score:", faileanScore);
-
-    // Open the results dialog
-    setResultsOpen(true);
-    postDataToDatabase(averageFailScore, averageLeanScore, faileanScore);
+  const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
+  const { ideas } = useContext(UserContext);
+  const handleIdeaClick = (ideaID: string) => {
+    setCurrentIdeaID(ideaID);
   };
+
+  useEffect(() => {
+    if (ideas.length > 0) {
+      setCurrentIdeaID(ideas[0]._id);
+    }
+  }, [ideas as any]);
+
+  const handleFinish = () => {
+    const answers: string[] = steps.flatMap((step) =>
+      step.questions.map((question, index) => {
+        const questionKey = `${activeStep}-${index}`;
+        return selectedValue[questionKey] || "";
+      })
+    );
+
+    postDataToDatabase(answers);
+  };
+
   const handleResultsClose = () => {
     setResultsOpen(false);
   };
-  const postDataToDatabase = async (
-    averageFailScore: number,
-    leanScore: number,
-    faileanScore: number
-  ) => {
+
+  const postDataToDatabase = async (answers: string[]) => {
     try {
       if (axiosInstance) {
         const response = await axiosInstance.post(
-          "/data/critiqQuestionire/update",
+          `/data/critiqQuestionire/update/${currentIdeaID}`, // Replace `ideaID` with the actual idea ID
           {
-            averageFailScore: averageFailScore,
-            leanScore: leanScore,
-            faileanScore: faileanScore,
+            ideaID: currentIdeaID,
+            answers: answers,
           }
         );
 
         console.log(response.data);
+        setResultsOpen(true);
       }
     } catch (error) {
       console.log(error);
@@ -539,6 +539,10 @@ const CritIQuest = () => {
         <Button variant="outlined" onClick={handleClickOpen}>
           Start Validation Questionnaire
         </Button>
+        <IdeaSelector
+          selectedIdeaID={currentIdeaID}
+          setSelectedIdeaID={setCurrentIdeaID}
+        />
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
           <DialogTitle>Validation Questionnaire</DialogTitle>
           <DialogContent>
@@ -623,3 +627,6 @@ const CritIQuest = () => {
 };
 
 export default CritIQuest;
+function useEffect(arg0: () => void, arg1: any[]) {
+  throw new Error("Function not implemented.");
+}

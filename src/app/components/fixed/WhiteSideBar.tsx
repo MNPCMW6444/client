@@ -39,7 +39,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
       disabled: true,
       comingSoon: true,
     },
-    { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
+    { label: "CritiQ", route: "/critiq" },
   ];
 
   const handleMenuItemClick = (route: string) => {
