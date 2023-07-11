@@ -40,7 +40,7 @@ export const AIdeatorContextProvider = ({
 }) => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
-  const { ideas } = useContext(UserContext);
+  const { ideas, refreshUserData } = useContext(UserContext);
   const [graph, setGraph] = useState<PromptGraph>([]);
   const [currentIdeaID, setCurrentIdeaID] = useState<string>(
     ideas[0]?._id || ""
@@ -142,12 +142,13 @@ export const AIdeatorContextProvider = ({
 
   useEffect(() => {
     fetchGraph();
+    refreshUserData();
     const interval = setInterval(
       () => polled.forEach((name) => fetchOneResult(name)),
       5000
     );
     return () => clearInterval(interval);
-  }, [fetchGraph, fetchOneResult, polled]);
+  }, [fetchGraph, fetchOneResult, polled, refreshUserData]);
 
   return (
     <AIdeatorContext.Provider

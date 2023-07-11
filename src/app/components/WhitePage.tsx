@@ -20,7 +20,7 @@ const WhitePage = ({ path }: WhitePageProps) => {
   const axiosInstance = mainserver?.axiosInstance;
 
   useEffect(() => {
-    axiosInstance?.post("analytics/render", { route: location.pathname });
+    axiosInstance?.post("analytics/render", { page: location.pathname });
   }, [location, axiosInstance]);
 
   return path === "my-account" ? (

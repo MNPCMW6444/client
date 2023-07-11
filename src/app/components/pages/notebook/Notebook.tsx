@@ -57,6 +57,7 @@ const Notebook = () => {
               <TabScrollButton direction="right" orientation="horizontal" />
             </Tabs>
             <Button
+              color="secondary"
               onClick={() => {
                 if (axiosInstance)
                   axiosInstance
@@ -90,6 +91,7 @@ const Notebook = () => {
           <Grid item container columnSpacing={4}>
             <Grid item>
               <Button
+                color="secondary"
                 disabled={ideas.length === 0}
                 onClick={() => {
                   if (axiosInstance)
@@ -113,6 +115,7 @@ const Notebook = () => {
             </Grid>
             <Grid item>
               <Button
+                color="secondary"
                 disabled={ideas.length === 0}
                 onClick={() => {
                   if (axiosInstance)
