@@ -22,7 +22,7 @@ interface WhiteAppBarProps {
 
 const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
+  const { user, tokens } = useContext(UserContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: MouseEvent<HTMLElement>) => {
@@ -68,6 +68,9 @@ const WhiteAppBar: React.FC<WhiteAppBarProps> = ({ onMobileDrawerToggle }) => {
         </Box>
         {user && (
           <>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {"tokens: " + tokens}
+            </Typography>
             <IconButton
               edge="end"
               color="inherit"

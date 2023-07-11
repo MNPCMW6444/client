@@ -1,5 +1,5 @@
 import { CritIQuestContextProvider } from "../../../context/CritIQuestContext";
-import CritIQuest from "./CritIQuest";
+import CritIQuest from "./CritIQuest.future";
 
 const CritIQuestWrapper = () => (
   <CritIQuestContextProvider>

@@ -36,7 +36,11 @@ export const StyledTextField: any = styled(TextField)`
 `;
 
 const MyAccount: FC = () => {
-  const { user, refreshUserData } = useContext(UserContext);
+  const {
+    user,
+    refreshUserData,
+    tokens: tokenBalance,
+  } = useContext(UserContext);
   const [name, setName] = useState(user?.name || "");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -49,7 +53,7 @@ const MyAccount: FC = () => {
 
   useEffect(() => {
     refreshUserData();
-  }, [refreshUserData]);
+  }, [refreshUserData, axiosInstance]);
 
   useEffect(() => {
     user && setName(user.name);
@@ -65,7 +69,7 @@ const MyAccount: FC = () => {
         );
         setIsEditingName(false);
 
-        toast("Name updated successfully!");
+        toast.error("Name updated successfully!");
         refreshUserData();
       }
     } catch (err) {
@@ -82,7 +86,7 @@ const MyAccount: FC = () => {
           { withCredentials: true }
         );
         setIsEditingPassword(false);
-        toast("Password updated successfully!");
+        toast.error("Password updated successfully!");
         refreshUserData();
       }
     } catch (err) {
@@ -124,6 +128,7 @@ const MyAccount: FC = () => {
                 startAdornment: <EmailIcon />,
               }}
               fullWidth
+              dsiabled
             />
           </Grid>
           <Grid item>
@@ -144,6 +149,11 @@ const MyAccount: FC = () => {
               setter={setPassword}
               setter2={setRepeatPassword}
             />
+          </Grid>
+          <Grid item alignSelf="center">
+            <Typography variant="h6" gutterBottom>
+              Token Balance: {tokenBalance}
+            </Typography>
           </Grid>
         </Grid>
       </StyledPaper>

@@ -6,8 +6,8 @@ interface WhiteThemeProviderProps {
   children: ReactNode;
 }
 
-const WhiteThemeProvider: FC<WhiteThemeProviderProps> = ({ children }) => {
-  return <ThemeProvider theme={whiteTheme}>{children}</ThemeProvider>;
-};
+const WhiteThemeProvider: FC<WhiteThemeProviderProps> = ({ children }) => (
+  <ThemeProvider theme={whiteTheme}>{children}</ThemeProvider>
+);
 
 export default WhiteThemeProvider;

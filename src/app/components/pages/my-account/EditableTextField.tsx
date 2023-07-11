@@ -47,16 +47,20 @@ const EditableTextField: FC<EditableTextFieldProps> = ({
       </Grid>
       <Grid item alignSelf="center">
         {!isEditing && (
-          <Button variant="outlined" onClick={() => setIsEditing(true)}>
+          <Button
+            color="secondary"
+            variant="outlined"
+            onClick={() => setIsEditing(true)}
+          >
             Edit{` ${props.label}`}
           </Button>
         )}
         {isEditing && (
           <Stack direction="row" spacing={1}>
-            <Button variant="contained" onClick={handleSave}>
+            <Button color="secondary" variant="contained" onClick={handleSave}>
               Save
             </Button>
-            <Button variant="outlined" onClick={handleCancel}>
+            <Button color="secondary" variant="outlined" onClick={handleCancel}>
               Cancel
             </Button>
           </Stack>
