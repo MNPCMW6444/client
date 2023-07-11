@@ -6,6 +6,8 @@ import { LinearProgress, Box } from "@mui/material";
 import UserContext from "../../../context/UserContext";
 import IdeaSelector from "../../common/IdeaSelector";
 import { steps, answerScores } from "../critiq/validationScore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   Button,
@@ -34,9 +36,9 @@ const CritIQuest = () => {
   const [resultsOpen, setResultsOpen] = useState(false);
   const [averageFailScore, setAverageFailScore] = useState(0);
   const [averageLeanScore, setAverageLeanScore] = useState(0);
-  const [failScores, setFailScores] = useState<any>({});
-  const [leanScores, setLeanScores] = useState<any>({});
-  const [numQuestionsAnswered, setNumQuestionsAnswered] = useState(0);
+  const [, setFailScores] = useState<any>({});
+  const [, setLeanScores] = useState<any>({});
+  const [, setNumQuestionsAnswered] = useState(0);
 
   const handleAnswerChange = (
     event: SelectChangeEvent<{ name?: string; value: unknown }>
@@ -95,7 +97,7 @@ const CritIQuest = () => {
       }
     } else {
       // Show alert if not all questions in the current step have been answered
-      alert("Please answer all questions before proceeding.");
+      toast.warn("Please answer all questions before proceeding.");
     }
   };
 
