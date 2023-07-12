@@ -17,6 +17,12 @@ RUN echo "@failean:registry=https://npm.pkg.github.com" >> .npmrc
 # Install the npm dependencies
 RUN npm install
 
+COPY public ./public
+COPY src ./src
+COPY website ./website
+COPY server.js ./server.js
+
+
 # Build the production assets
 RUN npm run prod
 
