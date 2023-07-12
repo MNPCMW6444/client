@@ -91,8 +91,13 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
           setUser(undefined);
           setLoading(false);
         });
-      const resx = await axiosInstance.get("accounts/countTokens");
-      setTokens(resx.data.tokens);
+      try {
+        const resx = await axiosInstance.get("accounts/countTokens");
+        setTokens(resx.data.tokens);
+      } catch (e) {
+        setUser(undefined);
+        setLoading(false);
+      }
     }
   }, [axiosInstance]);
 
