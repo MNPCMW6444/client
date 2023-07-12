@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import {
   Tab,
@@ -24,7 +24,7 @@ const Notebook = () => {
   useEffect(() => {
     setInputText(ideas[activeIdeaIndex]?.idea);
   }, [ideas, activeIdeaIndex]);
-
+  
   const handleInputChange = (event: any) => {
     const text = event.target.value;
     setInputText(text);
@@ -142,5 +142,4 @@ const Notebook = () => {
     </>
   );
 };
-
 export default Notebook;
