@@ -1,28 +1,57 @@
 // Layout
-import { BorderColor } from '@mui/icons-material';
-import { Box, Container, Grid, Stack } from '@mui/material';
+import { Box, Container, Grid, Stack } from "@mui/material";
 
 // Inputs
-import { Autocomplete, Button, Checkbox, Radio, Slider, Switch, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Button,
+  Checkbox,
+  Radio,
+  Slider,
+  Switch,
+  TextField,
+} from "@mui/material";
 
 // Navigation
-import { AppBar, BottomNavigation, Breadcrumbs, Drawer, Link, Menu, Pagination, Stepper, Tabs } from '@mui/material';
+import {
+  AppBar,
+  BottomNavigation,
+  Breadcrumbs,
+  Drawer,
+  Link,
+  Menu,
+  Pagination,
+  Stepper,
+  Tabs,
+} from "@mui/material";
 
 // Surfaces
-import { Accordion, Card, Paper, Tooltip } from '@mui/material';
+import { Accordion, Card, Paper, Tooltip } from "@mui/material";
 
 // Feedback
-import { Alert, CircularProgress, LinearProgress, Snackbar } from '@mui/material';
+import {
+  Alert,
+  CircularProgress,
+  LinearProgress,
+  Snackbar,
+} from "@mui/material";
 
 // Data Display
-import { Avatar, Badge, Chip, Divider, List, Table, Typography } from '@mui/material';
+import {
+  Avatar,
+  Badge,
+  Chip,
+  Divider,
+  List,
+  Table,
+  Typography,
+} from "@mui/material";
 
 // Utils
-import { ClickAwayListener, NoSsr, Popper, Portal} from '@mui/material';
+import { ClickAwayListener, NoSsr, Popper, Portal } from "@mui/material";
 
 // Styles
-import { styled } from '@mui/material/styles';
-
+import { styled } from "@mui/material/styles";
 
 export const loading = () => <Typography>Loading...</Typography>;
 
@@ -31,104 +60,109 @@ const StyledButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
   padding: theme.spacing(1),
-  transition: theme.transitions.create(['background-color', 'color', 'border'], {
-    duration: theme.transitions.duration.short,
-  }),
-  '&:hover': {
+  transition: theme.transitions.create(
+    ["background-color", "color", "border"],
+    {
+      duration: theme.transitions.duration.short,
+    }
+  ),
+  "&:hover": {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.primary.main,
     border: `1px solid ${theme.palette.primary.main}`,
   },
-    "&.Mui-disabled": {
-      background: "White",
-      color: "#c0c0c0",
-      border: `1px solid ${theme.palette.primary.main}`
-    },
+  "&.Mui-disabled": {
+    background: "White",
+    color: "#c0c0c0",
+    border: `1px solid ${theme.palette.primary.main}`,
+  },
 }));
 
 const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
   padding: theme.spacing(0.5),
-  '&.Mui-checked': { color: theme.palette.primary.main },
-  '&.Mui-disabled': { color: theme.palette.action.disabled },
+  "&.Mui-checked": { color: theme.palette.primary.main },
+  "&.Mui-disabled": { color: theme.palette.action.disabled },
 }));
 
 const StyledRadio = styled(Radio)(({ theme }) => ({
   padding: theme.spacing(0.5),
-  '&.Mui-checked': { color: theme.palette.primary.main },
-  '&.Mui-disabled': { color: theme.palette.action.disabled },
+  "&.Mui-checked": { color: theme.palette.primary.main },
+  "&.Mui-disabled": { color: theme.palette.action.disabled },
 }));
 
 const StyledSlider = styled(Slider)(({ theme }) => ({
   paddingBottom: theme.spacing(2),
-  '&.Mui-active': { color: theme.palette.primary.main },
-  '&.Mui-disabled': { color: theme.palette.action.disabled },
+  "&.Mui-active": { color: theme.palette.primary.main },
+  "&.Mui-disabled": { color: theme.palette.action.disabled },
 }));
 
 const StyledSwitch = styled(Switch)(({ theme }) => ({
   padding: theme.spacing(0.5),
-  '&.Mui-checked': { color: theme.palette.primary.main },
-  '&.Mui-disabled': { color: theme.palette.action.disabled },
+  "&.Mui-checked": { color: theme.palette.primary.main },
+  "&.Mui-disabled": { color: theme.palette.action.disabled },
 }));
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
   margin: theme.spacing(1),
-  '&.Mui-focused': { borderColor: theme.palette.primary.main },
-  '&.Mui-error': { borderColor: theme.palette.error.main },
-  transition: theme.transitions.create('border-color', {
+  "&.Mui-focused": { borderColor: theme.palette.primary.main },
+  "&.Mui-error": { borderColor: theme.palette.error.main },
+  transition: theme.transitions.create("border-color", {
     duration: theme.transitions.duration.short,
   }),
 }));
 
 // Navigation
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  '&.Mui-focused': { backgroundColor: theme.palette.secondary.main },
+  "&.Mui-focused": { backgroundColor: theme.palette.secondary.main },
 }));
 
 const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
   padding: theme.spacing(1),
-  '&.Mui-selected': { color: theme.palette.primary.main },
+  "&.Mui-selected": { color: theme.palette.primary.main },
 }));
 
 const StyledLink = styled(Link)(({ theme }) => ({
   padding: theme.spacing(0.5),
-  '&.Mui-focused': { color: theme.palette.primary.main },
+  "&.Mui-focused": { color: theme.palette.primary.main },
 }));
 
 const StyledPagination = styled(Pagination)(({ theme }) => ({
   margin: theme.spacing(2, 0),
-  '&.Mui-selected': { color: theme.palette.primary.main },
+  "&.Mui-selected": { color: theme.palette.primary.main },
 }));
 
 const StyledTabs = styled(Tabs)(({ theme }) => ({
   padding: theme.spacing(1),
-  '&.Mui-selected': { color: theme.palette.primary.main },
+  "&.Mui-selected": { color: theme.palette.primary.main },
 }));
 
 // Feedback
 const StyledAlert = styled(Alert)(({ theme }) => ({
   margin: theme.spacing(2, 0),
-  '&.Mui-error': { borderColor: theme.palette.error.main },
+  "&.Mui-error": { borderColor: theme.palette.error.main },
 }));
 
 const StyledSnackbar = styled(Snackbar)(({ theme }) => ({
-  '&.Mui-error': { borderColor: theme.palette.error.main },
+  "&.Mui-error": { borderColor: theme.palette.error.main },
 }));
 
 // Data Display
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
   margin: theme.spacing(1),
-  '&.Mui-focusVisible': { boxShadow: `0 0 0 4px ${theme.palette.action.focus}` },
+  "&.Mui-focusVisible": {
+    boxShadow: `0 0 0 4px ${theme.palette.action.focus}`,
+  },
 }));
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   margin: theme.spacing(1),
-  '&.Mui-error': { color: theme.palette.error.main },
+  "&.Mui-error": { color: theme.palette.error.main },
 }));
 
 const StyledChip = styled(Chip)(({ theme }) => ({
   margin: theme.spacing(1),
-  '&.Mui-disabled': { color: theme.palette.action.disabled },
-  '&.Mui-selected': { backgroundColor: theme.palette.primary.main },
+  "&.Mui-disabled": { color: theme.palette.action.disabled },
+  "&.Mui-selected": { backgroundColor: theme.palette.primary.main },
 }));
 
 const StyledDivider = styled(Divider)(({ theme }) => ({
@@ -139,7 +173,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1),
   fontFamily: theme.typography.fontFamily,
   fontSize: theme.typography.fontSize,
-  '&.Mui-error': { color: theme.palette.error.main },
+  "&.Mui-error": { color: theme.palette.error.main },
 }));
 
 // Utils
