@@ -10,7 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import IdeaSelector from "../../common/IdeaSelector";
-import Questionire from "./CritIQuest.future";
+import Questionire from "./CritIQuest";
 
 export default function RunCritiq() {
   const [value, setValue] = useState("");
@@ -120,7 +120,9 @@ export default function RunCritiq() {
           rowSpacing={0}
         ></Grid>
         <Grid item xs={12} sm={6} md={4}>
-          <Button color="secondary" variant="contained">Run CritIQ</Button>
+          <Button color="secondary" variant="contained">
+            Run CritIQ
+          </Button>
         </Grid>
       </Grid>
     </>

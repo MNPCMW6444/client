@@ -5,6 +5,8 @@ import { MainserverContext } from "@failean/mainserver-provider";
 const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
 const About = lazy(() => import("./pages/about/About"));
 const Notebook = lazy(() => import("./pages/notebook/Notebook"));
+const CritiQ = lazy(() => import("./pages/critiq/CritIQ"));
+
 const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
 //const Deck = lazy(() => import("./pages/deck/Deck.future"));
 const Backlog = lazy(() => import("./pages/backlog/Backlog"));
@@ -31,6 +33,8 @@ const WhitePage = ({ path }: WhitePageProps) => {
     <Notebook />
   ) : path === "aideator" ? (
     <AIdeatorWrapper />
+  ) : path === "critiq" ? (
+    <CritiQ />
   ) : (
     <Backlog />
   );
