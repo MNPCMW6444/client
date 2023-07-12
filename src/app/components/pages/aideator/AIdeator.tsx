@@ -10,14 +10,19 @@ import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import { PromptGraph, PromptName } from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
-import { Lock, LockOpen, Warning } from "@mui/icons-material";
+import {
+  Lock,
+  LockOpen,
+  RemoveCircleOutlineOutlined,
+  Warning,
+} from "@mui/icons-material";
 import AIdeatorContext from "../../../context/AIdeatorContext";
 import UserContext from "../../../context/UserContext";
 import capitalize from "../../../util/capitalize";
 import { MainserverContext } from "@failean/mainserver-provider";
 import RunDialog from "../../common/prompt-dialog/RunDialog";
 import FeedbackDialog from "../../common/prompt-dialog/FeedbackDialog";
-
+import { AutoFixHigh } from "@mui/icons-material";
 type TypeOfOpenDialog = "closed" | "run" | "feedback";
 export type TypeOfSetOpenDialog = Dispatch<SetStateAction<TypeOfOpenDialog>>;
 
@@ -144,6 +149,9 @@ const AIdeator = () => {
             <Button
               color="secondary"
               variant="outlined"
+              size="large"
+              startIcon={<AutoFixHigh />}
+              sx={{ bgcolor: "#FFDCFB", border: "1px solid" }}
               disabled={allLabel !== "Run All"}
               onClick={async () => {
                 setAllLabel("Estimating cost...");
@@ -171,7 +179,14 @@ const AIdeator = () => {
           </Grid>
           <Grid item>
             <Button
-              color="secondary"
+              size="large"
+              startIcon={<RemoveCircleOutlineOutlined />}
+              sx={{
+                bgcolor: "#FFDBD8",
+                border: "1px solid",
+                color: "#EF3E36",
+                borderColor: "#EF3E36",
+              }}
               variant="outlined"
               disabled={missingLabel !== "Run Missing" || missing.length === 0}
               onClick={async () => {

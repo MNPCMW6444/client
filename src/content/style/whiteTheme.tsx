@@ -1,4 +1,4 @@
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 // Supports weights 100-800
 import '@fontsource-variable/montserrat';
 // import '@fontsource-variable/jetbrains-mono';

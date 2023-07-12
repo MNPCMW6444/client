@@ -142,5 +142,4 @@ const Notebook = () => {
     </>
   );
 };
-}
 export default Notebook;
