@@ -16,6 +16,7 @@ import {
   SelectChangeEvent,
   IconButton,
   Menu,
+  Avatar,
 } from "@mui/material";
 import useResponsive from "../../hooks/useRespnsive";
 import UserContext from "../../context/UserContext";
@@ -25,7 +26,6 @@ import {
   List as ListIcon,
   EmojiObjects as EmojiObjectsIcon,
   Dashboard as DashboardIcon,
-  AccountCircle,
 } from "@mui/icons-material";
 
 interface WhiteSideBarProps {
@@ -38,7 +38,7 @@ const WhiteSideBar = ({ onMobileDrawerToggle }: WhiteSideBarProps) => {
   const location = useLocation();
   const mainserver = useContext(MainserverContext);
   const axiosInstance = mainserver?.axiosInstance;
-  const { ideas, refreshUserData } = useContext(UserContext);
+  const { user, ideas, refreshUserData } = useContext(UserContext);
   const [openSubMenu, setOpenSubMenu] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState("");
   const [hoveredItem, setHoveredItem] = useState("");
@@ -281,7 +281,12 @@ const WhiteSideBar = ({ onMobileDrawerToggle }: WhiteSideBarProps) => {
                 aria-haspopup="true"
                 onClick={handleMenu}
               >
-                <AccountCircle sx={{ fontSize: "300%" }} />
+                <Avatar>
+                  {user?.name
+                    .match(/(\b\S)?/g)
+                    ?.join("")
+                    .toUpperCase()}
+                </Avatar>
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -370,7 +375,12 @@ const WhiteSideBar = ({ onMobileDrawerToggle }: WhiteSideBarProps) => {
                 aria-haspopup="true"
                 onClick={handleMenu}
               >
-                <AccountCircle sx={{ fontSize: "300%" }} />
+                <Avatar sx={{ width: 100, height: 100, fontSize: "150%" }}>
+                  {user?.name
+                    .match(/(\b\S)?/g)
+                    ?.join("")
+                    .toUpperCase()}
+                </Avatar>
               </IconButton>
               <Menu
                 id="menu-appbar"
