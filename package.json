@@ -32,7 +32,7 @@
     "prestart": "npm run build",
     "start": "node server.js",
     "dev": "PORT=5999 react-scripts start",
-    "devwindows": "react-scripts start",
+    "devwindows": "set PORT=5999 react-scripts start",
     "preudev": "npm run update",
     "udev": "npm run dev",
     "build": "react-scripts build",
