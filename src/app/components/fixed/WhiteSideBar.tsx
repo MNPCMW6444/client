@@ -1,40 +1,26 @@
-import { FC } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Collapse, Typography } from "@mui/material";
-import Drawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import Typography from "@mui/material/Typography";
+import { Collapse, Typography, Box,
+ List,
+ ListItem,
+ ListItemText,
+ ListItemSecondaryAction, Drawer, Avatar} from "@mui/material";
 import useResponsive from "../../hooks/useRespnsive";
-import { Select, MenuItem } from "@mui/material";
-import { SelectChangeEvent } from "@mui/material";
-import UserContext from "../../context/UserContext";
-import Divider from "@mui/material/Divider";
-import ListIcon from "@mui/icons-material/List";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import Avatar from "@mui/material/Avatar";
+import {ListIcon,
+EmojiObjectsIcon,
+DashboardIcon,} from "@mui/icons-material";
 import whiteTheme from "../../../content/style/whiteTheme";
-import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton } from "@mui/material";
-import Logo from '../../../content/assets/Failean logo.png';  
 import { MainserverContext } from "@failean/mainserver-provider";
-import { useContext } from "react";
+import { useContext,} from "react";
 
 interface WhiteSideBarProps {
   mobileDrawerOpen: boolean;
   onMobileDrawerToggle: () => void;
 }
 
-const WhiteSideBar: FC<WhiteSideBarProps> = ({
+const WhiteSideBar = ({
   mobileDrawerOpen,
   onMobileDrawerToggle,
-}) => {
+}:WhiteSideBarProps) => {
   const navigate = useNavigate();
 
   const { isMobile } = useResponsive();
@@ -119,8 +105,8 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               </ListItemSecondaryAction>
             )}
           </ListItem>
-
-          {item.label === "Run CritIQ" && (
+        ))}
+        {/*   {item.label === "Run CritIQ" && (
             <Collapse in={openSubMenu} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {critiqSubItems.map((subItem, subIndex) => (
@@ -153,55 +139,9 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
               "&:hover::before": {
                 transform: "scaleX(1)",
               },
-              // bgcolor:
-              //   location.pathname.startsWith(item.route) ? whiteTheme.palette.primary.main
-              //   : location.pathname.startsWith(item.route)
-              //   ? whiteTheme.palette.primary.main
-              //   : "inherit",
+             
             }}
-            // This is another styling for the effect. keep tif need to change
-            // sx={{
-            //   bgcolor:
-            //     hoveredItem === subItem.route &&
-            //     !location.pathname.startsWith(subItem.route)
-            //       ? "#4a8dd7"
-            //       : location.pathname.startsWith(subItem.route)
-            //       ? whiteTheme.palette.primary.main
-            //       : "inherit",
-            //   color:
-            //     hoveredItem === subItem.route ||
-            //     location.pathname.startsWith(subItem.route)
-            //       ? "white"
-            //       : "inherit",
-            //   borderRadius: "1rem",
-            //   display: "flex",
-            //   alignItems: "center",
-            //   marginBottom: "15px",
-            //   transition: `${whiteTheme.transitions.create(
-            //     "background-color",
-            //     {
-            //       duration: whiteTheme.transitions.duration.shorter,
-            //       easing: whiteTheme.transitions.easing.easeInOut,
-            //     }
-            //   )}, ${whiteTheme.transitions.create("transform", {
-            //     duration: whiteTheme.transitions.duration.shortest,
-            //     easing: whiteTheme.transitions.easing.easeInOut,
-            //   })}, ${whiteTheme.transitions.create("box-shadow", {
-            //     duration: whiteTheme.transitions.duration.shortest,
-            //     easing: whiteTheme.transitions.easing.easeInOut,
-            //   })}`,
-            //   transform:
-            //     hoveredItem === subItem.route
-            //       ? "scale(1.1)"
-            //       : "scale(1)",
-            //   boxShadow:
-            //     hoveredItem === subItem.route
-            //       ? "0 0 10px rgba(31, 38, 135, 0.37)"
-            //       : "none",
-            //   "&:active": {
-            //     bgcolor: "#2f4d92", // Set your desired click color
-            //   },
-            // }}
+          
                   >
                     {subItem.route === "/critiq/ideascore" && (
                       <ListIcon
@@ -235,9 +175,7 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             </Collapse>
           )}
         </Box>
-      ))}
-        )
-      )}
+                      */}
     </List>
   );
 
@@ -423,7 +361,6 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           <Box sx={{ bgcolor: "white", position: "absolute", bottom: 0, left: 0, p: 2, display: 'flex', flexDirection: 'column', gap: 1}}>
           <Typography>Powered by <img style={{ marginLeft: 2, width: "40%"}} src={Logo} alt="Failean Logo" /> </Typography>
           </Box>
-          {renderMenuItems()}
         </Drawer>
       )}
     </Box>
