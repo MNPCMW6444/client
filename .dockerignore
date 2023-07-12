@@ -9,14 +9,14 @@
 *.log
 
 
-.DS_Store
-.vscode
+#.DS_Store
+#.vscode
 
-.env
+#.env
 
-node_modules
-package-lock.json
+#node_modules
+#package-lock.json
 
-dist
-build
+#dist
+#build
 
