@@ -1,12 +1,12 @@
 
-.git
+#.git
 
-.gitignore
+#.gitignore
 
 
-.idea
+#.idea
 
-*.log
+#*.log
 
 
 #.DS_Store
