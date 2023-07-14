@@ -1,6 +1,6 @@
 {
   "name": "failean-client",
-  "version": "4.0.73",
+  "version": "4.0.74",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.17",
@@ -32,6 +32,7 @@
     "preprod": "npm run update",
     "prod": "npm run build",
     "clean": "rm -rf node_modules build package-lock.json",
+    "clean:p": "rm -rf node_modules package-lock.json",
     "prestart": "npm run build",
     "start": "node server.js",
     "dev": "PORT=5999 react-scripts start",

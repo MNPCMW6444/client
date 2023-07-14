@@ -1,51 +1,26 @@
-# First stage: complete build with devDependencies
-FROM node:lts AS builder
-
+FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts as BUILDER
 WORKDIR /app
-
-# Set up environment variable for npm
 ARG NPM_TOKEN
-
-# Copy package.json into the Docker image
 COPY package.json /app/package.json
-
-# Create the .npmrc file
-RUN echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc
-RUN echo "@failean:registry=https://npm.pkg.github.com" >> .npmrc
-
-# Install the npm dependencies
-
+COPY tsconfig.json /app/tsconfig.json
 COPY public /app/public
 COPY src /app/src
 COPY website /app/website
 COPY server.js /app/server.js
-
-
-# If you have a typescript compile step, add it here
-# RUN npm run tsc
-
-# Build the production assets
+RUN echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc
+RUN echo "@failean:registry=https://npm.pkg.github.com" >> .npmrc
 RUN npm run prod
-
-# Remove the .npmrc file after installing dependencies
+RUN npm run clean:p
+RUN npm i --omit=dev
 RUN rm -rf .npmrc
-
-# Second stage: setup for production
-FROM node:lts
-
+RUN rm -rf .npmrc
+FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts-slim
 WORKDIR /app
-
 COPY packageserver.json /app/package.json
-
-# Install only production dependencies
-RUN npm install
-
-# Copy built assets from builder stage
+COPY --from=builder /app/package-lock.json /app/package-lock.json
+COPY --from=builder /app/node_modules /app/node_modules
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/website /app/website
-
-# Copy server file
 COPY server.js /app/server.js
-
-# Expose port 5999
+CMD ["node", "./build"]
 EXPOSE 5999
