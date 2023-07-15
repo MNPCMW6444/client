@@ -1,6 +1,6 @@
 {
   "name": "failean-client",
-  "version": "4.0.69",
+  "version": "4.0.74",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.17",
@@ -28,7 +28,11 @@
     "predevwindows": "npm install",
     "preupdate": "npx npm-check-updates -u",
     "update": "npm i",
+    "i:prod": "npm i express",
+    "preprod": "npm run update",
+    "prod": "npm run build",
     "clean": "rm -rf node_modules build package-lock.json",
+    "clean:p": "rm -rf node_modules package-lock.json",
     "prestart": "npm run build",
     "start": "node server.js",
     "dev": "PORT=5999 react-scripts start",
@@ -41,7 +45,8 @@
     "prebuild": "npm run version:patch",
     "version:patch": "npm version patch --no-git-tag-version",
     "version:minor": "npm version minor --no-git-tag-version",
-    "version:major": "npm version major --no-git-tag-version"
+    "version:major": "npm version major --no-git-tag-version",
+    "d:b": "VERSION=$(node -p \"require('./package.json').version\") && docker build --build-arg NPM_TOKEN=$NPM_TOKEN -t 988253048728.dkr.ecr.us-east-1.amazonaws.com/mainserver:$VERSION ."
   },
   "eslintConfig": {
     "extends": [

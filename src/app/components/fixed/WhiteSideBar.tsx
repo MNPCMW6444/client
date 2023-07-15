@@ -1,53 +1,57 @@
-import { useState, useEffect, FC, useContext } from "react";
+import { useState, useEffect, useContext, MouseEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Collapse, Typography } from "@mui/material";
-import Drawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import {
+  Collapse,
+  Typography,
+  Drawer,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Divider,
+  Grid,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  IconButton,
+  Menu,
+  Avatar,
+} from "@mui/material";
 import useResponsive from "../../hooks/useRespnsive";
-import { Select, MenuItem } from "@mui/material";
-import { SelectChangeEvent } from "@mui/material";
 import UserContext from "../../context/UserContext";
-import Divider from "@mui/material/Divider";
-import ListIcon from "@mui/icons-material/List";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import Avatar from "@mui/material/Avatar";
 import whiteTheme from "../../../content/style/whiteTheme";
-import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton } from "@mui/material";
 import { MainserverContext } from "@failean/mainserver-provider";
+import {
+  List as ListIcon,
+  EmojiObjects as EmojiObjectsIcon,
+  Dashboard as DashboardIcon,
+} from "@mui/icons-material";
 
 interface WhiteSideBarProps {
-  mobileDrawerOpen: boolean;
   onMobileDrawerToggle: () => void;
 }
 
-const WhiteSideBar: FC<WhiteSideBarProps> = ({
-  mobileDrawerOpen,
-  onMobileDrawerToggle,
-}) => {
+const WhiteSideBar = ({ onMobileDrawerToggle }: WhiteSideBarProps) => {
   const navigate = useNavigate();
-
   const { isMobile } = useResponsive();
-
   const location = useLocation();
-
   const mainserver = useContext(MainserverContext);
   const axiosInstance = mainserver?.axiosInstance;
-  const { ideas } = useContext(UserContext);
+  const { user, ideas, refreshUserData } = useContext(UserContext);
   const [openSubMenu, setOpenSubMenu] = useState(false);
   const [selectedIdeaId, setSelectedIdeaId] = useState("");
   const [hoveredItem, setHoveredItem] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [timers, setTimers] = useState<NodeJS.Timeout[]>([]);
-  const toggleSidebar = () => {
-    setIsSidebarOpen((prevState) => !prevState);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const menuItems = [
@@ -267,24 +271,58 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
           anchor="left"
           sx={{ boxShadow: `0 0 10px ${"rgba(31, 38, 135, 0.37)"}` }}
         >
-          <Avatar
-            alt="User Avatar"
-            src="/path/to/avatar-image.jpg"
-            sx={{
-              width: 40,
-              height: 40,
-              margin: "0 auto",
-              border: "2px",
-              borderColor: whiteTheme.palette.primary.main,
-              marginBottom: whiteTheme.spacing(2),
-              transition: whiteTheme.transitions.create("box-shadow", {
-                duration: whiteTheme.transitions.duration.short,
-              }),
-              "&:hover": {
-                boxShadow: whiteTheme.shadows[6],
-              },
-            }}
-          />
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+              >
+                <Avatar>
+                  {user?.name
+                    .match(/(\b\S)?/g)
+                    ?.join("")
+                    .toUpperCase()}
+                </Avatar>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => navigate("/my-account")}>
+                  My Account
+                </MenuItem>
+                <MenuItem onClick={() => navigate("/about")}>
+                  About Failean
+                </MenuItem>
+                <MenuItem
+                  onClick={() =>
+                    axiosInstance &&
+                    axiosInstance
+                      .get("auth/signout")
+                      .then(() => refreshUserData())
+                      .catch(() => refreshUserData())
+                  }
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
+            </Grid>
+          </Grid>
 
           <>
             <Select
@@ -327,63 +365,58 @@ const WhiteSideBar: FC<WhiteSideBarProps> = ({
             },
           }}
         >
-          <Box
-            sx={{
-              position: "relative",
-              alignSelf: "center",
-              width: "calc(100% - 20px)",
-              height: "auto",
-            }}
-          >
-            <Avatar
-              alt="User Avatar"
-              src="/path/to/avatar-image.jpg"
-              sx={{
-                border: 1.5,
-                borderColor: whiteTheme.palette.primary.main,
-                width: 50,
-                height: 50,
-                margin: "0 auto",
-                marginTop: whiteTheme.spacing(2),
-                marginBottom: whiteTheme.spacing(2),
-                transition: whiteTheme.transitions.create("box-shadow", {
-                  duration: whiteTheme.transitions.duration.short,
-                }),
-                "&:hover": {
-                  boxShadow: whiteTheme.shadows[6],
-                },
-              }}
-            />
-            <IconButton
-              onClick={toggleSidebar}
-              sx={{
-                position: "absolute",
-                top: "50%",
-                right: 0,
-                transform: "translateY(-50%)",
-                marginTop: whiteTheme.spacing(2),
-                marginBottom: whiteTheme.spacing(2),
-                width: 30,
-                height: 29,
-                borderRadius: 1.1,
-                padding: 0,
-                boxShadow: 0,
-                bgcolor: whiteTheme.palette.primary.main,
-                transition: "transform 0.3s, scale 0.3s, rotate 0.2s",
-                "&:hover": {
-                  transform: "translateY(-50%) scale(1.1) rotate(180deg)",
-                  bgcolor: whiteTheme.palette.primary.main,
-                },
-              }}
-            >
-              <MenuIcon
-                sx={{
-                  color: "white",
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+              <IconButton
+                edge="end"
+                color="inherit"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+              >
+                <Avatar sx={{ width: 100, height: 100, fontSize: "150%" }}>
+                  {user?.name
+                    .match(/(\b\S)?/g)
+                    ?.join("")
+                    .toUpperCase()}
+                </Avatar>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
                 }}
-              />
-            </IconButton>
-          </Box>
-
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={() => navigate("/my-account")}>
+                  My Account
+                </MenuItem>
+                <MenuItem onClick={() => navigate("/about")}>
+                  About Failean
+                </MenuItem>
+                <MenuItem
+                  onClick={() =>
+                    axiosInstance &&
+                    axiosInstance
+                      .get("auth/signout")
+                      .then(() => refreshUserData())
+                      .catch(() => refreshUserData())
+                  }
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
+            </Grid>
+          </Grid>
           <>
             <Select
               value={selectedIdeaId}

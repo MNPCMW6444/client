@@ -2,7 +2,6 @@ import { useContext, useState, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
-import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
@@ -22,11 +21,7 @@ const Router = () => {
     <BrowserRouter>
       {user ? (
         <Box paddingTop="20px" overflow="hidden">
-          <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
-          <WhiteSideBar
-            mobileDrawerOpen={mobileDrawerOpen}
-            onMobileDrawerToggle={handleMobileDrawerToggle}
-          />
+          <WhiteSideBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <Box
             component="main"
             sx={{

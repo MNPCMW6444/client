@@ -1,22 +1,22 @@
 
-.git
+#.git
 
-.gitignore
-
-
-.idea
-
-*.log
+#.gitignore
 
 
-.DS_Store
-.vscode
+#.idea
 
-.env
+#*.log
 
-node_modules
-package-lock.json
 
-dist
-build
+#.DS_Store
+#.vscode
+
+#.env
+
+#node_modules
+#package-lock.json
+
+#dist
+#build
 
