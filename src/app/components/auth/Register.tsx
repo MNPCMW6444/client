@@ -90,8 +90,21 @@ const Register = () => {
     e.preventDefault();
     if (!key) {
       if (axiosInstance) {
-        axiosInstance.post("auth/signupreq", { email });
-        setCheck(true);
+        axiosInstance
+          .post("auth/signupreq", { email })
+          .then(() => {
+            setCheck(true);
+          })
+          .catch((error) => {
+            toast.error(
+              error?.response?.data?.clientError ||
+                error?.response?.data?.serverError ||
+                error?.message ||
+                "Unknown error, Make sure you are Online"
+            );
+            setButtonLabel("IDLE");
+          });
+        setButtonLabel("DOING");
       }
     } else {
       if (
@@ -211,6 +224,7 @@ const Register = () => {
                   data-testid="login-button"
                   variant="contained"
                   fullWidth
+                  disabled={buttonLabel !== "IDLE"}
                   onClick={handleSubmit}
                 >
                   {LABELS[buttonLabel].REGISTER}
