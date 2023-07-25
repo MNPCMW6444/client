@@ -44,7 +44,7 @@
     "f2": "npm run update",
     "preprod": "npm run f1",
     "prod": "npm run build",
-    "preconect": "aws codeartifact login --tool npm --repository failean --domain failean --domain-owner 988253048728 --region us-east-1",
+    "preconnect": "aws codeartifact login --tool npm --repository failean --domain failean --domain-owner 988253048728 --region us-east-1",
     "connect": "npm run prod",
     "prelocalprod": "rm -f .npmrc",
     "localprod": "npm run connect",
