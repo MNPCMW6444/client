@@ -37,7 +37,7 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "react-scripts test",
-    "start": "npm run dev",
+    "start": "npm run udev",
     "pref1": "npm config set registry https://registry.npmjs.org/",
     "f1": "npm run f2",
     "pref2": "npm config set @failean:registry https://failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/",
