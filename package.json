@@ -48,7 +48,7 @@
     "connect": "npm run prod",
     "prelocalprod": "rm -f .npmrc",
     "localprod": "npm run connect",
-    "pred:b": "npm run connet",
+    "pred:b": "npm run connect",
     "d:b": "VERSION=$(node -p \"require('./package.json').version\") && docker build --platform amd64 -t 988253048728.dkr.ecr.us-east-1.amazonaws.com/client:$VERSION .",
     "dev": "PORT=5999 react-scripts start",
     "preudev": "npm run update",
