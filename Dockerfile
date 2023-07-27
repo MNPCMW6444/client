@@ -6,10 +6,11 @@ COPY public /app/public
 COPY src /app/src
 COPY website /app/website
 COPY server.js /app/server.js
+RUN npm config set registry https://registry.npmjs.org/
+RUN npm config set @failean:registry https://failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/
 RUN npm run prod
 RUN npm run clean:p
 RUN npm i --omit=dev
-RUN rm -rf .npmrc
 RUN rm -rf .npmrc
 FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts-slim
 WORKDIR /app
