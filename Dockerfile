@@ -1,18 +1,15 @@
 FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts as BUILDER
 WORKDIR /app
-RUN apt-get update && \
-    apt-get install -y unzip curl && \
-    curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install
-COPY ./credentials /root/.aws/credentials
-COPY ./config /root/.aws/config
+ARG CODEARTIFACT_TOKEN
 COPY package.json /app/package.json
 COPY tsconfig.json /app/tsconfig.json
 COPY public /app/public
 COPY src /app/src
 COPY website /app/website
 COPY server.js /app/server.js
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm config set @failean:registry https://failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/ && \
+    echo "//failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/:_authToken=${CODEARTIFACT_TOKEN}" > .npmrc
 RUN npm run prod
 RUN npm run clean:p
 RUN npm i --omit=dev
