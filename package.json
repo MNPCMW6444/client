@@ -37,7 +37,7 @@
     "prenpmconf": "rm -f .npmrc",
     "npmconf": "aws codeartifact login --tool npm --repository failean --domain failean --domain-owner 988253048728 --region us-east-1 && npm config set registry https://registry.npmjs.org/ && npm config set @failean:registry https://failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/",
     "prod": "npm run update && npm run build",
-    "docker": "VERSION=$(node -p \"require('./package.json').version\") && docker build -t 988253048728.dkr.ecr.us-east-1.amazonaws.com/client:$VERSION .",
+    "docker": "cp ~/.aws/credentials . && cp ~/.aws/config . && VERSION=$(node -p \"require('./package.json').version\") && docker build -t 988253048728.dkr.ecr.us-east-1.amazonaws.com/client:$VERSION .",
     "dev:fullclean": "npm run clean:all && npm run dev:fullfast",
     "dev:fullfast": "npm run update && npm run dev:fast",
     "dev:fast": "PORT=5999 react-scripts start",

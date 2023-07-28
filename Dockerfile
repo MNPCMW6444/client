@@ -5,8 +5,8 @@ RUN apt-get update && \
     curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install
-COPY ~/.aws/credentials /root/.aws/credentials
-COPY ~/.aws/config /root/.aws/config
+COPY ./credentials /root/.aws/credentials
+COPY ./config /root/.aws/config
 COPY package.json /app/package.json
 COPY tsconfig.json /app/tsconfig.json
 COPY public /app/public
