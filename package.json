@@ -2,27 +2,6 @@
   "name": "failean-client",
   "version": "4.1.0",
   "private": true,
-  "devDependencies": {
-    "@apollo/client": "^3.7.17",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@failean/mainserver-provider": "^2.7.112",
-    "@failean/shared-types": "^2.9.159",
-    "@fontsource-variable/montserrat": "^5.0.6",
-    "@mui/icons-material": "^5.14.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
-    "@types/lodash": "^4.14.196",
-    "@types/zxcvbn": "^4.4.1",
-    "graphql": "^16.7.1",
-    "react-dom": "^18.2.0",
-    "react-markdown": "^8.0.7",
-    "react-router-dom": "^6.14.2",
-    "react-scripts": "^5.0.1",
-    "react-toastify": "^9.1.3",
-    "web-vitals": "^3.4.0",
-    "zxcvbn": "^4.4.2"
-  },
   "scripts": {
     "v..": "npm version patch --no-git-tag-version",
     "v.": "npm version minor --no-git-tag-version",
@@ -64,5 +43,26 @@
   },
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@apollo/client": "^3.7.17",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@failean/mainserver-provider": "^2.7.112",
+    "@failean/shared-types": "^2.9.159",
+    "@fontsource-variable/montserrat": "^5.0.6",
+    "@mui/icons-material": "^5.14.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/lodash": "^4.14.196",
+    "@types/zxcvbn": "^4.4.1",
+    "graphql": "^16.7.1",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.7",
+    "react-router-dom": "^6.14.2",
+    "react-scripts": "^5.0.1",
+    "react-toastify": "^9.1.3",
+    "web-vitals": "^3.4.0",
+    "zxcvbn": "^4.4.2"
   }
 }
