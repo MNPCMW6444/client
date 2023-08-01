@@ -66,8 +66,7 @@ const Register = () => {
   const [tosDialogOpen, setTosDialogOpen] = useState<boolean>(false);
   const [tosContent, setTosContent] = useState<string>("");
 
-    const { refreshUserData } = useContext(UserContext);
-
+  const { refreshUserData } = useContext(UserContext);
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
@@ -108,50 +107,50 @@ const Register = () => {
     if (!tosChecked) {
       toast.error("Please agree to the Terms of Service");
       return;
-    }
-    else{
-        if (!key) {
-      if (axiosInstance) {
-        axiosInstance
-          .post("auth/signupreq", { email })
-          .then(() => {
-            setCheck(true);
-          })
-          .catch((error) => {
-            toast.error(
-              error?.response?.data?.clientError ||
-                error?.response?.data?.serverError ||
-                error?.message ||
-                "Unknown error, Make sure you are Online"
-            );
-            setButtonLabel("IDLE");
-          });
-        setButtonLabel("DOING");
-      }
     } else {
-      if (
-        password.length >= 6 &&
-        name.length > 0 &&
-        password === confirmPassword
-      ) {
+      if (!key) {
         if (axiosInstance) {
           axiosInstance
-            .post("auth/signupfin", {
-              key,
-              fullname: name,
-              password,
-              passwordagain: confirmPassword,
+            .post("auth/signupreq", { email })
+            .then(() => {
+              setCheck(true);
             })
-            .then(() => refreshUserData())
             .catch((error) => {
-              setButtonLabel("IDLE");
               toast.error(
                 error?.response?.data?.clientError ||
+                  error?.response?.data?.serverError ||
                   error?.message ||
                   "Unknown error, Make sure you are Online"
               );
+              setButtonLabel("IDLE");
             });
           setButtonLabel("DOING");
+        }
+      } else {
+        if (
+          password.length >= 6 &&
+          name.length > 0 &&
+          password === confirmPassword
+        ) {
+          if (axiosInstance) {
+            axiosInstance
+              .post("auth/signupfin", {
+                key,
+                fullname: name,
+                password,
+                passwordagain: confirmPassword,
+              })
+              .then(() => refreshUserData())
+              .catch((error) => {
+                setButtonLabel("IDLE");
+                toast.error(
+                  error?.response?.data?.clientError ||
+                    error?.message ||
+                    "Unknown error, Make sure you are Online"
+                );
+              });
+            setButtonLabel("DOING");
+          }
         }
       }
     }
