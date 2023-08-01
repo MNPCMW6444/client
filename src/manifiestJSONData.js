@@ -1,10 +1,15 @@
+require('dotenv').config();
+
+
 const env =
   process.env.REACT_APP_WHITE_ENV === "dev"
     ? " Dev"
     : process.env.REACT_APP_WHITE_ENV === "tst"
     ? " TST"
     : "";
-export default {
+
+    
+module.exports = {
   short_name: `Failean${env}`,
   name: `Failean App${env}`,
   icons: [
