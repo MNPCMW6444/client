@@ -5,7 +5,13 @@ import WhiteThemeProvider from "./providers/style/WhiteThemeProvider";
 
 const App = () => (
   <WhiteThemeProvider>
-    <MainserverProvider env="dev">
+    <MainserverProvider
+      env={
+        process.env.REACT_APP_WHITE_ENV === "prod"
+          ? undefined
+          : (process.env.REACT_APP_WHITE_ENV as "dev" | "tst")
+      }
+    >
       <UserContextProvider>
         <WhiteRouter />
       </UserContextProvider>
