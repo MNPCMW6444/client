@@ -224,7 +224,7 @@ const Register = () => {
                   data-testid="login-button"
                   variant="contained"
                   fullWidth
-                  disabled={buttonLabel !== "IDLE"}
+                  disabled={buttonLabel !== "IDLE" || !tosChecked}
                   onClick={handleSubmit}
                 >
                   {LABELS[buttonLabel].REGISTER}
