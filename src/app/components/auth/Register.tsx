@@ -65,7 +65,6 @@ const Register = () => {
   const [tosChecked, setTosChecked] = useState<boolean>(false);
   const [tosDialogOpen, setTosDialogOpen] = useState<boolean>(false);
   const [tosContent, setTosContent] = useState<string>("");
-  const { refreshUserData } = useContext(UserContext);
 
   const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
@@ -107,7 +106,6 @@ const Register = () => {
       toast.error("Please agree to the Terms of Service");
       return;
     }
-    // Other form validation and submission logic here...
   };
 
   const StyledLinearProgress = StyledLinearProgressHOC(passwordStrength);
