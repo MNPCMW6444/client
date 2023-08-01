@@ -1,21 +1,14 @@
-import { useContext, useState, lazy, Suspense } from "react";
+import { useContext, useState, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Box } from "@mui/material";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
-import WhiteAppBar from "./fixed/WhiteAppBar";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
 import useResponsive from "../hooks/useRespnsive";
 import { loading } from "../../content/style/styled-components/all";
+import WhitePage from "./WhitePage";
 
-const AIdeatorWrapper = lazy(() => import("./pages/aideator/AIdeatorWrapper"));
-const MyAccount = lazy(() => import("./pages/my-account/MyAccount"));
-const About = lazy(() => import("./pages/about/About"));
-const Notebook = lazy(() => import("./pages/notebook/Notebook"));
-//const Deck = lazy(() => import("./pages/deck/Deck.future"));
-const Backlog = lazy(() => import("./pages/backlog/Backlog"));
-
-const WhiteRouter = () => {
+const Router = () => {
   const { user } = useContext(UserContext);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const { isMobile } = useResponsive();
@@ -28,11 +21,7 @@ const WhiteRouter = () => {
     <BrowserRouter>
       {user ? (
         <Box paddingTop="20px" overflow="hidden">
-          <WhiteAppBar onMobileDrawerToggle={handleMobileDrawerToggle} />
-          <WhiteSideBar
-            mobileDrawerOpen={mobileDrawerOpen}
-            onMobileDrawerToggle={handleMobileDrawerToggle}
-          />
+          <WhiteSideBar onMobileDrawerToggle={handleMobileDrawerToggle} />
           <Box
             component="main"
             sx={{
@@ -51,7 +40,7 @@ const WhiteRouter = () => {
                 path="/my-account"
                 element={
                   <Suspense fallback={loading()}>
-                    <MyAccount />
+                    <WhitePage path="my-account" />
                   </Suspense>
                 }
               />
@@ -59,15 +48,24 @@ const WhiteRouter = () => {
                 path="/about"
                 element={
                   <Suspense fallback={loading()}>
-                    <About />
+                    <WhitePage path="about" />
                   </Suspense>
                 }
               />
+
               <Route
                 path="/*"
                 element={
                   <Suspense fallback={loading()}>
-                    <Notebook />
+                    <WhitePage path="*" />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/critiq"
+                element={
+                  <Suspense fallback={loading()}>
+                    <WhitePage path="critiq" />
                   </Suspense>
                 }
               />
@@ -75,23 +73,15 @@ const WhiteRouter = () => {
                 path="/aideator"
                 element={
                   <Suspense fallback={loading()}>
-                    <AIdeatorWrapper />
+                    <WhitePage path="aideator" />
                   </Suspense>
                 }
               />
-              {/*    <Route
-                path="/deck"
-                element={
-                  <Suspense fallback={loading()}>
-                    <Deck />
-                  </Suspense>
-                }
-              /> */}
               <Route
                 path="/backlog"
                 element={
                   <Suspense fallback={loading()}>
-                    <Backlog />
+                    <WhitePage path="backlog" />
                   </Suspense>
                 }
               />
@@ -105,4 +95,4 @@ const WhiteRouter = () => {
   );
 };
 
-export default WhiteRouter;
+export default Router;

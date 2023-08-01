@@ -31,10 +31,12 @@ const loadingMessage = (
 const UserContext = createContext<{
   user?: WhiteUser;
   ideas: WhiteIdea[];
+  tokens: number;
   refreshUserData: () => Promise<void>;
 }>({
   user: undefined,
   ideas: [],
+  tokens: 0,
   refreshUserData: () => Promise.resolve(),
 });
 
@@ -44,9 +46,10 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(undefined);
   const [ideas, setIdeas] = useState<WhiteIdea[]>([]);
   const [loading, setLoading] = useState(true);
+  const [tokens, setTokens] = useState<number>(0);
 
   const refreshUserData = useCallback(async () => {
-    if (axiosInstance)
+    if (axiosInstance) {
       axiosInstance
         .get("auth/signedin")
         .then((userRes) => {
@@ -88,6 +91,14 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
           setUser(undefined);
           setLoading(false);
         });
+      try {
+        const resx = await axiosInstance.get("accounts/countTokens");
+        setTokens(resx.data.tokens);
+      } catch (e) {
+        setUser(undefined);
+        setLoading(false);
+      }
+    }
   }, [axiosInstance]);
 
   useEffect(() => {
@@ -98,6 +109,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     <UserContext.Provider
       value={{
         user,
+        tokens,
         ideas,
         refreshUserData,
       }}

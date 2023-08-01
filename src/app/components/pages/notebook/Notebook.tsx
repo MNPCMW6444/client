@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import UserContext from "../../../context/UserContext";
 import {
   Tab,
@@ -24,7 +24,7 @@ const Notebook = () => {
   useEffect(() => {
     setInputText(ideas[activeIdeaIndex]?.idea);
   }, [ideas, activeIdeaIndex]);
-
+  
   const handleInputChange = (event: any) => {
     const text = event.target.value;
     setInputText(text);
@@ -57,6 +57,7 @@ const Notebook = () => {
               <TabScrollButton direction="right" orientation="horizontal" />
             </Tabs>
             <Button
+              color="secondary"
               onClick={() => {
                 if (axiosInstance)
                   axiosInstance
@@ -90,6 +91,7 @@ const Notebook = () => {
           <Grid item container columnSpacing={4}>
             <Grid item>
               <Button
+                color="secondary"
                 disabled={ideas.length === 0}
                 onClick={() => {
                   if (axiosInstance)
@@ -113,6 +115,7 @@ const Notebook = () => {
             </Grid>
             <Grid item>
               <Button
+                color="secondary"
                 disabled={ideas.length === 0}
                 onClick={() => {
                   if (axiosInstance)
@@ -139,5 +142,4 @@ const Notebook = () => {
     </>
   );
 };
-
 export default Notebook;

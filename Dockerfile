@@ -1,34 +1,26 @@
-# Use the official Node.js LTS image as the base image
-FROM node:lts
-
-# Set the working directory inside the container
+FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts as BUILDER
 WORKDIR /app
-
-# Copy package.json and package-lock.json to the working directory
-COPY package.json ./
-COPY .npmrc ./
-ENV NPM_TOKEN=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
-
-# Install dependencies
-RUN npm i
-
-# Copy the rest of the application code to the working directory
-COPY . .
-
-# Build the React application for production
-RUN npm run build
-
-# Use the official Nginx image to serve the built application
-FROM nginx:stable-alpine
-
-# Copy the built application from the Node.js container to the Nginx container
-COPY --from=0 /app/build /usr/share/nginx/html
-
-# Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80 for the Nginx server
-EXPOSE 80
-
-# Start the Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+ARG CODEARTIFACT_TOKEN
+COPY package.json /app/package.json
+COPY tsconfig.json /app/tsconfig.json
+COPY public /app/public
+COPY src /app/src
+COPY website /app/website
+COPY server.js /app/server.js
+RUN npm config set registry https://registry.npmjs.org/ && \
+    npm config set @failean:registry https://failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/ && \
+    echo "//failean-988253048728.d.codeartifact.us-east-1.amazonaws.com/npm/failean/:_authToken=${CODEARTIFACT_TOKEN}" > .npmrc
+RUN npm run prod
+RUN npm run clean:prod
+RUN npm i --omit=dev
+RUN rm -rf .npmrc
+FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts-slim
+WORKDIR /app
+COPY package.json /app/package.json
+COPY --from=builder /app/package-lock.json /app/package-lock.json
+COPY --from=builder /app/node_modules /app/node_modules
+COPY --from=builder /app/build /app/build
+COPY --from=builder /app/website /app/website
+COPY server.js /app/server.js
+CMD ["node", "./server.js"]
+EXPOSE 5999

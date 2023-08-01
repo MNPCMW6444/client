@@ -90,8 +90,21 @@ const Register = () => {
     e.preventDefault();
     if (!key) {
       if (axiosInstance) {
-        axiosInstance.post("auth/signupreq", { email });
-        setCheck(true);
+        axiosInstance
+          .post("auth/signupreq", { email })
+          .then(() => {
+            setCheck(true);
+          })
+          .catch((error) => {
+            toast.error(
+              error?.response?.data?.clientError ||
+                error?.response?.data?.serverError ||
+                error?.message ||
+                "Unknown error, Make sure you are Online"
+            );
+            setButtonLabel("IDLE");
+          });
+        setButtonLabel("DOING");
       }
     } else {
       if (
@@ -206,11 +219,12 @@ const Register = () => {
             <>
               <Box mt={2}>
                 <Button
+                  color="secondary"
                   type="submit"
                   data-testid="login-button"
                   variant="contained"
-                  color="primary"
                   fullWidth
+                  disabled={buttonLabel !== "IDLE"}
                   onClick={handleSubmit}
                 >
                   {LABELS[buttonLabel].REGISTER}
@@ -220,7 +234,7 @@ const Register = () => {
               <Box mt={1}>
                 <Typography align="center">
                   Already have an account?
-                  <Button color="primary" onClick={() => navigate("/login")}>
+                  <Button color="secondary" onClick={() => navigate("/login")}>
                     Login here
                   </Button>
                 </Typography>
