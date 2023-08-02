@@ -4,32 +4,27 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
+//import { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import IdeaSelector from "../../common/IdeaSelector";
 import Questionire from "./CritIQuest";
-
 export default function RunCritiq() {
-  const [value, setValue] = useState("");
-  const [Category, setCategory] = useState("");
-  const [ideaID, setIdeaID] = useState<string>("");
+  /* const setValue = useState("")[1];
+  const setCategory = useState("")[1]; */
+  const ideaID = useState<string>("")[0];
   const [checkedState, setCheckedState] = useState({
     angel: false,
     vc: false,
     customer: false,
   });
-
+  /* 
   const handleCategoryChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
-  };
-  const [disabled, setDisabled] = useState(true);
+  }; */
+  const setDisabled = useState(true)[1];
 
   useEffect(() => {
     setDisabled(!ideaID);
-  }, [ideaID]);
+  }, [ideaID, setDisabled]);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckedState({
@@ -38,10 +33,10 @@ export default function RunCritiq() {
     });
   };
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
+  /* const handleChange = (event: React.ChangeEvent<{}>, newValue: any) => {
     setValue(newValue);
   };
-
+ */
   return (
     <>
       <Grid

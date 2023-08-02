@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, MouseEvent } from "react";
+import { useState, useEffect, useContext, MouseEvent, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Collapse,
@@ -67,11 +67,14 @@ const WhiteSideBar = ({ onMobileDrawerToggle }: WhiteSideBarProps) => {
     { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
   ];
 
-  const critiqSubItems = [
-    { label: "Idea Score", route: "/critiq/ideascore" },
-    { label: "CritIQ Chat", route: "/critiq/critichat" },
-    { label: "Validation Roadmap", route: "/critiq/validationroadmap" },
-  ];
+  const critiqSubItems = useMemo(
+    () => [
+      { label: "Idea Score", route: "/critiq/ideascore" },
+      { label: "CritIQ Chat", route: "/critiq/critichat" },
+      { label: "Validation Roadmap", route: "/critiq/validationroadmap" },
+    ],
+    []
+  );
 
   useEffect(() => {
     const isCritiqRoute = [

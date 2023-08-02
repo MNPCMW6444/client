@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+//import { useTheme } from "@mui/material/styles";
+//import useMediaQuery from "@mui/material/useMediaQuery";
 import { MainserverContext } from "@failean/mainserver-provider";
 import { LinearProgress, Box } from "@mui/material";
 import UserContext from "../../../context/UserContext";
@@ -21,7 +21,6 @@ import {
   Select,
   MenuItem,
   FormControl,
-  TextField,
   Typography,
   Grid,
 } from "@mui/material";
@@ -34,8 +33,8 @@ const CritIQuest = () => {
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<any>({});
   const [resultsOpen, setResultsOpen] = useState(false);
-  const [averageFailScore, setAverageFailScore] = useState(0);
-  const [averageLeanScore, setAverageLeanScore] = useState(0);
+  const averageFailScore = useState(0)[0];
+  const averageLeanScore = useState(0)[0];
   const [, setFailScores] = useState<any>({});
   const [, setLeanScores] = useState<any>({});
   const [, setNumQuestionsAnswered] = useState(0);
@@ -101,8 +100,8 @@ const CritIQuest = () => {
     }
   };
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  //const theme = useTheme();
+  // const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -110,9 +109,9 @@ const CritIQuest = () => {
 
   const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
   const { ideas } = useContext(UserContext);
-  const handleIdeaClick = (ideaID: string) => {
+  /*   const handleIdeaClick = (ideaID: string) => {
     setCurrentIdeaID(ideaID);
-  };
+  }; */
 
   useEffect(() => {
     if (ideas.length > 0) {

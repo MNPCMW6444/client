@@ -1,50 +1,39 @@
 import React, { useState, useContext, useEffect } from "react";
-import {
-  Grid,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  IconButton,
-} from "@mui/material";
-import { AutoFixHigh, Send, ViewSidebar } from "@mui/icons-material";
+import { Typography, TextField, Paper, Box, IconButton } from "@mui/material";
+import { AutoFixHigh, Send } from "@mui/icons-material";
 import UserContext from "../../../context/UserContext";
-import { MainserverContext } from "@failean/mainserver-provider";
+// import { MainserverContext } from "@failean/mainserver-provider";
 
 const CritiChat = () => {
-  const mainserverContext = useContext(MainserverContext);
-  const axiosInstance = mainserverContext?.axiosInstance;
+  // const mainserverContext = useContext(MainserverContext);
+  //  const axiosInstance = mainserverContext?.axiosInstance;
 
   const { ideas } = useContext(UserContext);
 
   const [inputText, setInputText] = useState("");
-  const [role, setRole] = useState({
+  /* const [role, setRole] = useState({
     Angel: false,
     VC: false,
     Customer: false,
-  });
+  }); */
 
-  const [currentIdeaID, setCurrentIdeaID] = useState<string>("");
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const setCurrentIdeaID = useState<string>("")[1];
+  //const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
 
   // set init§ial idea after ideas have loaded
   useEffect(() => {
     if (ideas.length > 0) {
       setCurrentIdeaID(ideas[0]._id);
     }
-  }, [ideas]);
+  }, [ideas, setCurrentIdeaID]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(event.target.value);
   };
-
+  /* 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole({ ...role, [event.target.name]: event.target.checked });
-  };
+  }; */
 
   const handleQuestionGeneration = async () => {
     // Logic to generate a question from the CritiQ chat bot
@@ -57,10 +46,10 @@ const CritiChat = () => {
     }
     setInputText("");
   };
-
+  /* 
   const handleIdeaClick = (ideaID: string) => {
     setCurrentIdeaID(ideaID);
-  };
+  }; */
 
   return (
     <Box
