@@ -236,22 +236,27 @@ const Register = () => {
               />
             </>
           )}
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={tosChecked}
-                onChange={() => setTosChecked(!tosChecked)}
-              />
-            }
-            label={
-              <Typography>
-                I agree to the{" "}
-                <Link underline="hover" onClick={() => setTosDialogOpen(true)}>
-                  Terms of Service
-                </Link>
-              </Typography>
-            }
-          />
+          {!check && (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={tosChecked}
+                  onChange={() => setTosChecked(!tosChecked)}
+                />
+              }
+              label={
+                <Typography>
+                  I agree to the{" "}
+                  <Link
+                    underline="hover"
+                    onClick={() => setTosDialogOpen(true)}
+                  >
+                    Terms of Service
+                  </Link>
+                </Typography>
+              }
+            />
+          )}
           <Dialog open={tosDialogOpen} onClose={() => setTosDialogOpen(false)}>
             <DialogTitle>Terms of Service</DialogTitle>
             <DialogContent>
