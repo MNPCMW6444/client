@@ -85,6 +85,14 @@ const Router = () => {
                   </Suspense>
                 }
               />
+              <Route
+                path="/critiq"
+                element={
+                  <Suspense fallback={loading()}>
+                    <WhitePage path="critiq" />
+                  </Suspense>
+                }
+              />
             </Routes>
           </Box>
         </Box>

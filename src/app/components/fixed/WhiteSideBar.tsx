@@ -64,7 +64,7 @@ const WhiteSideBar = ({ onMobileDrawerToggle }: WhiteSideBarProps) => {
       disabled: true,
       comingSoon: true,
     },
-    { label: "CritiQ", route: "/critiq", disabled: true, comingSoon: true },
+    { label: "CritiQ", route: "/critiq", disabled: false, comingSoon: false },
   ];
 
   const critiqSubItems = useMemo(
