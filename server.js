@@ -14,9 +14,9 @@ app.get('/manifest.json', (_, res) => {
     res.json(manifiestJSONData);
 });
 
-app.get('/tos', (_, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'tos.html'));
-});
+app.use('/tos',
+    express.static(path.join(__dirname, 'public', 'tos.html'))
+);
 
 
 app.get('*', (_, res) =>{
