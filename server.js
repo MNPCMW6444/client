@@ -24,6 +24,6 @@ app.get('*', (_, res) =>{
 });
 
 const port = process.env.PORT || ( process.env.NODE_ENV==="development" ? 5920 : 5999);
-app.listen(port);
+app.listen(port, "0.0.0.0");
 
 console.log('App is listening on port ' + port);
