@@ -21,7 +21,7 @@ COPY --from=builder /app/package-lock.json /app/package-lock.json
 COPY --from=builder /app/node_modules /app/node_modules
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/website /app/website
-COPY --from=builder /app/src/manifiestJSONData /app/src/manifiestJSONData
+COPY --from=builder /app/src/manifiestJSONData.js /app/src/manifiestJSONData.js
 COPY server.js /app/server.js
 CMD ["node", "./server.js"]
 EXPOSE 5999
