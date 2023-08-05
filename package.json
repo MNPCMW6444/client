@@ -2,7 +2,7 @@
   "name": "failean-client",
   "version": "6.1.3",
   "private": true,
-  "proxy": "http://localhost:5920",
+  "proxy": "http://localhost:5999",
   "scripts": {
     "v..": "npm version patch --no-git-tag-version",
     "v.": "npm version minor --no-git-tag-version",
@@ -19,7 +19,7 @@
     "dev:fullclean": "npm run clean:all && npm run dev:fullfast",
     "dev:fullfast": "npm run update && npm run dev:fast",
     "server": "node server.js",
-    "dev:fast": "concurrently \"npm run server\" \"PORT=5999 react-scripts start\"",
+    "dev:fast": "concurrently \"npm run server\" \"PORT=5992 react-scripts start\"",
     "dev": "npm run dev:fast",
     "udev": "npm run dev:fullfast",
     "eject": "react-scripts eject",

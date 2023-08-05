@@ -30,7 +30,7 @@ app.get('*', (_, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-const port = process.env.PORT || ( process.env.NODE_ENV==="development" ? 5920 : 5999);
+const port = process.env.PORT || ( 5999);
 app.listen(port, "0.0.0.0");
 
 console.log('App is listening on port ' + port);
