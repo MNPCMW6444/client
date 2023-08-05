@@ -1,4 +1,4 @@
-FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts as BUILDER
+FROM node:lts as BUILDER
 WORKDIR /app
 ARG CODEARTIFACT_TOKEN
 COPY package.json /app/package.json
@@ -14,13 +14,14 @@ RUN npm run prod
 RUN npm run clean:prod
 RUN npm i --omit=dev
 RUN rm -rf .npmrc
-FROM 988253048728.dkr.ecr.us-east-1.amazonaws.com/node:lts-slim
+FROM node:slim
 WORKDIR /app
 COPY package.json /app/package.json
 COPY --from=builder /app/package-lock.json /app/package-lock.json
 COPY --from=builder /app/node_modules /app/node_modules
 COPY --from=builder /app/build /app/build
 COPY --from=builder /app/website /app/website
+COPY --from=builder /app/src/manifiestJSONData /app/src/manifiestJSONData
 COPY server.js /app/server.js
-CMD ["node", "server.js"]
+CMD ["node", "./server.js"]
 EXPOSE 5999
