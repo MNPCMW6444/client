@@ -6,7 +6,7 @@ require('dotenv').config();
 const app = express();
 
 
-app.use('/website', express.static(path.join(__dirname, 'website')));
+app.use('/', express.static(path.join(__dirname, 'website')));
 
 
 
@@ -19,7 +19,9 @@ app.use('/tos',
 );
 
 
-app.get('*', (_, res) =>{
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('*', (_, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
