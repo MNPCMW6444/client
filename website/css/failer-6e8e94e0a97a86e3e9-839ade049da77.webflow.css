@@ -473,6 +473,7 @@ figcaption {
 
 .button.cc-small {
   background-image: linear-gradient(#8a307f 15%, #af3ea1);
+  margin-left: 21px;
   padding: 10px 22px;
   display: inline-block;
 }
@@ -625,6 +626,7 @@ figcaption {
 
 .nav-menu-flex {
   align-items: center;
+  margin-right: -64px;
   display: flex;
 }
 
