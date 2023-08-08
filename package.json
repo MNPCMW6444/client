@@ -51,7 +51,7 @@
   "devDependencies": {
     "@apollo/client": "^3.8.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@failean/mainserver-provider": "^2.7.118",
+    "@failean/mainserver-provider": "^2.7.121",
     "@failean/shared-types": "^2.9.159",
     "@fontsource-variable/montserrat": "^5.0.9",
     "@mui/icons-material": "^5.14.3",
