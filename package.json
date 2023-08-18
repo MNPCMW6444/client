@@ -55,7 +55,7 @@
     "@failean/shared-types": "^2.9.159",
     "@fontsource-variable/montserrat": "^5.0.9",
     "@mui/icons-material": "^5.14.3",
-    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/jest-dom": "^6.0.1",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/lodash": "^4.14.197",
