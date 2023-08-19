@@ -16,6 +16,10 @@ app.get('/tos', (_, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tos.html'));
 });
 
+app.get('/pay', (_, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'pay.html'));
+});
+
 
 // Production environment: serve the build
 if (process.env.NODE_ENV === 'production') {
