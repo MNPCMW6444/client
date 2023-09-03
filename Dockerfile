@@ -1,4 +1,6 @@
 FROM node:lts as BUILDER
+ARG NPMTOKEN=default_value
+RUN echo $NPMTOKEN
 WORKDIR /app
 COPY package.json /app/package.json
 COPY tsconfig.json /app/tsconfig.json
