@@ -14,7 +14,7 @@
     "build": "react-scripts build",
     "start": "npm run dev:fullclean",
     "prod": "npm run update:prod && npm run build",
-    "docker": "VERSION=$(node -p \"require('./package.json').version\") docker build --build-arg -t client:$VERSION .",
+    "docker": "docker build -t client:latest .",
     "dev:fullclean": "npm run clean:all && npm run dev:fullfast",
     "dev:fullfast": "npm run update && npm run dev:fast",
     "server": "node server.js",
