@@ -473,6 +473,7 @@ figcaption {
 
 .button.cc-small {
   background-image: linear-gradient(#8a307f 15%, #af3ea1);
+  margin-left: 0;
   padding: 10px 22px;
   display: inline-block;
 }
@@ -625,6 +626,7 @@ figcaption {
 
 .nav-menu-flex {
   align-items: center;
+  margin-right: 0;
   display: flex;
 }
 
@@ -724,7 +726,10 @@ figcaption {
 }
 
 .navbar-button-wrapper {
+  grid-column-gap: 15px;
+  grid-row-gap: 15px;
   flex: none;
+  display: flex;
 }
 
 .hero-grid {
@@ -1961,7 +1966,7 @@ figcaption {
 .div-block-9 {
   height: 3.5rem;
   background-color: #3ba6b2;
-  background-image: linear-gradient(to right, #b473bf 38%, #f05a7d);
+  background-image: linear-gradient(to right, #8a3052, #b473bf);
   justify-content: space-between;
   align-items: center;
   padding-left: 40px;
@@ -2627,7 +2632,7 @@ figcaption {
   }
 
   .section-2.free-uses {
-    top: 78px;
+    top: 84px;
   }
 
   .image-7 {
@@ -2707,6 +2712,7 @@ figcaption {
 
   .navbar-brand-mobile.w--current {
     flex: 0 auto;
+    order: -1;
     align-items: center;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -2715,6 +2721,7 @@ figcaption {
 
   .nav-link-mobile {
     color: #000;
+    display: none;
   }
 
   .doodle-shine {
@@ -2755,16 +2762,19 @@ figcaption {
   }
 
   .div-block-9 {
+    height: 3rem;
     padding-left: 20px;
     padding-right: 20px;
   }
 
   .text-block {
-    font-size: 1rem;
+    align-self: center;
+    font-size: .8rem;
+    text-decoration: none;
   }
 
   .section-2.free-uses {
-    top: 71px;
+    top: 77px;
   }
 
   .image-7 {
@@ -2784,6 +2794,7 @@ figcaption {
   }
 
   .container {
+    min-height: 71px;
     flex: 1;
     justify-content: space-between;
     align-self: stretch;
@@ -2823,7 +2834,8 @@ figcaption {
   }
 
   .logo.cc {
-    padding-left: 15px;
+    max-width: 85%;
+    padding-left: 0;
   }
 
   .navbar {
@@ -2851,11 +2863,33 @@ figcaption {
     display: none;
   }
 
-  .nav-link-mobile {
-    color: #000;
+  .navbar-brand-mobile.w--current {
+    order: -1;
+    margin-bottom: 10px;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
-  .nav-link-mobile:hover, .nav-link-mobile.w--current, .nav-link-mobile.w--current:hover {
+  .nav-link-mobile {
+    color: #8a307f;
+    order: -1;
+    padding-bottom: 0;
+    display: block;
+  }
+
+  .nav-link-mobile:hover {
+    color: #8a307f;
+  }
+
+  .nav-link-mobile.w--current {
+    color: #8a307f;
+    order: -1;
+    justify-content: flex-end;
+    padding-top: 6px;
+    padding-bottom: 0;
+  }
+
+  .nav-link-mobile.w--current:hover {
     color: #8a307f;
   }
 
@@ -2894,8 +2928,24 @@ figcaption {
     padding-right: 0;
   }
 
+  .footer-grid {
+    grid-template-rows: auto auto;
+    grid-template-areas: ". ."
+                         "Area Area";
+  }
+
   .text-field, .text-field-dark {
     height: 47px;
+  }
+
+  .social-links {
+    width: auto;
+    min-width: auto;
+    display: block;
+  }
+
+  .social-link {
+    justify-content: flex-end;
   }
 
   .container-3 {
@@ -2958,11 +3008,29 @@ figcaption {
   }
 
   .section-2.free-uses {
-    top: 67px;
+    top: 71px;
   }
 
   .image-7 {
     width: 1.5rem;
+  }
+
+  .div-block-10 {
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    grid-template: ". ."
+                   "Area Area"
+                   / 1fr .25fr;
+    grid-auto-columns: 1fr;
+    display: grid;
+  }
+
+  .div-block-11 {
+    grid-column-gap: 15px;
+    grid-row-gap: 15px;
+    align-self: center;
+    align-items: center;
+    display: flex;
   }
 }
 
@@ -3114,6 +3182,16 @@ figcaption {
 
   #w-node-_5c141f12-d9d8-ebed-f29e-6c4978afe931-cd8efba7, #w-node-_45ed9a9d-a0f6-dd96-4c58-f563f8c0af7b-cd8efba7 {
     grid-area: span 1 / span 1 / span 1 / span 1;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  #w-node-e0fb658a-c97f-5ea3-4c72-bec70d73f57a-cd8efba7, #w-node-e0fb658a-c97f-5ea3-4c72-bec70d73f57c-cd8efba7 {
+    grid-area: Area;
+  }
+
+  #w-node-e0fb658a-c97f-5ea3-4c72-bec70d73f57e-cd8efba7 {
+    align-self: center;
   }
 }
 

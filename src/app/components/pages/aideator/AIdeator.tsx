@@ -39,7 +39,7 @@ const removePrefix = (str: string): string => {
 const AIdeator = () => {
   const mainserverContext = useContext(MainserverContext);
   const axiosInstance = mainserverContext?.axiosInstance;
-  const { ideas } = useContext(UserContext);
+  const { ideas, tokens } = useContext(UserContext);
   const { currentIdeaID, setCurrentIdeaID, graph, loaded, polled } =
     useContext(AIdeatorContext);
   const [openPrompt, setOpenPrompt] = useState<PromptName | "closed">("closed");
@@ -287,7 +287,7 @@ const AIdeator = () => {
     );
   };
 
-  return (
+  return ideas.length > 0 ? (
     <>
       {openPrompt !== "closed" &&
         !(openPrompt[0].length && openPrompt[0].length > 2) && (
@@ -324,6 +324,9 @@ const AIdeator = () => {
           </Grid>
         )}
         <Grid item>
+          <Typography variant="h4">Token Balance: {tokens}</Typography>
+        </Grid>
+        <Grid item>
           <Paper sx={{ overflow: "scroll" }}>
             {graph.length > 0 ? (
               renderGraph(graph)
@@ -334,6 +337,10 @@ const AIdeator = () => {
         </Grid>
       </Grid>
     </>
+  ) : (
+    <Typography variant="h4">
+      Please save at least one idea before using AIdeator
+    </Typography>
   );
 };
 

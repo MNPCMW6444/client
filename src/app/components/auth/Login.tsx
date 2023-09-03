@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  KeyboardEvent,
+  useContext,
+  useState,
+} from "react";
 import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -47,6 +53,12 @@ const Login = () => {
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
+  };
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSubmit(e as unknown as FormEvent);
+    }
   };
 
   const validateEmail = (email: string) => {
@@ -103,6 +115,7 @@ const Login = () => {
             variant="outlined"
             value={password}
             onChange={handlePasswordChange}
+            onKeyPress={handleKeyPress} // Add this line
           />
           <Box mt={2}>
             <Button

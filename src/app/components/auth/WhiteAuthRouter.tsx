@@ -10,7 +10,7 @@ const WhiteAuthRouter = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/register" element={<Register />} />
     <Route path="/reset" element={<Reset />} />
-    <Route path="/checkemail" element={<Checkemail />} />
+    <Route path="/wxwxwx" element={<Checkemail />} />
   </Routes>
 );
 
