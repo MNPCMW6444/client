@@ -14,7 +14,7 @@
     "build": "react-scripts build",
     "start": "npm run dev:fullclean",
     "prod": "npm run update:prod && npm run build",
-    "docker": "docker build --build-arg NPMTOKEN=$(System.AccessToken) -t client:latest .",
+    "docker": "docker build --build-arg NPMTOKEN=$($NPMTOKEN) -t client:latest .",
     "dev:fullclean": "npm run clean:all && npm run dev:fullfast",
     "dev:fullfast": "npm run update && npm run dev:fast",
     "server": "node server.js",
@@ -43,8 +43,8 @@
     ]
   },
   "dependencies": {
-    "@failean/mainserver-provider": "^2.7.122",
-    "@failean/shared-types": "^2.9.161",
+    "@failean/mainserver-provider": "^2.7.126",
+    "@failean/shared-types": "^2.9.165",
     "dotenv": "^16.3.1",
     "express": "^4.18.2"
   },

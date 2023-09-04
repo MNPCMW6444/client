@@ -1,5 +1,5 @@
 FROM node:lts as BUILDER
-ARG NPMTOKEN=default_value
+ARG NPMTOKEN
 RUN echo $NPMTOKEN
 WORKDIR /app
 COPY package.json /app/package.json
