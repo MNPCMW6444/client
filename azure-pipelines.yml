@@ -14,7 +14,6 @@ variables:
   imagePullSecret: 'failean785642a2-auth'
   vmImageName: 'ubuntu-latest'
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
-  MyNPMTOKEN: $(NPMTOKEN)  # Renamed here
 
 stages:
   - stage: Build
@@ -34,7 +33,7 @@ stages:
               containerRegistry: $(dockerRegistryServiceConnection)
               tags: |
                 $(tag)
-              buildArgs: --build-arg NPMTOKEN=$(MyNPMTOKEN)
+              buildArgs: --build-arg NPMTOKEN=$(NPMTOKEN§)
           - upload: manifests
             artifact: manifests
 
