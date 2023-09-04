@@ -24,48 +24,61 @@ variables:
   # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
-parameters:
-  - name: containerRegistry
-    displayName: Container registry name
-    type: string
-    default: failean
-
-  - name: containerRepository
-    displayName: Container repository name (Docker image name)
-    type: string
-    default: client
-
-  - name: imageTag
-    displayName: image tag
-    type: string
-    default: $(Build.BuildId)
-
-  - name: resourceManagerConnectionName
-    displayName: ARM connection name
-    type: string
-    default: arm-connection
-
 stages:
 - stage: Build
   displayName: Build stage
   jobs:
-    - job: "Build_and_publish_artifacts"
-      steps:
-        - task: npmAuthenticate@0
-          inputs:
-            workingFile: .npmrc
-        - task: AzureCLI@2
-          displayName: 'Login to ACR'
-          inputs:
-            azureSubscription: ${{ parameters.resourceManagerConnectionName }}
-            scriptType: 'bash'
-            scriptLocation: 'inlineScript'
-            inlineScript: 'az acr login --name ${{ parameters.containerRegistry }}'
-        - script: |
-            IMAGE=${{ lower(parameters.containerRegistry) }}.azurecr.io/${{ parameters.containerRepository }}:${{ parameters.imageTag }}
-            docker build -t $IMAGE .
-            docker push $IMAGE
-          displayName: 'Build and push to ACR'
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+    - upload: manifests
+      artifact: manifests
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MNPCMW6444faileanclientg-2991.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              manifests: |
+                $(Pipeline.Workspace)/manifests/deployment.yml
+                $(Pipeline.Workspace)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
 
   - deployment: DeployPullRequest
     displayName: Deploy Pull request
