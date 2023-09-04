@@ -8,7 +8,7 @@ COPY src /app/src
 COPY website /app/website
 COPY server.js /app/server.js
 COPY .npmrc /app/.npmrc
-RUN echo $NPMTOKEN
+RUN echo "Token length is: " ${#NPMTOKEN}
 RUN npm run prod
 RUN npm run clean:prod
 RUN npm i --omit=dev
