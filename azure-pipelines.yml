@@ -9,20 +9,18 @@ resources:
 - repo: self
 
 variables:
-
-  # Container registry service connection established during pipeline creation
+  # Existing variables
   dockerRegistryServiceConnection: 'c28f4fb6-98f8-427f-93e8-76c04c75841f'
   imageRepository: 'client'
   containerRegistry: 'failean.azurecr.io'
   dockerfilePath: '**/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'failean785642a2-auth'
-
-  # Agent VM image name
   vmImageName: 'ubuntu-latest'
-
-  # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
+
+  # Add the NPMTOKEN variable
+  NPMTOKEN: $(NPMTOKEN)
 
 stages:
 - stage: Build
