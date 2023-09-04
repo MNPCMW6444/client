@@ -40,7 +40,7 @@ stages:
     - task: Docker@2
       inputs:
         command: 'build'
-        repository: '$(registry)/$(imageName)'
+        repository: 'failean.azurecr.io/client'
         dockerfile: '**/Dockerfile'
         buildContext: '$(Build.Repository.LocalPath)'
         arguments: '--build-arg NPMTOKEN=$(npmToken)'
@@ -49,7 +49,7 @@ stages:
     - task: Docker@2
       inputs:
         command: 'push'
-        repository: '$(registry)/$(imageName)'
+        repository: 'failean.azurecr.io/client'
         tags: |
           $(tag)
 
