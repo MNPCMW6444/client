@@ -10,6 +10,9 @@ resources:
 
 variables:
 
+  ARTIFACTORY_URL: 'https://pkgs.dev.azure.com/failean/_packaging/failean/npm/registry'
+  NPM_REPO: 'failean'
+
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'f11c963b-a7f5-484f-8b26-dedd816701ca'
   imageRepository: 'client'
@@ -42,7 +45,6 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
-        buildArgs: --build-arg NPMTOKEN=$(NPMTOKEN)
 
     - upload: manifests
       artifact: manifests
