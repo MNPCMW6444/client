@@ -14,7 +14,6 @@ variables:
   imagePullSecret: 'failean785642a2-auth'
   vmImageName: 'ubuntu-latest'
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
-  # Add the NPMTOKEN variable
   MyNPMTOKEN: $(NPMTOKEN)  # Renamed here
 
 stages:
