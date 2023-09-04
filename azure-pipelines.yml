@@ -33,7 +33,7 @@ stages:
               containerRegistry: $(dockerRegistryServiceConnection)
               tags: |
                 $(tag)
-              buildArgs: --build-arg NPMTOKEN=$(NPMTOKEN§)
+              buildArgs: --build-arg NPMTOKEN=$(NPMTOKEN)
           - upload: manifests
             artifact: manifests
 
