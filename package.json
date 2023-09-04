@@ -14,7 +14,7 @@
     "build": "react-scripts build",
     "start": "npm run dev:fullclean",
     "prod": "npm run update:prod && npm run build",
-    "docker": "docker build --build-arg NPMTOKEN=$(System.AccessToken) -t client:latest .",
+    "docker": "docker build --build-arg -t client:latest .",
     "dev:fullclean": "npm run clean:all && npm run dev:fullfast",
     "dev:fullfast": "npm run update && npm run dev:fast",
     "server": "node server.js",
