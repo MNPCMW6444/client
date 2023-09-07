@@ -11,7 +11,7 @@ resources:
 variables:
 
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '96c87e29-d224-4821-ab3c-1a3ba25d4f8b'
+  dockerRegistryServiceConnection: 'faileann'
   imageRepository: 'client'
   containerRegistry: 'failean.azurecr.io'
   dockerfilePath: '**/Dockerfile'
