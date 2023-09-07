@@ -33,6 +33,8 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
+          - script: az acr login --name failean --username $(registryUserName) --password $(registryPassword)
+            displayName: 'Login to ACR'
           - task: Docker@2
             inputs:
               command: 'build'
