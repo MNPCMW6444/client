@@ -33,6 +33,17 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
+          - script: echo "Fetch current external IP"
+            displayName: 'Fetch IP'
+          - script: |
+              current_ip=$(curl -s ifconfig.me)
+              echo "Current IP is $current_ip"
+            displayName: 'Get current IP'
+          - script: |
+              az acr network-rule add --name failean --ip-address $current_ip
+              displayName: 'Add Network Rule to ACR'
+              env:
+                AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
           - script: az acr login --name failean --username $(registryUserName) --password $(registryPassword)
             displayName: 'Login to ACR'
           - task: Docker@2
