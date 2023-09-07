@@ -33,16 +33,6 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
-          - task: AzureCLI@2
-            displayName: 'Fetch IP and Add Network Rule to ACR'
-            inputs:
-              azureSubscription: 'fffaaaa'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                current_ip=$(curl -s ifconfig.me)
-                echo "Current IP is $current_ip"
-                az acr network-rule add --name failean --ip-address $current_ip
           - task: Docker@2
             inputs:
               command: 'build'
