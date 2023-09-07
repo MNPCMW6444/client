@@ -62,7 +62,7 @@ stages:
         displayName: Deploy
         pool:
           vmImage: $(vmImageName)
-        environment: 'MNPCMW6444faileanclientg-2991.default'
+        environment: 'MNPCMW6444faileanclientg.default'
         strategy:
           runOnce:
             deploy:
@@ -92,7 +92,7 @@ stages:
         pool:
           vmImage: $(vmImageName)
 
-        environment: 'MNPCMW6444faileanclientg-2991.$(k8sNamespaceForPR)'
+        environment: 'MNPCMW6444faileanclientg.$(k8sNamespaceForPR)'
         strategy:
           runOnce:
             deploy:
