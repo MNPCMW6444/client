@@ -32,11 +32,13 @@ const loadingMessage = (
 const UserContext = createContext<{
     user?: WhiteUser;
     ideas: WhiteIdea[];
+    ideaNames: string[];
     tokens: number;
     refreshUserData: () => Promise<void>;
 }>({
     user: undefined,
     ideas: [],
+    ideaNames: [],
     tokens: 0,
     refreshUserData: () => Promise.resolve(),
 });
@@ -78,10 +80,9 @@ export const UserContextProvider = ({children}: { children: ReactNode }) => {
                                             idea,
                                         }))
                                     )
-                                ).map(({data, original, idea}) => ({
-                                    ...idea,
-                                    idea: data.promptResult ? data.promptResult.data : original,
-                                }))
+                                ).map(({data, original, idea}) => (
+                                    data.promptResult ? data.promptResult.data : original
+                                ))
                             );
                             setLoading(false);
                         })
@@ -114,6 +115,7 @@ export const UserContextProvider = ({children}: { children: ReactNode }) => {
                 user,
                 tokens,
                 ideas,
+                ideaNames,
                 refreshUserData,
             }}
         >

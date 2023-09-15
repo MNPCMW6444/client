@@ -17,7 +17,7 @@ import {Button} from "@mui/material";
 const Notebook = () => {
     const mainserverContext = useContext(MainserverContext);
     const axiosInstance = mainserverContext?.axiosInstance;
-    const {ideas, refreshUserData} = useContext(UserContext);
+    const {ideas, ideaNames, refreshUserData} = useContext(UserContext);
     const [activeIdeaIndex, setActiveIdeaIndex] = useState<number>(0);
     const [inputText, setInputText] = useState<string>(ideas[0]?.idea);
 
@@ -63,11 +63,11 @@ const Notebook = () => {
                             allowScrollButtonsMobile
                             style={{flex: 1}}
                         >
-                            {ideas.map((idea, index) =>
+                            {ideaNames.map((name, index) =>
                                 (
-                                    <Tooltip title={idea.idea} key={index}>
+                                    <Tooltip title={name} key={index}>
                                         <Tab
-                                            label={`${index + 1}: ${idea.idea.substring(0, 30) === " " ? "New Idea" : idea.idea.substring(0, 30)}...`}
+                                            label={`${index + 1}: ${name.substring(0, 30) === " " ? "New Idea" : name.substring(0, 30)}...`}
                                         />
                                     </Tooltip>
                                 )

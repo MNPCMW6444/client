@@ -1,6 +1,6 @@
 {
   "name": "failean-client",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "private": true,
   "proxy": "http://localhost:5992",
   "scripts": {
