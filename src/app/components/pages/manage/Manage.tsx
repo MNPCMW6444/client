@@ -57,7 +57,7 @@ const Manage = () => {
                             <TableRow key={index}>
                                 <ManageTableCell>{task.status}</ManageTableCell>
                                 <ManageTableCell>{task.promptResIDOrReason === "successful but unknown" ? "successful" : task.promptResIDOrReason}</ManageTableCell>
-                                <ManageTableCell>{capitalize("task")}</ManageTableCell>
+                                <ManageTableCell>{capitalize(task.promptName)}</ManageTableCell>
                                 <ManageTableCell>{new Date(task.startTime).toLocaleString()}</ManageTableCell></TableRow>
                         ))}
                     </TableBody>
