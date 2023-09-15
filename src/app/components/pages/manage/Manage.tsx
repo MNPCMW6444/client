@@ -48,6 +48,7 @@ const Manage = () => {
                     <TableHead>
                         <TableRow>
                             <ManageTableCell>Status</ManageTableCell>
+                            <ManageTableCell>If failure why</ManageTableCell>
                             <ManageTableCell>Prompt Names</ManageTableCell>
                             <ManageTableCell>Time</ManageTableCell> </TableRow>
                     </TableHead>
@@ -55,6 +56,7 @@ const Manage = () => {
                         {tasks.map((task, index: number) => (
                             <TableRow key={index}>
                                 <ManageTableCell>{task.status}</ManageTableCell>
+                                <ManageTableCell>{task.promptResIDOrReason === "successful but unknown" ? "successful" : task.promptResIDOrReason}</ManageTableCell>
                                 <ManageTableCell>{capitalize("task")}</ManageTableCell>
                                 <ManageTableCell>{new Date(task.startTime).toLocaleString()}</ManageTableCell></TableRow>
                         ))}
