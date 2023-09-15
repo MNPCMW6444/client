@@ -2,11 +2,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import {Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import styled from "@emotion/styled";
 import {MainserverContext} from "@failean/mainserver-provider";
-import {Job} from "bull";
-
-interface Jobb extends Job {
-    status: string
-}
+import capitalize from "../../../util/capitalize";
+import {OpenAIJob} from "@failean/shared-types";
+import {Job} from "bull"
 
 
 const ManageTableCell = styled(TableCell)({
@@ -16,7 +14,7 @@ const ManageTableCell = styled(TableCell)({
 const Manage = () => {
     const msc = useContext(MainserverContext);
     const axiosInstance = msc?.axiosInstance;
-    const [tasks, setTasks] = useState<Jobb[]>([]);
+    const [tasks, setTasks] = useState<Job<OpenAIJob>[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>();
 
@@ -49,18 +47,16 @@ const Manage = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <ManageTableCell>ID</ManageTableCell>
                             <ManageTableCell>Status</ManageTableCell>
-                            <ManageTableCell>PromptName</ManageTableCell>
+                            <ManageTableCell>Prompt Names</ManageTableCell>
                             <ManageTableCell>Time</ManageTableCell> </TableRow>
                     </TableHead>
                     <TableBody>
                         {tasks.map((task, index: number) => (
                             <TableRow key={index}>
-                                <ManageTableCell>{task.id}</ManageTableCell>
-                                <ManageTableCell>{task.status}</ManageTableCell>
-                                <ManageTableCell>{task.data}</ManageTableCell>
-                                <ManageTableCell>{new Date(task.timestamp).toLocaleString()}</ManageTableCell></TableRow>
+                                <ManageTableCell>{"task"}</ManageTableCell>
+                                <ManageTableCell>{capitalize("task")}</ManageTableCell>
+                                <ManageTableCell>{new Date("task").toLocaleString()}</ManageTableCell></TableRow>
                         ))}
                     </TableBody>
                 </Table>
