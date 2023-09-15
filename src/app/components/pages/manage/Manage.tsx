@@ -3,8 +3,7 @@ import {Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography} from
 import styled from "@emotion/styled";
 import {MainserverContext} from "@failean/mainserver-provider";
 import capitalize from "../../../util/capitalize";
-import {OpenAIJob} from "@failean/shared-types";
-import {Job} from "bull"
+import {WhiteModels} from "@failean/shared-types";
 
 
 const ManageTableCell = styled(TableCell)({
@@ -14,7 +13,7 @@ const ManageTableCell = styled(TableCell)({
 const Manage = () => {
     const msc = useContext(MainserverContext);
     const axiosInstance = msc?.axiosInstance;
-    const [tasks, setTasks] = useState<Job<OpenAIJob>[]>([]);
+    const [tasks, setTasks] = useState<WhiteModels.Tasks.OpenAITaskModel[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>();
 
@@ -54,9 +53,9 @@ const Manage = () => {
                     <TableBody>
                         {tasks.map((task, index: number) => (
                             <TableRow key={index}>
-                                <ManageTableCell>{"task"}</ManageTableCell>
+                                <ManageTableCell>{task.status}</ManageTableCell>
                                 <ManageTableCell>{capitalize("task")}</ManageTableCell>
-                                <ManageTableCell>{new Date("task").toLocaleString()}</ManageTableCell></TableRow>
+                                <ManageTableCell>{new Date(task.startTime).toLocaleString()}</ManageTableCell></TableRow>
                         ))}
                     </TableBody>
                 </Table>
