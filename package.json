@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@failean/mainserver-provider": "^2.7.126",
-    "@failean/shared-types": "^2.9.172",
+    "@failean/shared-types": "^2.9.173",
     "@types/bull": "^4.10.0",
     "bull": "^4.11.3",
     "dotenv": "^16.3.1",
