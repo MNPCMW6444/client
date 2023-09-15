@@ -73,6 +73,14 @@ const Router = () => {
                                 }
                             />
                             <Route
+                                path="/manage"
+                                element={
+                                    <Suspense fallback={loading()}>
+                                        <WhitePage path="manage"/>
+                                    </Suspense>
+                                }
+                            />
+                            <Route
                                 path="/backlog"
                                 element={
                                     <Suspense fallback={loading()}>

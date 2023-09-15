@@ -9,9 +9,9 @@ import {
     Box,
     Avatar,
     MenuItem,
-    Menu
+    Menu, Divider
 } from '@mui/material';
-import {Menu as MenuIcon, MenuOpen, EditNote, TipsAndUpdates, Close} from '@mui/icons-material';
+import {Menu as MenuIcon, MenuOpen, EditNote, TipsAndUpdates, Close, Settings} from '@mui/icons-material';
 import useResponsive from "../../hooks/useRespnsive";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../../context/UserContext";
@@ -113,17 +113,25 @@ const WhiteSideBar = () => {
                             Logout
                         </MenuItem>
                     </Menu>
+                    <Divider/>
                     <ListItem onClick={() => navigate("/notebook")}>
                         <ListItemIcon>
                             <EditNote/>
                         </ListItemIcon>
                         {open && <ListItemText primary="Notebook"/>}
                     </ListItem>
+                    <Divider/>
                     <ListItem onClick={() => navigate("/aideator")}>
                         <ListItemIcon>
                             <TipsAndUpdates/>
                         </ListItemIcon>
                         {open && <ListItemText primary="AIdeator"/>}
+                    </ListItem>
+                    <ListItem onClick={() => navigate("/manage")}>
+                        <ListItemIcon>
+                            <Settings/>
+                        </ListItemIcon>
+                        {open && <ListItemText primary="Manage"/>}
                     </ListItem>
                 </List>
             </Drawer>
