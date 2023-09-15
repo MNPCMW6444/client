@@ -16,13 +16,14 @@ const Manage = () => {
     const [tasks, setTasks] = useState<WhiteModels.Tasks.OpenAITaskModel[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>();
-
     useEffect(() => {
         const fetchTasks = async () => {
             try {
                 const res = await axiosInstance?.get("data/prompts/tasks");
                 if (res?.data?.data) {
-                    setTasks(res.data.data);
+                    setTasks(res.data.data.sort((a: any, b: any) => {
+                        return new Date(b.startTime).getTime() - new Date(a.startTime).getTime();
+                    }));
                 }
             } catch (error) {
                 console.error("Error fetching tasks:", error);
