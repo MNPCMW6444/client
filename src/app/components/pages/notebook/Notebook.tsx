@@ -90,7 +90,7 @@ const Notebook = () => {
                             variant="outlined"
                             fullWidth
                             onChange={handleInputChange}
-                            value={inputText || "Click on 'New+' to create you first idea..."}
+                            value={ ideas.length> 0 ?  inputText : "Click on 'New+' to create you first idea..."}
 
                         />
                     </Grid>
