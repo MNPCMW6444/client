@@ -71,7 +71,21 @@ const Reset = () => {
                             password,
                             passwordagain: confirmPassword,
                         })
-                        .then(() => refreshUserData())
+                        .then(() => {
+                            refreshUserData();
+                            axiosInstance
+                                .post("auth/signin", {email, password})
+                                .then(() => refreshUserData())
+                                .catch((error) => {
+                                    setButtonLabel("IDLE");
+                                    toast.error(
+                                        error?.response?.data?.clientError ||
+                                        error?.message ||
+                                        "Unknown error, Make sure you are Online"
+                                    );
+                                });
+                            navigate("/login")
+                        })
                         .catch((error) => {
                             setButtonLabel("IDLE");
                             toast.error(
