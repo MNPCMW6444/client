@@ -80,7 +80,6 @@ const AIdeator = () => {
             const res = await axiosInstance?.get("data/prompts/tasks");
             if (res?.data?.data) {
                 const x = res.data.data.filter(({status}: WhiteModels.Tasks.OpenAITaskModel) => status === "running")
-                debugger;
                 setNewPolled(x.map(({promptName}: WhiteModels.Tasks.OpenAITaskModel) => promptName));
             }
         }, 5000)

@@ -104,10 +104,16 @@ const WhiteSideBar = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleClose}
                     >
-                        <MenuItem onClick={() => navigate("/my-account")}>
+                        <MenuItem onClick={() => {
+                            axiosInstance?.post("analytics/sidebar", {route: "my-account"});
+                            navigate("/my-account")
+                        }}>
                             My Account
                         </MenuItem>
-                        <MenuItem onClick={() => navigate("/about")}>
+                        <MenuItem onClick={() => {
+                            axiosInstance?.post("analytics/sidebar", {route: "about"});
+                            navigate("/about")
+                        }}>
                             About Failean
                         </MenuItem>
                         <MenuItem
@@ -124,7 +130,10 @@ const WhiteSideBar = () => {
                     </Menu>
                     <Divider/>
                     <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
-                              onClick={() => navigate("/backlog")}>
+                              onClick={() => {
+                                  axiosInstance?.post("analytics/sidebar", {route: "backlog"});
+                                  navigate("/backlog")
+                              }}>
                         <ListItemIcon>
                             <EditNote/>
                         </ListItemIcon>
@@ -140,7 +149,10 @@ const WhiteSideBar = () => {
                     </ListItem>
 
                     <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
-                              onClick={() => navigate("/aideator")}>
+                              onClick={() => {
+                                  axiosInstance?.post("analytics/sidebar", {route: "aideator"});
+                                  navigate("/aideator")
+                              }}>
                         <ListItemIcon>
                             <TipsAndUpdates/>
                         </ListItemIcon>
@@ -154,7 +166,10 @@ const WhiteSideBar = () => {
                     </ListItem>
 
                     <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
-                              onClick={() => navigate("/validator")}>
+                              onClick={() => {
+                                  axiosInstance?.post("analytics/sidebar", {route: "validator"});
+                                  navigate("/validator")
+                              }}>
                         <ListItemIcon>
                             <Check/>
                         </ListItemIcon>
@@ -169,7 +184,10 @@ const WhiteSideBar = () => {
 
 
                     <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
-                              onClick={() => navigate("/deck")}>
+                              onClick={() => {
+                                  axiosInstance?.post("analytics/sidebar", {route: "deck"});
+                                  navigate("/deck")
+                              }}>
                         <ListItemIcon>
                             <Book/>
                         </ListItemIcon>
