@@ -16,6 +16,14 @@ app.get('/tos', (_, res) => {
     res.sendFile(path.join(__dirname, 'public', 'tos.html'));
 });
 
+app.get('/sub', (_, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'subscription.html'));
+});
+
+app.get('/tok', (_, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'tokens.html'));
+});
+
 app.get('/pay', (_, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pay.html'));
 });
