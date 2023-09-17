@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect, useContext} from "react";
-import {Container, TextField, Typography, Grid, Paper} from "@mui/material";
+import {Container, TextField, Typography, Grid, Paper, Button} from "@mui/material";
 import {toast} from "react-toastify";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
@@ -155,11 +155,27 @@ const MyAccount: FC = () => {
                         <Typography variant="h6" gutterBottom>
                             Token Balance: {tokenBalance}
                         </Typography>
-                    </Grid> {user?.email && <Grid item alignSelf="center">
-                    <Link
-                        href={"https://billing.stripe.com/p/login/eVaeVtgjb1KxfOo9AA?prefilled_email=" + user?.email}>Buy
-                        more here</Link>
-                </Grid>}
+                    </Grid> {user?.email &&
+                    (<><Grid item alignSelf="center">
+                        <Typography variant="h5">Need more Tokens?</Typography>
+                    </Grid><Grid item alignSelf="center">
+                        <Button variant="contained">
+                            <Link color="#ffffff"
+                                  href={"/tok"}>
+                                Buy more here
+                            </Link>
+                        </Button>
+                    </Grid><Grid item alignSelf="center">
+                        <Typography variant="h5">Or Even Better:</Typography>
+                    </Grid><Grid item alignSelf="center">
+                        <Button variant="contained">
+                            <Link color="#ffffff"
+                                  href={"/sub"}>
+                                Subscribe and save
+                            </Link>
+                        </Button>
+                    </Grid>
+                    </>)}
                 </Grid>
             </StyledPaper>
         </StyledContainer>
