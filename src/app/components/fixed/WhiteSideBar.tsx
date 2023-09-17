@@ -137,7 +137,7 @@ const WhiteSideBar = () => {
                         <ListItemIcon>
                             <EditNote/>
                         </ListItemIcon>
-                        {open && <ListItemText primary="Idea Validator"/>}
+                        {open && <ListItemText primary="Idea Backlog"/>}
                     </ListItem>
                     <Divider/>
 
