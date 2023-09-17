@@ -20,7 +20,7 @@ import {
     Close,
     History,
 } from "@mui/icons-material";
-import useResponsive from "../../hooks/useRespnsive";
+import useResponsive from "../../hooks/useResponsive";
 import {useNavigate} from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import {MainserverContext} from "@failean/mainserver-provider";
@@ -122,11 +122,11 @@ const WhiteSideBar = () => {
                         </MenuItem>
                     </Menu>
                     <Divider/>
-                    <ListItem onClick={() => navigate("/notebook")}>
+                    <ListItem onClick={() => navigate("/backlog")}>
                         <ListItemIcon>
                             <EditNote/>
                         </ListItemIcon>
-                        {open && <ListItemText primary="Notebook"/>}
+                        {open && <ListItemText primary="Idea Backlog"/>}
                     </ListItem>
                     <Divider/>
                     <ListItem onClick={() => navigate("/aideator")}>

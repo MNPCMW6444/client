@@ -8,7 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
-import useResponsive from "../../../hooks/useRespnsive";
+import useResponsive from "../../../hooks/useResponsive";
 import capitalize from "../../../util/capitalize";
 import {TypeOfSetOpenDialog} from "../../pages/aideator/AIdeator";
 import AIdeatorContext from "../../../context/AIdeatorContext";

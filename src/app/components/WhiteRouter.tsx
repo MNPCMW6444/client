@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 import WhiteAuthRouter from "./auth/WhiteAuthRouter";
 import WhiteSideBar from "./fixed/WhiteSideBar";
 import UserContext from "../context/UserContext";
-import useResponsive from "../hooks/useRespnsive";
+import useResponsive from "../hooks/useResponsive";
 import {loading} from "../../content/style/styled-components/all";
 import WhitePage from "./WhitePage";
 

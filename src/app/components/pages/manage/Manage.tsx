@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import {MainserverContext} from '@failean/mainserver-provider';
 import capitalize from '../../../util/capitalize';
 import {WhiteModels} from '@failean/shared-types';
-import useResponsive from "../../../hooks/useRespnsive";
+import useResponsive from "../../../hooks/useResponsive";
 
 
 const DividerRow = styled.div({
