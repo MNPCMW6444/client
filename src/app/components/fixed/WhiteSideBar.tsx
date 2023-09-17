@@ -17,8 +17,7 @@ import {
     MenuOpen,
     EditNote,
     TipsAndUpdates,
-    Close,
-    History,
+    Close, Check, Book, ArrowDownward,
 } from "@mui/icons-material";
 import useResponsive from "../../hooks/useResponsive";
 import {useNavigate} from "react-router-dom";
@@ -86,11 +85,13 @@ const WhiteSideBar = () => {
                 <List>
                     {" "}
                     {isMobile && (
-                        <ListItem onClick={() => setOpen(!open)}>
+                        <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
+                                  onClick={() => setOpen(!open)}>
                             <ListItemIcon>{open ? <Close/> : <MenuIcon/>}</ListItemIcon>
                         </ListItem>
                     )}
-                    <ListItem onClick={handleMenu}>
+                    <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
+                              onClick={handleMenu}>
                         <ListItemIcon>
                             <Avatar sx={{width: 24, height: 24}}>
                                 {user?.name[0].toUpperCase()}
@@ -122,25 +123,59 @@ const WhiteSideBar = () => {
                         </MenuItem>
                     </Menu>
                     <Divider/>
-                    <ListItem onClick={() => navigate("/backlog")}>
+                    <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
+                              onClick={() => navigate("/backlog")}>
                         <ListItemIcon>
                             <EditNote/>
                         </ListItemIcon>
-                        {open && <ListItemText primary="Idea Backlog"/>}
+                        {open && <ListItemText primary="Idea Validator"/>}
                     </ListItem>
                     <Divider/>
-                    <ListItem onClick={() => navigate("/aideator")}>
+
+
+                    <ListItem>
+                        <ListItemIcon>
+                            <ArrowDownward sx={{paddingLeft: open ? "70px" : 0}}/>
+                        </ListItemIcon>
+                    </ListItem>
+
+                    <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
+                              onClick={() => navigate("/aideator")}>
                         <ListItemIcon>
                             <TipsAndUpdates/>
                         </ListItemIcon>
                         {open && <ListItemText primary="AIdeator"/>}
                     </ListItem>
-                    <ListItem onClick={() => navigate("/manage")}>
+
+                    <ListItem>
                         <ListItemIcon>
-                            <History/>
+                            <ArrowDownward sx={{paddingLeft: open ? "70px" : 0}}/>
                         </ListItemIcon>
-                        {open && <ListItemText primary="History"/>}
                     </ListItem>
+
+                    <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
+                              onClick={() => navigate("/validator")}>
+                        <ListItemIcon>
+                            <Check/>
+                        </ListItemIcon>
+                        {open && <ListItemText primary="Validator"/>}
+                    </ListItem>
+
+                    <ListItem>
+                        <ListItemIcon>
+                            <ArrowDownward sx={{paddingLeft: open ? "70px" : 0}}/>
+                        </ListItemIcon>
+                    </ListItem>
+
+
+                    <ListItem sx={{cursor: "pointer", backgroundColor: "#8A307F50", borderRadius: "5px"}}
+                              onClick={() => navigate("/deck")}>
+                        <ListItemIcon>
+                            <Book/>
+                        </ListItemIcon>
+                        {open && <ListItemText primary="Deckifier"/>}
+                    </ListItem>
+
                 </List>
             </Drawer>
         </Box>

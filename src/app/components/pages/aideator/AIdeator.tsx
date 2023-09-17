@@ -5,14 +5,15 @@ import {
     SetStateAction,
     useEffect,
 } from "react";
-import {Grid, Typography, Paper, Tooltip, Button, Box} from "@mui/material";
+import {Grid, Typography, Tooltip, Button, Box} from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
 import {PromptGraph, PromptName, WhiteModels} from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 import {
+    History,
     Lock,
-    LockOpen,
+    LockOpen, PlayArrow,
     RemoveCircleOutlineOutlined,
     Warning,
 } from "@mui/icons-material";
@@ -22,7 +23,7 @@ import capitalize from "../../../util/capitalize";
 import {MainserverContext} from "@failean/mainserver-provider";
 import RunDialog from "../../common/prompt-dialog/RunDialog";
 import FeedbackDialog from "../../common/prompt-dialog/FeedbackDialog";
-import {AutoFixHigh} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 type TypeOfOpenDialog = "closed" | "run" | "feedback";
 export type TypeOfSetOpenDialog = Dispatch<SetStateAction<TypeOfOpenDialog>>;
@@ -50,6 +51,9 @@ const AIdeator = () => {
     const [missingLabel, setMissingLabel] = useState<string>("Run Missing");
     const [groupLabel, setGroupLabel] = useState<string>("Run Group");
     const [missing, setMissing] = useState<PromptName[]>([]);
+
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         if (graph.length > 0) {
@@ -155,6 +159,9 @@ const AIdeator = () => {
                         </Grid>
                     </Grid>
                 )}
+                <br/>
+                <br/>
+                <br/>
                 <Grid
                     item
                     container
@@ -167,7 +174,6 @@ const AIdeator = () => {
                             color="secondary"
                             variant="outlined"
                             size="large"
-                            startIcon={<AutoFixHigh/>}
                             sx={{bgcolor: "#FFDCFB", border: "1px solid"}}
                             disabled={allLabel !== "Run All"}
                             onClick={async () => {
@@ -191,13 +197,13 @@ const AIdeator = () => {
                                 }
                             }}
                         >
-                            {allLabel}
+                            <><PlayArrow/><PlayArrow sx={{paddingRight: "5px"}}/></>
+                            {" " + allLabel}
                         </Button>
                     </Grid>
                     <Grid item>
                         <Button
                             size="large"
-                            startIcon={<RemoveCircleOutlineOutlined/>}
                             sx={{
                                 bgcolor: "#FFDBD8",
                                 border: "1px solid",
@@ -227,10 +233,13 @@ const AIdeator = () => {
                                 }
                             }}
                         >
-                            {missingLabel}
+                            <><PlayArrow/><RemoveCircleOutlineOutlined sx={{paddingRight: "5px"}}/></>
+                            {" " + missingLabel}
                         </Button>
                     </Grid>
                 </Grid>
+                <br/>
+                <br/>
                 {result.map(({level, lockedPrompts}, index) => (
                     <Grid
                         item
@@ -304,6 +313,7 @@ const AIdeator = () => {
         );
     };
 
+
     return ideas.length > 0 ? (
         <>
             {openPrompt !== "closed" &&
@@ -342,15 +352,17 @@ const AIdeator = () => {
                 )}
                 <Grid item>
                     <Typography variant="h4">Token Balance: {tokens}</Typography>
-                </Grid>
+                </Grid> <Grid item>
+                <Button variant="contained" onClick={() => navigate("/manage")}>See History <History/></Button>
+            </Grid>
                 <Grid item>
-                    <Paper sx={{overflow: "scroll"}}>
+                    <Box sx={{overflow: "scroll"}}>
                         {graph.length > 0 ? (
                             renderGraph(graph)
                         ) : (
                             <Typography>Loading {loaded}...</Typography>
                         )}
-                    </Paper>
+                    </Box>
                 </Grid>
             </Grid>
         </>

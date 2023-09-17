@@ -9,13 +9,15 @@ import {
     TableCell,
     Tooltip,
     Paper,
-    TableContainer
+    TableContainer, Button
 } from "@mui/material";
 import styled from '@emotion/styled';
 import {Fragment, useContext} from "react";
 import UserContext from "../../../context/UserContext";
 import {WhiteModels} from "@failean/shared-types";
 import useResponsive from "../../../hooks/useResponsive";
+import {Edit} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 const DividerRow = styled.div({
     height: '1px',
@@ -37,48 +39,59 @@ const TruncatedCell = styled(TableCell)({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     maxWidth: '15vw',
+    textAlign: "center"
 });
+
+interface Field {
+    name: string,
+    valueGetter: (ideas: WhiteModels.Data.Ideas.WhiteIdea[], idaeNames: string[], index: number) => string
+}
+
+const config: Field[] = [
+    {name: "Name", valueGetter: (_, idaeNames, index: number) => (idaeNames[index])},
+    {name: "Idea", valueGetter: (ideas, _, index: number) => (ideas[index].idea)},
+    {name: "Ideation", valueGetter: (_, __, ___: number) => ("0%")},
+    {name: "Validation", valueGetter: (_, __, ___: number) => ("0%")},
+]
 
 const Backlog = () => {
     const {isMobile} = useResponsive();
     const {ideas, ideaNames} = useContext(UserContext);
 
     const renderRow = (ideaObj: WhiteModels.Data.Ideas.WhiteIdea, i: number) => {
-        const {idea, _id} = ideaObj;
+        const {_id} = ideaObj;
 
         if (isMobile) {
             return (
                 <MobileRow key={_id}>
-                    <MobileCell>{`Name: ${ideaNames[i]}`}</MobileCell>
-                    <MobileCell>{`Idea: ${idea}`}</MobileCell>
-                    <MobileCell>{`ID: ${_id}`}</MobileCell>
-                    <MobileCell>{`Status: ${idea}`}</MobileCell>
+                    {config.map(({name, valueGetter}) => (
+                        <MobileCell>{`${name}: ${valueGetter(ideas, ideaNames, i)}`}</MobileCell>
+                    ))}
                 </MobileRow>
             );
         } else {
             return (
                 <TableRow key={_id}>
-                    <Tooltip title={ideaNames[i]}>
-                        <TruncatedCell>{ideaNames[i]}</TruncatedCell>
-                    </Tooltip>
-                    <Tooltip title={idea}>
-                        <TruncatedCell>{idea}</TruncatedCell>
-                    </Tooltip>
-                    <Tooltip title={String(_id)}>
-                        <TruncatedCell>{_id}</TruncatedCell>
-                    </Tooltip>
-                    <Tooltip title={idea}>
-                        <TruncatedCell>{idea}</TruncatedCell>
-                    </Tooltip>
+                    {config.map(({valueGetter}) => (
+                        <Tooltip title={valueGetter(ideas, ideaNames, i)}>
+                            <TruncatedCell>{valueGetter(ideas, ideaNames, i)}</TruncatedCell>
+                        </Tooltip>
+                    ))}
+
                 </TableRow>
             );
         }
     };
 
+    const navigate = useNavigate()
+
     return (
-        <Grid container direction="column" spacing={3} alignItems="center">
+        <Grid container direction="column" rowSpacing={6} alignItems="center">
             <Grid item>
                 <Typography variant="h3">Idea Backlog:</Typography>
+            </Grid>
+            <Grid item>
+                <Button variant="contained" onClick={() => navigate("/notebook")}>Edit Ideas <Edit/></Button>
             </Grid>
             <Grid item>
                 <TableContainer component={Paper}>
@@ -86,10 +99,8 @@ const Backlog = () => {
                         {!isMobile && (
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Idea</TableCell>
-                                    <TableCell>Ideation</TableCell>
-                                    <TableCell>Validation</TableCell>
+                                    {config.map(({name}) => (
+                                        <TableCell>{name}</TableCell>))}
                                 </TableRow>
                             </TableHead>
                         )}

@@ -87,7 +87,35 @@ const Router = () => {
                                         <WhitePage path="backlog"/>
                                     </Suspense>
                                 }
+                            /><Route
+                            path="/notebook"
+                            element={
+                                <Suspense fallback={loading()}>
+                                    <WhitePage path="notebook"/>
+                                </Suspense>
+                            }
+                        />
+
+                            <Route
+                                path="/deck"
+                                element={
+                                    <Suspense fallback={loading()}>
+                                        <WhitePage path="deck"/>
+                                    </Suspense>
+                                }
                             />
+
+
+                            <Route
+                                path="/validator"
+                                element={
+                                    <Suspense fallback={loading()}>
+                                        <WhitePage path="validator"/>
+                                    </Suspense>
+                                }
+                            />
+
+
                         </Routes>
                     </Box>
                 </Box>

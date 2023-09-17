@@ -96,7 +96,7 @@ const Manage = () => {
     return (
         <Grid container direction="column" alignItems="center" spacing={3}>
             <Grid item xs={12}>
-                <Typography variant="h2" gutterBottom>Manage Your AIdeator Tasks</Typography>
+                <Typography variant="h2" gutterBottom>AIdeator Runs History</Typography>
             </Grid>
             <Grid item xs={12}>
                 <TableContainer component={Paper}>
