@@ -40,7 +40,7 @@ const UserContext = createContext<{
     ideas: WhiteIdea[];
     ideaNames: string[];
     tokens: number;
-    refreshUserData: () => Promise<void>;
+    refreshUserData: () => void;
 }>({
     user: undefined,
     ideas: [],
@@ -86,7 +86,7 @@ export const UserContextProvider = ({children}: { children: ReactNode }) => {
                                             idea,
                                         }))
                                     )
-                                ).map(({data, original, idea}) =>
+                                ).map(({data, original}) =>
                                     data.promptResult ? data.promptResult.data : original
                                 )
                             );

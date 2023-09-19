@@ -1,25 +1,18 @@
-import React, {FC, useState, useEffect, useContext} from "react";
+import React, {FC, useEffect, useContext} from "react";
 import {
     Container,
-    TextField,
     Typography,
     Grid,
     Paper,
     Button,
 } from "@mui/material";
-import {toast} from "react-toastify";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import EmailIcon from "@mui/icons-material/Email";
-import LockIcon from "@mui/icons-material/Lock";
-import EditableTextField from "../EditableTextField";
-import PasswordTextField from "../PasswordTextField";
 import styled from "@emotion/styled";
 import UserContext from "../../../../context/UserContext";
 import {MainserverContext} from "@failean/mainserver-provider";
 import Link from "@mui/material/Link";
 import capitalize from "../../../../util/capitalize";
 
-const StyledContainer = styled(Container)`
+export const StyledContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,11 +31,6 @@ const StyledPaper = styled(Paper)`
   width: 100%;
 `;
 
-export const StyledTextField: any = styled(TextField)`
-  width: 100%;
-  margin-bottom: ${(props: any) =>
-          props.theme.spacing instanceof Function ? props.theme.spacing(2) : 2}px;
-`;
 
 const Billing: FC = () => {
     const {
@@ -50,12 +38,6 @@ const Billing: FC = () => {
         refreshUserData,
         tokens: tokenBalance,
     } = useContext(UserContext);
-    const [name, setName] = useState(user?.name || "");
-    const [password, setPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
-    const setIsEditingNamex = useState(false);
-    const setIsEditingName = setIsEditingNamex[1];
-    const [isEditingPassword, setIsEditingPassword] = useState(false);
 
     const mainserverContext = useContext(MainserverContext);
     const axiosInstance = mainserverContext?.axiosInstance;
@@ -64,44 +46,6 @@ const Billing: FC = () => {
         refreshUserData();
     }, [refreshUserData, axiosInstance]);
 
-    useEffect(() => {
-        user && setName(user.name);
-    }, [user]);
-
-    const handleUpdateName = async () => {
-        try {
-            if (axiosInstance) {
-                axiosInstance.post(
-                    "auth/updatename",
-                    {name},
-                    {withCredentials: true}
-                );
-                setIsEditingName(false);
-
-                toast.success("Name updated successfully!");
-                refreshUserData();
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    const handleUpdatePassword = async () => {
-        try {
-            if (axiosInstance) {
-                axiosInstance.post(
-                    "auth/updatepassword",
-                    {password},
-                    {withCredentials: true}
-                );
-                setIsEditingPassword(false);
-                toast.error("Password updated successfully!");
-                refreshUserData();
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    };
 
     return (
         <StyledContainer maxWidth="xs">

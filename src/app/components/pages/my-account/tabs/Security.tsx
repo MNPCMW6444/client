@@ -1,11 +1,9 @@
 import React, {FC, useState, useEffect, useContext} from "react";
 import {
-    Container,
     TextField,
     Typography,
     Grid,
     Paper,
-    Button,
 } from "@mui/material";
 import {toast} from "react-toastify";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -16,16 +14,8 @@ import PasswordTextField from "../PasswordTextField";
 import styled from "@emotion/styled";
 import UserContext from "../../../../context/UserContext";
 import {MainserverContext} from "@failean/mainserver-provider";
-import Link from "@mui/material/Link";
+import {StyledContainer} from "./Billing";
 
-const StyledContainer = styled(Container)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: ${(props: any) =>
-          props.theme.spacing instanceof Function ? props.theme.spacing(32) : 32}px;
-  min-height: 100vh;
-`;
 
 const StyledTypography = styled(Typography)`
   color: #ffffff;
