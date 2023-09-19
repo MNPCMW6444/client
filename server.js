@@ -13,15 +13,15 @@ app.get('/manifest.json', (_, res) => {
 });
 
 app.get('/tos', (_, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'tos.html'));
+    res.sendFile(path.join(__dirname, 'build', 'tos.html'));
 });
 
 app.get('/sub', (_, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'subscription.html'));
+    res.sendFile(path.join(__dirname, 'build', 'subscription.html'));
 });
 
 app.get('/tok', (_, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'tokens.html'));
+    res.sendFile(path.join(__dirname, 'build', 'tokens.html'));
 });
 
 
