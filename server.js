@@ -23,11 +23,11 @@ if (process.env.NODE_ENV === 'production') {
     });
 
     app.get('/sub', (_, res) => {
-        res.sendFile(path.join(__dirname, 'build', 'subscription.html'));
+        res.sendFile(path.join(__dirname, 'build', 'sub.html'));
     });
 
     app.get('/tok', (_, res) => {
-        res.sendFile(path.join(__dirname, 'build', 'tokens.html'));
+        res.sendFile(path.join(__dirname, 'build', 'tok.html'));
     });
 
     app.get('*', (_, res) => {
@@ -43,11 +43,11 @@ else if (process.env.NODE_ENV === 'development') {
     });
 
     app.get('/sub', (_, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'subscription.html'));
+        res.sendFile(path.join(__dirname, 'public', 'sub.html'));
     });
 
     app.get('/tok', (_, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'tokens.html'));
+        res.sendFile(path.join(__dirname, 'public', 'tok.html'));
     });
 
 
