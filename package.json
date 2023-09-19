@@ -59,7 +59,7 @@
     "@types/lodash": "^4.14.198",
     "@types/zxcvbn": "^4.4.2",
     "concurrently": "^8.2.1",
-    "graphql": "^16.8.0",
+    "graphql": "^16.8.1",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.7",
     "react-router-dom": "^6.16.0",
