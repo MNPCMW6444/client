@@ -1,11 +1,20 @@
 import {PromptGraph, PromptName} from "@failean/shared-types";
-import {Box, Button, Grid, Tooltip, Typography} from "@mui/material";
-import {Lock, LockOpen, PlayArrow, RemoveCircleOutlineOutlined, Warning} from "@mui/icons-material";
+import {Box, Button, Grid, Typography} from "@mui/material";
+import {PlayArrow, Warning} from "@mui/icons-material";
 import capitalize from "../../../util/capitalize";
 import Prompt from "../../common/Prompt";
 import {Dispatch, SetStateAction, useContext, useState, useMemo} from "react";
 import {MainserverContext} from "@failean/mainserver-provider";
 import {TypeOfOpenDialog} from "./AIdeator";
+
+
+interface PromptGroupProps {
+
+    levels: any
+    levelIndex: number
+    setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>
+
+}
 
 interface GraphProps {
     tempGraph: PromptGraph;
@@ -17,13 +26,13 @@ interface GraphProps {
     setOpenDialog: Dispatch<SetStateAction<TypeOfOpenDialog>>
 }
 
-const removePrefix = (str) => {
+const removePrefix = (str: string) => {
     if (str.startsWith(", Idea, ")) return str.slice(", Idea, ".length);
     if (str.startsWith(", ")) return str.slice(", ".length);
     return str;
 };
 
-const PromptGroup = ({levels, levelIndex, setOpenPrompt}) => {
+const PromptGroup = ({levels, levelIndex, setOpenPrompt}: PromptGroupProps) => {
     const currentLevel = levels[levelIndex];
     if (!currentLevel) return null;
 
@@ -34,7 +43,7 @@ const PromptGroup = ({levels, levelIndex, setOpenPrompt}) => {
             justifyContent="center"
             columnSpacing={3}
         >
-            {currentLevel.level.map((level, index) => (
+            {currentLevel.level.map((level: any, index: any) => (
                 <Grid key={index} item>
                     <Prompt level={level} setOpenPrompt={setOpenPrompt}/>
                 </Grid>
@@ -44,27 +53,27 @@ const PromptGroup = ({levels, levelIndex, setOpenPrompt}) => {
     );
 };
 
-const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, setPrice, setOpenDialog}) => {
+const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, setPrice, setOpenDialog}: GraphProps) => {
     const [allLabel, setAllLabel] = useState("Run All");
     const [missingLabel, setMissingLabel] = useState("Run Missing");
     const [groupLabel, setGroupLabel] = useState("Run Group");
     const msc = useContext(MainserverContext);
     const axiosInstance = msc?.axiosInstance;
 
-    const graph = tempGraph.map(tg => {
+    const graph: any = tempGraph.map(tg => {
         const missingDeps = tempGraph.find(g => g.name === tg.name)?.deps.filter(dep => {
             const depO = tempGraph.find(g => g.name === dep);
             if (depO?.name === "idea") return false;
-            if (depO?.result === "empty" || depO?.result === "One of the dependencies or feedback is invalid, please try to change it") return true;
-            return !(depO?.result?.length > 2);
+            if (depO?.result === "empty" || (depO?.result as any) === "One of the dependencies or feedback is invalid, please try to change it") return true;
+            return !((depO?.result as any).length > 2);
         });
         return {...tg, missingDeps, locked: missingDeps && missingDeps.length > 0};
     });
 
     const result = useMemo(() => {
         const res = [];
-        const grouped = graph.reduce((group, item) => {
-            if (!group[item.level]) group[item.level] = [];
+        const grouped = graph.reduce((group: any, item: any) => {
+            if (!(group)[item.level]) (group)[item.level] = [];
             group[item.level].push(item);
             return group;
         }, {});
@@ -73,13 +82,13 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
             if (grouped.hasOwnProperty(level)) {
                 res.push({
                     level: grouped[level],
-                    lockedPrompts: prevLevel ? grouped[level].filter(({locked}) => locked) : []
+                    lockedPrompts: prevLevel ? grouped[level].filter(({locked}: any) => locked) : []
                 });
                 prevLevel = level;
             }
         }
         return res;
-    }, [tempGraph]);
+    }, [graph]);
 
     return (
         <Grid container direction="column" rowSpacing={10} alignItems="center">
@@ -114,9 +123,9 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
                                 try {
                                     price = (await axiosInstance.post("data/prompts/preRunPrompt", {
                                         ideaID: currentIdeaID,
-                                        promptNames: graph.map(({name}) => name)
+                                        promptNames: graph.map(({name}: any) => name)
                                     })).data.price;
-                                    setOpenPrompt(graph.map(({name}) => name));
+                                    setOpenPrompt(graph.map(({name}: any) => name));
                                     setPrice(price);
                                     setOpenDialog("run");
                                     setAllLabel("Run All");
@@ -145,7 +154,7 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
                                         ideaID: currentIdeaID,
                                         promptNames: missing
                                     })).data.price;
-                                    setOpenPrompt(missing);
+                                    setOpenPrompt(missing as any);
                                     setPrice(price);
                                     setOpenDialog("run");
                                     setMissingLabel("Run Missing");
@@ -164,7 +173,7 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
                         size="large"
                         sx={{bgcolor: "#D8FFDA", border: "1px solid", color: "#00B300", borderColor: "#00B300"}}
                         variant="outlined"
-                        disabled={groupLabel !== "Run Group" || graph.map(({locked}) => locked).some(v => v === true)}
+                        disabled={groupLabel !== "Run Group" || graph.map(({locked}: any) => locked).some((v: any) => v === true)}
                         onClick={async () => {
                             setGroupLabel("Estimating cost...");
                             let price = 9999;
@@ -172,9 +181,9 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
                                 try {
                                     price = (await axiosInstance.post("data/prompts/preRunPrompt", {
                                         ideaID: currentIdeaID,
-                                        promptNames: graph.map(({name}) => name).filter(name => name !== "idea")
+                                        promptNames: graph.map(({name}: any) => name).filter((name: any) => name !== "idea")
                                     })).data.price;
-                                    setOpenPrompt(graph.map(({name}) => name).filter(name => name !== "idea"));
+                                    setOpenPrompt(graph.map(({name}: any) => name).filter((name: any) => name !== "idea"));
                                     setPrice(price);
                                     setOpenDialog("run");
                                     setGroupLabel("Run Group");
