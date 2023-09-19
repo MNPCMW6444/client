@@ -8,14 +8,13 @@ import {
 import {Grid, Typography, Tooltip, Button, Box} from "@mui/material";
 import Prompt from "../../common/Prompt";
 import PromptDialog from "../../common/prompt-dialog/PromptDialog";
-import {PromptGraph, PromptName, WhiteModels} from "@failean/shared-types";
+import {PromptGraph, PromptName} from "@failean/shared-types";
 import IdeaSelector from "../../common/IdeaSelector";
 import {
     History,
     Lock,
     LockOpen, PlayArrow,
     RemoveCircleOutlineOutlined,
-    Warning,
 } from "@mui/icons-material";
 import AIdeatorContext from "../../../context/AIdeatorContext";
 import UserContext from "../../../context/UserContext";
@@ -24,19 +23,14 @@ import {MainserverContext} from "@failean/mainserver-provider";
 import RunDialog from "../../common/prompt-dialog/RunDialog";
 import FeedbackDialog from "../../common/prompt-dialog/FeedbackDialog";
 import {useNavigate} from "react-router-dom";
+import Polled from "./Polled";
+import RenderLevel from './RenderLevel';
+import RecursiveRender from './RecursiveRender';
+
 
 type TypeOfOpenDialog = "closed" | "run" | "feedback";
 export type TypeOfSetOpenDialog = Dispatch<SetStateAction<TypeOfOpenDialog>>;
 
-const removePrefix = (str: string): string => {
-    if (str.startsWith(", Idea, ")) {
-        return str.slice(", Idea, ".length);
-    } else if (str.startsWith(", ")) {
-        return str.slice(", ".length);
-    } else {
-        return str;
-    }
-};
 
 const AIdeator = () => {
     const mainserverContext = useContext(MainserverContext);
@@ -72,19 +66,6 @@ const AIdeator = () => {
             );
         }
     }, [graph]);
-
-    const [newPolled, setNewPolled] = useState<PromptName[]>([])
-
-    useEffect(() => {
-        const r = setInterval(async () => {
-            const res = await axiosInstance?.get("data/prompts/tasks");
-            if (res?.data?.data) {
-                const x = res.data.data.filter(({status}: WhiteModels.Tasks.OpenAITaskModel) => status === "running")
-                setNewPolled(x.map(({promptName}: WhiteModels.Tasks.OpenAITaskModel) => promptName));
-            }
-        }, 5000)
-        return () => clearInterval(r)
-    }, [axiosInstance]);
 
 
     const renderGraph = (tempGraph: PromptGraph) => {
@@ -133,31 +114,7 @@ const AIdeator = () => {
 
         return (
             <Grid container direction="column" rowSpacing={10} alignItems="center">
-                {newPolled.length > 0 && (
-                    <Grid
-                        item
-                        container
-                        direction="column"
-                        rowSpacing={4}
-                        alignItems="center"
-                    >
-                        <Grid item>
-                            <Box display="flex" alignItems="center">
-                                <Warning sx={{color: "warning.main", mr: 1}}/>
-                                <Typography color="warning.main">
-                                    These prompts are now running:
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Typography color="warning.main" textAlign="center">
-                                {removePrefix(
-                                    newPolled.map((name: string) => ", " + capitalize(name)).join("")
-                                )}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                )}
+                <Polled/>
                 <br/>
                 <br/>
                 <br/>
@@ -240,73 +197,12 @@ const AIdeator = () => {
                 <br/>
                 <br/>
                 {result.map(({level, lockedPrompts}, index) => (
-                    <Grid
-                        item
+                    <RenderLevel
                         key={index}
-                        container
-                        justifyContent="center"
-                        columnSpacing={3}
-                    >
-                        {
-                            <Grid item>
-                                {lockedPrompts.length === level.length ? (
-                                    <Tooltip title="All the prompts in this group are locked">
-                                        <Lock/>
-                                    </Tooltip>
-                                ) : lockedPrompts.length > 0 ? (
-                                    <Tooltip
-                                        title={
-                                            "The promtps:" +
-                                            lockedPrompts.map(
-                                                ({name}: any) => " " + capitalize(name)
-                                            ) +
-                                            " are locked"
-                                        }
-                                    >
-                                        <LockOpen/>
-                                    </Tooltip>
-                                ) : (
-                                    level.length !== 1 && (
-                                        <Button
-                                            color="secondary"
-                                            variant="outlined"
-                                            disabled={groupLabel !== "Run Group"}
-                                            onClick={async () => {
-                                                setGroupLabel("Estimating cost...");
-                                                let price = 9999;
-                                                if (axiosInstance) {
-                                                    try {
-                                                        price = (
-                                                            await axiosInstance.post(
-                                                                "data/prompts/preRunPrompt",
-                                                                {
-                                                                    ideaID: currentIdeaID,
-                                                                    promptNames: level.map(({name}) => name),
-                                                                }
-                                                            )
-                                                        ).data.price;
-                                                        setOpenPrompt(level.map(({name}) => name) as any);
-                                                        setPrice(price);
-                                                        setOpenDialog("run");
-                                                        setGroupLabel("Run Group");
-                                                    } catch (e) {
-                                                        setGroupLabel("Run Group");
-                                                    }
-                                                }
-                                            }}
-                                        >
-                                            {groupLabel}
-                                        </Button>
-                                    )
-                                )}
-                            </Grid>
-                        }
-                        {level.map((level, index) => (
-                            <Grid key={index} item>
-                                <Prompt level={level} setOpenPrompt={setOpenPrompt}/>
-                            </Grid>
-                        ))}
-                    </Grid>
+                        level={level}
+                        lockedPrompts={lockedPrompts}
+                        axiosInstance={axiosInstance}
+                    />
                 ))}
             </Grid>
         );

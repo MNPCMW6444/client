@@ -49,7 +49,7 @@ const Manage = () => {
             try {
                 const res = await axiosInstance?.get('data/prompts/tasks');
                 if (res?.data?.data) {
-                    setTasks(res.data.data.sort((a: any, b: any) => {
+                    setTasks(res.data.data.filter(({promptName}: any) => promptName !== "idea").sort((a: any, b: any) => {
                         return new Date(b.startTime).getTime() - new Date(a.startTime).getTime();
                     }));
                 }
