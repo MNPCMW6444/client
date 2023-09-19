@@ -7,15 +7,6 @@ import {Dispatch, SetStateAction, useContext, useState, useMemo} from "react";
 import {MainserverContext} from "@failean/mainserver-provider";
 import {TypeOfOpenDialog} from "./AIdeator";
 
-interface GraphProps {
-    tempGraph: PromptGraph;
-    missing: string[]
-    newPolled: PromptName[];
-    currentIdeaID: string;
-    setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>
-    setPrice: Dispatch<SetStateAction<number>>
-    setOpenDialog: Dispatch<SetStateAction<TypeOfOpenDialog>>
-}
 
 const removePrefix = (str) => {
     if (str.startsWith(", Idea, ")) return str.slice(", Idea, ".length);
