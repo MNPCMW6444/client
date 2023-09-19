@@ -30,7 +30,7 @@ module.exports = {
         },
     ],
     start_url: "/",
-    background_color: "#ffffff",
+    background_color: "#8a307f",
     display: "standalone",
     scope: "/",
     theme_color: "#ffffff",
