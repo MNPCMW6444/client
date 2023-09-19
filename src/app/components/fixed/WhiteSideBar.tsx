@@ -108,7 +108,7 @@ const WhiteSideBar = () => {
                             axiosInstance?.post("analytics/sidebar", {route: "my-account"});
                             navigate("/my-account")
                         }}>
-                            My Account
+                            Settings
                         </MenuItem>
                         <MenuItem onClick={() => {
                             axiosInstance?.post("analytics/sidebar", {route: "about"});
