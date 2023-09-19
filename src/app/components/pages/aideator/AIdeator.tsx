@@ -79,8 +79,8 @@ const AIdeator = () => {
         const r = setInterval(async () => {
             const res = await axiosInstance?.get("data/prompts/tasks");
             if (res?.data?.data) {
-                const x = res.data.data.filter(({status}: WhiteModels.Tasks.OpenAITaskModel) => status === "running")
-                setNewPolled(x.map(({promptName}: WhiteModels.Tasks.OpenAITaskModel) => promptName));
+                const x: WhiteModels.Tasks.OpenAITaskModel[] = res.data.data.filter(({status}: WhiteModels.Tasks.OpenAITaskModel) => status === "running")
+                setNewPolled(x.filter(({promptName}) => promptName !== "idea").map(({promptName}) => promptName));
             }
         }, 5000)
         return () => clearInterval(r)
