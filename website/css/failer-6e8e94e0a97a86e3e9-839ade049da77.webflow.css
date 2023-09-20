@@ -2088,6 +2088,35 @@ figcaption {
   width: 2rem;
 }
 
+.paragraph-3 {
+  font-size: 17px;
+}
+
+.paragraph-4 {
+  font-size: 16px;
+}
+
+.button-4 {
+  background-color: rgba(0, 0, 0, 0);
+  background-image: url('../images/Gmail.png');
+  background-position: 50%;
+  background-size: 50px;
+}
+
+.image-9 {
+  width: 90px;
+}
+
+.button-5 {
+  width: 45px;
+  height: 35px;
+  background-color: rgba(0, 0, 0, 0);
+  background-image: url('../images/Gmail.png');
+  background-position: 50%;
+  background-size: 45px 45px;
+  display: block;
+}
+
 @media screen and (min-width: 1280px) {
   .container {
     max-width: 1280px;
