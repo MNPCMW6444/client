@@ -1,11 +1,11 @@
 import {PromptGraph, PromptName} from "@failean/shared-types";
-import {Box, Button, Grid, Tooltip, Typography} from "@mui/material";
-import {Lock, LockOpen, PlayArrow, RemoveCircleOutlineOutlined, Warning} from "@mui/icons-material";
+import {Box, Button, Grid, Typography} from "@mui/material";
+import {PlayArrow, RemoveCircleOutlineOutlined, Warning} from "@mui/icons-material";
 import capitalize from "../../../util/capitalize";
-import Prompt from "../../common/Prompt";
 import {Dispatch, SetStateAction, useContext, useState} from "react";
 import {MainserverContext} from "@failean/mainserver-provider";
 import {TypeOfOpenDialog} from "./AIdeator";
+import Group from "./Group";
 
 interface GraphProps {
     tempGraph: PromptGraph;
@@ -33,7 +33,6 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
 
     const [allLabel, setAllLabel] = useState<string>("Run All");
     const [missingLabel, setMissingLabel] = useState<string>("Run Missing");
-    const [groupLabel, setGroupLabel] = useState<string>("Run Group");
 
     const msc = useContext(MainserverContext);
     const axiosInstance = msc?.axiosInstance
@@ -190,73 +189,8 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
             <br/>
             <br/>
             {result.map(({level, lockedPrompts}, index) => (
-                <Grid
-                    item
-                    key={index}
-                    container
-                    justifyContent="center"
-                    columnSpacing={3}
-                >
-                    {
-                        <Grid item>
-                            {lockedPrompts.length === level.length ? (
-                                <Tooltip title="All the prompts in this group are locked">
-                                    <Lock/>
-                                </Tooltip>
-                            ) : lockedPrompts.length > 0 ? (
-                                <Tooltip
-                                    title={
-                                        "The promtps:" +
-                                        lockedPrompts.map(
-                                            ({name}: any) => " " + capitalize(name)
-                                        ) +
-                                        " are locked"
-                                    }
-                                >
-                                    <LockOpen/>
-                                </Tooltip>
-                            ) : (
-                                level.length !== 1 && (
-                                    <Button
-                                        color="secondary"
-                                        variant="outlined"
-                                        disabled={groupLabel !== "Run Group"}
-                                        onClick={async () => {
-                                            setGroupLabel("Estimating cost...");
-                                            let price = 9999;
-                                            if (axiosInstance) {
-                                                try {
-                                                    price = (
-                                                        await axiosInstance.post(
-                                                            "data/prompts/preRunPrompt",
-                                                            {
-                                                                ideaID: currentIdeaID,
-                                                                promptNames: level.map(({name}) => name),
-                                                            }
-                                                        )
-                                                    ).data.price;
-                                                    setOpenPrompt(level.map(({name}) => name) as any);
-                                                    setPrice(price);
-                                                    setOpenDialog("run");
-                                                    setGroupLabel("Run Group");
-                                                } catch (e) {
-                                                    setGroupLabel("Run Group");
-                                                }
-                                            }
-                                        }}
-                                    >
-                                        {groupLabel}
-                                    </Button>
-                                )
-                            )}
-                        </Grid>
-                    }
-                    {level.map((level, index) => (
-                        <Grid key={index} item>
-                            <Prompt level={level} setOpenPrompt={setOpenPrompt}/>
-                        </Grid>
-                    ))}
-                </Grid>
+                <Group level={level} lockedPrompts={lockedPrompts} currentIdeaID={currentIdeaID}
+                       setOpenPrompt={setOpenPrompt} setOpenDialog={setOpenDialog} setPrice={setPrice} key={index}/>
             ))}
         </Grid>
     );

@@ -1,5 +1,5 @@
 import {FC, useState, Dispatch, SetStateAction, useEffect} from "react";
-import {TextField, Button, Stack, Grid} from "@mui/material";
+import {TextField, Grid} from "@mui/material";
 import {StandardTextFieldProps} from "@mui/material/TextField";
 
 interface EditableTextFieldProps extends StandardTextFieldProps {
@@ -13,18 +13,18 @@ const EditableTextField: FC<EditableTextFieldProps> = ({
                                                            setter,
                                                            ...props
                                                        }) => {
-    const [isEditing, setIsEditing] = useState(false);
+    const isEditing = useState(false)[0];
     const [value, setValue] = useState<string>(props.value || "");
+    /*
+        const handleSave = () => {
+            onEditSave();
+            setIsEditing(false);
+        };
 
-    const handleSave = () => {
-        onEditSave();
-        setIsEditing(false);
-    };
-
-    const handleCancel = () => {
-        setValue(props.value || "");
-        setIsEditing(false);
-    };
+        const handleCancel = () => {
+            setValue(props.value || "");
+            setIsEditing(false);
+        };*/
 
     useEffect(() => {
         setter(value);
