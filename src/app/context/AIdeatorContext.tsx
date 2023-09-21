@@ -12,14 +12,13 @@ import {MainserverContext} from "@failean/mainserver-provider";
 import {Prompt, PromptGraph, PromptName, PromptWireframe, WhiteModels} from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
-import WhitePromptResult = WhiteModels.Data.Prompts.WhitePromptResult;
 
 const AIdeatorContext = createContext<{
     currentIdeaID: string;
     setCurrentIdeaID: Dispatch<SetStateAction<string>> | undefined;
     graph: PromptGraph;
     loaded: string;
-    fetchGraph: () => Promise<void>;
+    fetchGraph: () => void;
     fetchOneResult: (name: PromptName) => Promise<void>;
     setPolled: Dispatch<SetStateAction<PromptName[]>> | undefined;
     polled: PromptName[];
@@ -65,53 +64,61 @@ export const AIdeatorContextProvider = memo(({
     console.log("Error:", error);
     console.log("Data:", data); */
 
-    const fetchGraph = useCallback(async () => {
+    const fetchGraph = useCallback(() => {
         console.log("fetchGraph");
 
         try {
             if (axiosInstance) {
-                const {data} = await axiosInstance.get("data/prompts/getPromptGraph");
-                const baseGraph: PromptWireframe[] = data.graph;
-                setLoaded("graph");
+                axiosInstance.get("data/prompts/getPromptGraph").then(({data}: { data: any }) => {
 
-                setGraph([]);
-                let results: WhiteModels.Data.Prompts.WhitePromptResult[] = (
-                    await axiosInstance.post("data/prompts/getPromptResult", {
-                        ideaID: currentIdeaID,
-                        promptName: "all",
+
+                    const baseGraph: PromptWireframe[] = data.graph;
+                    setLoaded("graph");
+
+                    setGraph([]);
+                    (
+                        axiosInstance.post("data/prompts/getPromptResult", {
+                            ideaID: currentIdeaID,
+                            promptName: "all",
+                        })
+                    ).then(({data}: { data: { promptResult: WhiteModels.Data.Prompts.WhitePromptResult[] } }) => {
+
+                        const results = data.promptResult
+
+
+                        results.sort(
+                            (a, b) =>
+                                new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+                        );
+
+                        let result: {
+                            [key: PromptName]: (WhiteModels.Data.Prompts.WhitePromptResult | (WhiteModels.Data.Prompts.WhitePromptResult | "idea" | "empty"))
+                        } = {};
+
+
+                        // We are now iterating over sorted array
+                        results.forEach((item) => {
+                            // If the key doesn't exist in the result object, or the current item's date is more recent, update the value
+                            if (
+                                !result[item.promptName] ||
+                                new Date(item.updatedAt).getTime() >
+                                new Date((result[item.promptName] as WhiteModels.Data.Prompts.WhitePromptResult).updatedAt).getTime()
+                            ) {
+                                result[item.promptName] = item.data as WhiteModels.Data.Prompts.WhitePromptResult | "idea" | "empty";
+                            }
+                        });
+                        setGraph(
+                            baseGraph.map((x, index: number) => ({
+                                ...x,
+                                result: index === 0 ? "idea" : (result[x.name]) || "empty",
+                            }))
+                        );
+                        setLoaded("");
                     })
-                ).data.promptResult;
-
-                results.sort(
-                    (a, b) =>
-                        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-                );
-
-                let result: {
-                    [key: PromptName]: (WhiteModels.Data.Prompts.WhitePromptResult | (WhitePromptResult | "idea" | "empty"))
-                } = {};
-
-
-                // We are now iterating over sorted array
-                results.forEach((item) => {
-                    // If the key doesn't exist in the result object, or the current item's date is more recent, update the value
-                    if (
-                        !result[item.promptName] ||
-                        new Date(item.updatedAt).getTime() >
-                        new Date((result[item.promptName] as WhiteModels.Data.Prompts.WhitePromptResult).updatedAt).getTime()
-                    ) {
-                        result[item.promptName] = item.data as WhitePromptResult | "idea" | "empty";
-                    }
                 });
-                setGraph(
-                    baseGraph.map((x, index: number) => ({
-                        ...x,
-                        result: index === 0 ? "idea" : (result[x.name]) || "empty",
-                    }))
-                );
-                setLoaded("");
             }
         } catch (e) {
+            console.log(e)
         }
     }, [axiosInstance, currentIdeaID]);
 
@@ -147,7 +154,7 @@ export const AIdeatorContextProvider = memo(({
         },
         [axiosInstance, currentIdeaID]
     );
- 
+
     useEffect(() => {
         fetchGraph();
         refreshUserData();
