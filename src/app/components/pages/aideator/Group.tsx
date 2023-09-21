@@ -3,13 +3,12 @@ import {Button, Grid, Tooltip} from "@mui/material";
 import {Lock, LockOpen} from "@mui/icons-material";
 import capitalize from "../../../util/capitalize";
 import Prompt from "../../common/Prompt";
-import {Dispatch, SetStateAction, useContext, useState} from "react";
+import {Dispatch, SetStateAction, useContext, useState, memo} from "react";
 import {MainserverContext} from "@failean/mainserver-provider";
 import {TypeOfOpenDialog} from "./AIdeator";
 
 interface GroupProps {
-    level: any
-    lockedPrompts: any;
+    result: any
     currentIdeaID: string;
     setOpenPrompt: Dispatch<SetStateAction<PromptName | "closed">>
     setPrice: Dispatch<SetStateAction<number>>
@@ -18,8 +17,7 @@ interface GroupProps {
 
 
 const Group = ({
-                   level, lockedPrompts,
-                   currentIdeaID,
+                   result, currentIdeaID,
                    setOpenPrompt,
                    setPrice,
                    setOpenDialog
@@ -30,9 +28,9 @@ const Group = ({
     const msc = useContext(MainserverContext);
     const axiosInstance = msc?.axiosInstance
 
-    if (level.length > 0) {
-        const singleLevel = [level[0]]
-        const theRest = level.splice(0, 1);
+    if (result.length > 0) {
+        const {level, lockedPrompts} = result[0]
+        result.shift();
 
 
         return (
@@ -45,14 +43,14 @@ const Group = ({
                 >
                     {
                         <Grid item>
-                            {lockedPrompts.length === singleLevel.length ? (
+                            {lockedPrompts.length === level.length ? (
                                 <Tooltip title="All the prompts in this group are locked">
                                     <Lock/>
                                 </Tooltip>
                             ) : lockedPrompts.length > 0 ? (
                                 <Tooltip
                                     title={
-                                        "The promtps:" +
+                                        "The prompts:" +
                                         lockedPrompts.map(
                                             ({name}: any) => " " + capitalize(name)
                                         ) +
@@ -62,7 +60,7 @@ const Group = ({
                                     <LockOpen/>
                                 </Tooltip>
                             ) : (
-                                singleLevel.length !== 1 && (
+                                level.length !== 1 && (
                                     <Button
                                         color="secondary"
                                         variant="outlined"
@@ -77,11 +75,11 @@ const Group = ({
                                                             "data/prompts/preRunPrompt",
                                                             {
                                                                 ideaID: currentIdeaID,
-                                                                promptNames: singleLevel.map(({name}: any) => name),
+                                                                promptNames: level.map(({name}: any) => name),
                                                             }
                                                         )
                                                     ).data.price;
-                                                    setOpenPrompt(singleLevel.map(({name}: any) => name) as any);
+                                                    setOpenPrompt(level.map(({name}: any) => name) as any);
                                                     setPrice(price);
                                                     setOpenDialog("run");
                                                     setGroupLabel("Run Group");
@@ -97,7 +95,7 @@ const Group = ({
                             )}
                         </Grid>
                     }
-                    {singleLevel.map((level: any, index: number) => (
+                    {level.map((level: any, index: number) => (
                         <Grid key={index} item>
                             <Prompt level={level} setOpenPrompt={setOpenPrompt}/>
                         </Grid>
@@ -105,7 +103,7 @@ const Group = ({
 
 
                 </Grid>
-                <Group level={theRest} lockedPrompts={lockedPrompts} currentIdeaID={currentIdeaID}
+                <Group result={result} currentIdeaID={currentIdeaID}
                        setOpenPrompt={setOpenPrompt} setPrice={setPrice} setOpenDialog={setOpenDialog}
                 />
             </>
@@ -116,4 +114,4 @@ const Group = ({
 };
 
 
-export default Group
+export default memo(Group);

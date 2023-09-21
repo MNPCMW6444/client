@@ -6,12 +6,13 @@ import {
     useCallback,
     useContext,
     Dispatch,
-    SetStateAction,
+    SetStateAction, memo,
 } from "react";
 import {MainserverContext} from "@failean/mainserver-provider";
-import {Prompt, PromptGraph, PromptName} from "@failean/shared-types";
+import {Prompt, PromptGraph, PromptName, PromptWireframe, WhiteModels} from "@failean/shared-types";
 import UserContext from "./UserContext";
 import capitalize from "../util/capitalize";
+import WhitePromptResult = WhiteModels.Data.Prompts.WhitePromptResult;
 
 const AIdeatorContext = createContext<{
     currentIdeaID: string;
@@ -35,9 +36,9 @@ const AIdeatorContext = createContext<{
     polled: [],
 });
 
-export const AIdeatorContextProvider = ({
-                                            children,
-                                        }: {
+export const AIdeatorContextProvider = memo(({
+                                                 children,
+                                             }: {
     children: ReactNode;
 }) => {
     const mainserverContext = useContext(MainserverContext);
@@ -70,11 +71,11 @@ export const AIdeatorContextProvider = ({
         try {
             if (axiosInstance) {
                 const {data} = await axiosInstance.get("data/prompts/getPromptGraph");
-                const baseGraph = data.graph;
+                const baseGraph: PromptWireframe[] = data.graph;
                 setLoaded("graph");
 
                 setGraph([]);
-                let results = (
+                let results: WhiteModels.Data.Prompts.WhitePromptResult[] = (
                     await axiosInstance.post("data/prompts/getPromptResult", {
                         ideaID: currentIdeaID,
                         promptName: "all",
@@ -82,27 +83,30 @@ export const AIdeatorContextProvider = ({
                 ).data.promptResult;
 
                 results.sort(
-                    (a: any, b: any) =>
+                    (a, b) =>
                         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
                 );
 
-                let result: { [key: string]: { data: string; updatedAt: string } } = {};
+                let result: {
+                    [key: PromptName]: (WhiteModels.Data.Prompts.WhitePromptResult | (WhitePromptResult | "idea" | "empty"))
+                } = {};
+
 
                 // We are now iterating over sorted array
-                results.forEach((item: any) => {
+                results.forEach((item) => {
                     // If the key doesn't exist in the result object, or the current item's date is more recent, update the value
                     if (
                         !result[item.promptName] ||
                         new Date(item.updatedAt).getTime() >
-                        new Date(result[item.promptName].updatedAt).getTime()
+                        new Date((result[item.promptName] as WhiteModels.Data.Prompts.WhitePromptResult).updatedAt).getTime()
                     ) {
-                        result[item.promptName] = item.data;
+                        result[item.promptName] = item.data as WhitePromptResult | "idea" | "empty";
                     }
                 });
                 setGraph(
-                    baseGraph.map((x: any, index: number) => ({
+                    baseGraph.map((x, index: number) => ({
                         ...x,
-                        result: index === 0 ? "idea" : result[x.name] || "empty",
+                        result: index === 0 ? "idea" : (result[x.name]) || "empty",
                     }))
                 );
                 setLoaded("");
@@ -143,7 +147,7 @@ export const AIdeatorContextProvider = ({
         },
         [axiosInstance, currentIdeaID]
     );
-
+ 
     useEffect(() => {
         fetchGraph();
         refreshUserData();
@@ -170,6 +174,6 @@ export const AIdeatorContextProvider = ({
             {children}
         </AIdeatorContext.Provider>
     );
-};
+});
 
-export default AIdeatorContext;
+export default (AIdeatorContext);

@@ -58,8 +58,13 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
         };
     });
 
-    const result: { level: any[]; lockedPrompts: PromptName[] }[] = [];
-    const grouped = graph.reduce((group: { [key: number]: any }, item: any) => {
+    const result: {
+        level: any[];
+        lockedPrompts: PromptName[]
+    }[] = [];
+    const grouped = graph.reduce((group: {
+        [key: number]: any
+    }, item: any) => {
         if (!group[item.level]) {
             group[item.level] = [];
         }
@@ -188,10 +193,8 @@ const Graph = ({tempGraph, missing, newPolled, currentIdeaID, setOpenPrompt, set
             </Grid>
             <br/>
             <br/>
-            {result.map(({level, lockedPrompts}, index) => (
-                <Group level={level} lockedPrompts={lockedPrompts} currentIdeaID={currentIdeaID}
-                       setOpenPrompt={setOpenPrompt} setOpenDialog={setOpenDialog} setPrice={setPrice} key={index}/>
-            ))}
+            <Group result={result} currentIdeaID={currentIdeaID}
+                   setOpenPrompt={setOpenPrompt} setOpenDialog={setOpenDialog} setPrice={setPrice}/>
         </Grid>
     );
 };
