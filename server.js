@@ -4,7 +4,7 @@ const port = 3000;
 
 app.get('/', (req, res) => {
   // Redirect to the register page on failean.com
-  res.redirect('https://failean.com/register');
+  res.redirect('https://failean.com');
 });
 
 app.listen(port, () => {
